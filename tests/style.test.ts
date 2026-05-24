@@ -85,7 +85,7 @@ test("skill explorer exposes ownership filtering", () => {
 
 test("project log records the ownership and tool-scope change", () => {
   const source = readFileSync(join(root, "CHANGELOG.md"), "utf8");
-  const match = source.match(/## 2026-05-24\n([\s\S]*?)(?:\n## |$)/);
+  const match = source.match(/## 2026-05-24\r?\n([\s\S]*?)(?:\r?\n## |$)/);
 
   assert.ok(match);
   const section = match[1];
