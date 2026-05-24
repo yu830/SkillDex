@@ -21,12 +21,12 @@ import {
 const expectedSlugs = [
   "vercel-deploy",
   "playwright",
-  "react-component-performance",
-  "bug-hunt-swarm",
+  "vibe-coding-review",
+  "guizang-ppt-skill",
   "frontend-design",
 ];
 
-test("catalog contains exactly the five approved third-party skills", () => {
+test("catalog contains exactly the five approved skills", () => {
   const skills = getAllSkills();
 
   assert.deepEqual(
@@ -34,7 +34,8 @@ test("catalog contains exactly the five approved third-party skills", () => {
     expectedSlugs,
   );
   assert.equal(skills.length, 5);
-  assert.ok(skills.every((skill) => skill.sourceType === "third-party"));
+  assert.equal(getSkillBySlug("vibe-coding-review")?.sourceType, "own");
+  assert.equal(getSkillBySlug("guizang-ppt-skill")?.sourceType, "third-party");
   assert.ok(skills.every((skill) => Array.isArray(skill.toolScopes)));
   assert.ok(skills.every((skill) => !Object.hasOwn(skill, "toolScope")));
   assert.ok(skills.every((skill) => skill.visibility === "reference-only"));
@@ -53,12 +54,12 @@ test("helpers return skills by slug and multi-tool scope", () => {
   assert.deepEqual([...(getSkillBySlug("frontend-design")?.toolScopes ?? [])].sort(), ["claude-code", "codex"]);
   assert.equal(getSkillBySlug("missing-skill"), undefined);
   assert.deepEqual(
-    getSkillsByToolScope("claude-code").map((skill) => skill.slug),
-    ["frontend-design"],
+    getSkillsByToolScope("claude-code").map((skill) => skill.slug).sort(),
+    ["frontend-design", "guizang-ppt-skill", "vibe-coding-review"],
   );
   assert.deepEqual(
     getSkillsByToolScope("codex").map((skill) => skill.slug).sort(),
-    ["bug-hunt-swarm", "frontend-design", "playwright", "react-component-performance", "vercel-deploy"],
+    ["frontend-design", "guizang-ppt-skill", "playwright", "vercel-deploy", "vibe-coding-review"],
   );
 });
 
@@ -73,10 +74,10 @@ test("ownership helpers expose stable labels and grouping", () => {
   assert.equal(getToolScopeLabel("codex", "zh"), "Codex");
   assert.ok(SOURCE_TYPE_LABELS.own);
   assert.ok(TOOL_SCOPE_LABELS.codex);
-  assert.deepEqual(getSkillsBySourceType("own"), []);
+  assert.deepEqual(getSkillsBySourceType("own").map((skill) => skill.slug), ["vibe-coding-review"]);
   assert.deepEqual(
     getSkillsBySourceType("third-party").map((skill) => skill.slug),
-    expectedSlugs,
+    ["vercel-deploy", "playwright", "guizang-ppt-skill", "frontend-design"],
   );
 });
 
@@ -86,6 +87,7 @@ test("category and tag helpers expose stable ids and labels", () => {
   assert.equal(getCategoryLabel("design-image", "en"), "Design / Image");
   assert.equal(getCategoryLabel("design-image", "zh"), "设计 / 图像");
   assert.ok(getTags().includes("browser-automation"));
+  assert.ok(getTags().includes("ppt"));
   assert.ok(CATEGORY_LABELS["devops-deployment"]);
 });
 
