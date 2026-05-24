@@ -13,14 +13,14 @@ type SkillCardProps = {
 
 export function SkillCard({ skill, locale }: SkillCardProps) {
   return (
-    <article className="flex h-full flex-col gap-4 rounded-3xl border border-stone-300 bg-[#fff9e8]/85 p-5 shadow-[0_18px_50px_rgba(72,52,28,0.08)] transition hover:-translate-y-0.5 hover:border-stone-500">
+    <article className="flex h-full min-w-0 flex-col gap-5 border-b border-[var(--line)] px-5 py-7 transition hover:bg-[var(--paper-alt)] sm:px-8 md:border-r xl:[&:nth-child(3n)]:border-r-0">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <span className="font-mono text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">{skill.toolScope}</span>
+        <span className="font-mono text-xs font-medium uppercase tracking-[0.1em] text-[var(--muted-ink)]">{skill.toolScope}</span>
         <StatusBadge status={skill.status} />
       </div>
       <div>
-        <h2 className="text-xl font-bold tracking-tight text-stone-950">{skill.name}</h2>
-        <p className="mt-2 text-sm leading-6 text-stone-700">{getLocalizedText(skill.summary, locale)}</p>
+        <h2 className="font-serif text-[2.25rem] font-normal leading-[1] tracking-[-0.04em] text-[var(--ink)]">{skill.name}</h2>
+        <p className="mt-4 text-sm leading-6 text-[var(--muted-ink)]">{getLocalizedText(skill.summary, locale)}</p>
       </div>
       <div className="flex flex-wrap gap-2">
         <Tag>{getCategoryLabel(skill.categoryId, locale)}</Tag>
@@ -28,9 +28,9 @@ export function SkillCard({ skill, locale }: SkillCardProps) {
           <Tag key={tag}>{tag}</Tag>
         ))}
       </div>
-      <div className="mt-auto flex items-center justify-between gap-3 border-t border-dashed border-stone-300 pt-4 text-sm">
-        <span className="font-mono text-stone-500">{skill.source.license}</span>
-        <Link className="font-bold text-stone-950 underline decoration-amber-700/40 underline-offset-4 hover:decoration-stone-950" href={`/${locale}/skills/${skill.slug}`}>
+      <div className="mt-auto flex items-center justify-between gap-3 border-t border-[var(--line-soft)] pt-4 text-sm">
+        <span className="font-mono text-xs text-[var(--muted-ink)]">{skill.source.license}</span>
+        <Link className="font-medium text-[var(--ink)] underline decoration-[var(--line-soft)] underline-offset-4 hover:decoration-[var(--ink)]" href={`/${locale}/skills/${skill.slug}`}>
           Open card
         </Link>
       </div>

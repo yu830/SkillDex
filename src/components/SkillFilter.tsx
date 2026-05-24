@@ -47,7 +47,7 @@ export function SkillFilter({
   onTagChange,
 }: SkillFilterProps) {
   return (
-    <div className="grid gap-3 rounded-3xl border border-stone-300 bg-[#f8edcf]/80 p-4 shadow-sm md:grid-cols-4">
+    <div className="grid border-b border-[var(--line)] bg-[var(--paper-soft)] md:grid-cols-4">
       <Select label="Tool" value={toolScope} options={toolScopes} onChange={onToolScopeChange} />
       <Select
         label="Category"
@@ -75,12 +75,12 @@ type SelectProps<T extends string> = {
 
 function Select<T extends string>({ label, value, options, onChange }: SelectProps<T>) {
   return (
-    <label className="block">
-      <span className="mb-2 block text-xs font-bold uppercase tracking-[0.18em] text-stone-500">{label}</span>
+    <label className="block border-b border-[var(--line)] px-5 py-5 last:border-b-0 sm:px-8 md:border-b-0 md:border-r md:last:border-r-0">
+      <span className="mb-3 block font-mono text-xs font-medium uppercase tracking-[0.1em] text-[var(--muted-ink)]">{label}</span>
       <select
         value={value}
         onChange={(event) => onChange(event.target.value as T)}
-        className="w-full rounded-2xl border border-stone-300 bg-amber-50 px-3 py-2.5 text-sm font-medium text-stone-900 outline-none focus:border-stone-700 focus:ring-2 focus:ring-amber-700/30"
+        className="w-full border border-[var(--line)] bg-[var(--paper)] px-3 py-2.5 text-sm font-medium text-[var(--ink)] outline-none focus:ring-2 focus:ring-[rgba(23,21,17,0.22)]"
       >
         {options.map((option) => (
           <option key={option.value} value={option.value}>
