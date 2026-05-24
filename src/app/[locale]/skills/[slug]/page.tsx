@@ -28,22 +28,30 @@ const sectionTitles = {
     copyPrompt: "Copy prompt",
     copySource: "Copy source URL",
     copyUsage: "Copy usage hint",
+    metaTool: "Tool scope",
+    metaCategory: "Category",
+    metaLicense: "License",
+    metaReviewed: "Reviewed",
   },
   zh: {
-    overview: "概览",
-    capabilities: "这个 Skill 可以做什么",
-    useCases: "最佳使用场景",
-    antiUseCases: "不适合",
-    inputs: "输入",
-    outputs: "输出",
-    prompts: "安全示例提示词",
-    install: "安装 / 使用",
-    compatibility: "兼容性",
-    source: "来源元数据",
-    back: "返回 Skills",
-    copyPrompt: "复制提示词",
-    copySource: "复制来源 URL",
-    copyUsage: "复制使用提示",
+    overview: "\u6982\u89c8",
+    capabilities: "\u8fd9\u4e2a Skill \u53ef\u4ee5\u505a\u4ec0\u4e48",
+    useCases: "\u6700\u4f73\u4f7f\u7528\u573a\u666f",
+    antiUseCases: "\u4e0d\u9002\u5408",
+    inputs: "\u8f93\u5165",
+    outputs: "\u8f93\u51fa",
+    prompts: "\u5b89\u5168\u793a\u4f8b\u63d0\u793a\u8bcd",
+    install: "\u5b89\u88c5 / \u4f7f\u7528",
+    compatibility: "\u517c\u5bb9\u6027",
+    source: "\u6765\u6e90\u5143\u6570\u636e",
+    back: "\u8fd4\u56de Skills",
+    copyPrompt: "\u590d\u5236\u63d0\u793a\u8bcd",
+    copySource: "\u590d\u5236\u6765\u6e90 URL",
+    copyUsage: "\u590d\u5236\u4f7f\u7528\u63d0\u793a",
+    metaTool: "\u5de5\u5177\u8303\u56f4",
+    metaCategory: "\u5206\u7c7b",
+    metaLicense: "\u8bb8\u53ef\u8bc1",
+    metaReviewed: "\u5df2\u5ba1\u9605",
   },
 };
 
@@ -71,100 +79,142 @@ export default async function SkillDetailPage({ params }: PageProps) {
   const text = sectionTitles[locale];
 
   return (
-    <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-8 px-5 py-8 sm:px-8 lg:px-10">
-      <header className="space-y-5 border-b border-dashed border-stone-300 pb-6">
-        <nav className="flex flex-wrap items-center justify-between gap-3">
-          <Link href={`/${locale}/skills`} className="text-sm font-bold text-stone-700 hover:text-stone-950">
-            ← {text.back}
+    <main className="editorial-shell mx-auto flex w-full max-w-[1500px] flex-1 flex-col px-4 py-4 text-[var(--ink)] sm:px-6 sm:py-6 lg:px-8">
+      <div className="border border-[var(--line)] bg-[var(--paper)]">
+        <header className="grid min-h-20 grid-cols-[1fr_auto] items-center gap-5 border-b border-[var(--line)] px-5 py-4 sm:px-8 lg:grid-cols-[1fr_auto_1fr]">
+          <Link href={`/${locale}`} className="font-serif text-2xl font-normal leading-none tracking-[-0.035em] text-[var(--ink)]">
+            SkillDex
           </Link>
-          <LanguageSwitcher locale={locale} path={`/skills/${skill.slug}`} />
-        </nav>
-        <div className="flex flex-wrap gap-2">
-          <Tag>{skill.toolScope}</Tag>
-          <Tag>{getCategoryLabel(skill.categoryId, locale)}</Tag>
-          <StatusBadge status={skill.status} />
-        </div>
-        <div>
-          <h1 className="text-4xl font-black tracking-[-0.04em] text-stone-950 sm:text-6xl">{skill.name}</h1>
-          <p className="mt-4 max-w-3xl text-lg leading-8 text-stone-700">{getLocalizedText(skill.summary, locale)}</p>
-        </div>
-      </header>
+          <nav className="order-3 col-span-2 flex flex-wrap items-center gap-x-7 gap-y-3 text-sm text-[var(--muted-ink)] lg:order-none lg:col-span-1">
+            <Link href={`/${locale}/skills`} className="underline-offset-4 hover:text-[var(--ink)] hover:underline">
+              &larr; {text.back}
+            </Link>
+          </nav>
+          <div className="justify-self-end">
+            <LanguageSwitcher locale={locale} path={`/skills/${skill.slug}`} />
+          </div>
+        </header>
 
-      <section className="rounded-3xl border border-stone-300 bg-[#fff9e8]/85 p-6">
-        <h2 className="text-2xl font-black text-stone-950">{text.overview}</h2>
-        <p className="mt-3 leading-7 text-stone-700">{getLocalizedText(skill.description, locale)}</p>
-      </section>
+        <section className="grid border-b border-[var(--line)] lg:grid-cols-[minmax(0,8fr)_minmax(280px,4fr)]">
+          <div className="border-[var(--line)] px-5 py-10 sm:px-8 sm:py-14 lg:border-r">
+            <div className="mb-8 flex flex-wrap gap-2">
+              <Tag>{skill.toolScope}</Tag>
+              <Tag>{getCategoryLabel(skill.categoryId, locale)}</Tag>
+              <StatusBadge status={skill.status} />
+            </div>
+            <h1 className="max-w-5xl font-serif text-[4.25rem] font-normal leading-[1.02] tracking-[-0.055em] text-[var(--ink)] sm:text-[5.75rem] sm:leading-[0.98] lg:text-[8rem] lg:leading-[0.95]">
+              {skill.name}
+            </h1>
+            <p className="mt-10 max-w-3xl text-lg leading-8 tracking-[-0.01em] text-[var(--muted-ink)] sm:text-xl">
+              {getLocalizedText(skill.summary, locale)}
+            </p>
+          </div>
 
-      <div className="grid gap-5 lg:grid-cols-2">
-        <ListSection title={text.capabilities} items={skill.capabilities} locale={locale} />
-        <ListSection title={text.useCases} items={skill.useCases} locale={locale} />
-        <ListSection title={text.antiUseCases} items={skill.antiUseCases} locale={locale} />
-        <ListSection title={text.inputs} items={skill.inputs} locale={locale} />
-        <ListSection title={text.outputs} items={skill.outputs} locale={locale} />
-        <section className="rounded-3xl border border-stone-300 bg-[#fff9e8]/85 p-5">
-          <h2 className="text-xl font-black text-stone-950">{text.compatibility}</h2>
-          <div className="mt-4 space-y-3 text-sm leading-6 text-stone-700">
-            <p><strong>Tools:</strong> {skill.compatibility.tools.join(", ")}</p>
-            <p><strong>Environments:</strong> {skill.compatibility.environments.join(", ")}</p>
-            <ul className="list-disc space-y-2 pl-5">
-              {skill.compatibility.requirements.map((item) => (
-                <li key={item.en}>{getLocalizedText(item, locale)}</li>
-              ))}
-            </ul>
-            {skill.compatibility.notes ? <p>{getLocalizedText(skill.compatibility.notes, locale)}</p> : null}
+          <aside className="grid bg-[var(--paper-soft)]">
+            <MetaBlock label={text.metaTool} value={skill.toolScope} />
+            <MetaBlock label={text.metaCategory} value={getCategoryLabel(skill.categoryId, locale)} />
+            <MetaBlock label={text.metaLicense} value={skill.source.license} href={skill.source.licenseUrl} />
+            <MetaBlock label={text.metaReviewed} value={skill.lastReviewedAt} />
+          </aside>
+        </section>
+
+        <section className="grid border-b border-[var(--line)] lg:grid-cols-[minmax(220px,4fr)_minmax(0,8fr)]">
+          <SectionKicker title={text.overview} />
+          <div className="px-5 py-8 sm:px-8">
+            <p className="max-w-4xl text-xl leading-9 tracking-[-0.015em] text-[var(--muted-ink)]">
+              {getLocalizedText(skill.description, locale)}
+            </p>
           </div>
         </section>
-      </div>
 
-      <section className="rounded-3xl border border-stone-300 bg-[#fff9e8]/85 p-6">
-        <h2 className="text-2xl font-black text-stone-950">{text.prompts}</h2>
-        <div className="mt-4 grid gap-4">
-          {skill.examplePrompts.map((example) => (
-            <article key={example.title.en} className="rounded-2xl border border-dashed border-stone-300 bg-amber-50/70 p-4">
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <h3 className="font-bold text-stone-950">{getLocalizedText(example.title, locale)}</h3>
-                <CopyButton text={getLocalizedText(example.prompt, locale)} label={text.copyPrompt} />
-              </div>
-              <p className="mt-3 text-sm leading-6 text-stone-700">{getLocalizedText(example.prompt, locale)}</p>
-            </article>
-          ))}
-        </div>
-      </section>
+        <section className="grid border-b border-[var(--line)] lg:grid-cols-2">
+          <ListSection title={text.capabilities} items={skill.capabilities} locale={locale} />
+          <ListSection title={text.useCases} items={skill.useCases} locale={locale} />
+          <ListSection title={text.antiUseCases} items={skill.antiUseCases} locale={locale} />
+          <ListSection title={text.inputs} items={skill.inputs} locale={locale} />
+          <ListSection title={text.outputs} items={skill.outputs} locale={locale} />
+          <section className="border-b border-[var(--line)] px-5 py-8 sm:px-8 lg:border-r lg:[&:nth-child(even)]:border-r-0">
+            <h2 className="font-serif text-[2.25rem] font-normal leading-[1] tracking-[-0.04em] text-[var(--ink)] lg:text-[3.25rem] lg:leading-[0.96]">
+              {text.compatibility}
+            </h2>
+            <div className="mt-6 space-y-4 text-sm leading-6 text-[var(--muted-ink)]">
+              <p>
+                <strong className="font-medium text-[var(--ink)]">Tools:</strong> {skill.compatibility.tools.join(", ")}
+              </p>
+              <p>
+                <strong className="font-medium text-[var(--ink)]">Environments:</strong> {skill.compatibility.environments.join(", ")}
+              </p>
+              <ul className="space-y-3">
+                {skill.compatibility.requirements.map((item) => (
+                  <li key={item.en} className="border-t border-[var(--line-soft)] pt-3">
+                    {getLocalizedText(item, locale)}
+                  </li>
+                ))}
+              </ul>
+              {skill.compatibility.notes ? <p>{getLocalizedText(skill.compatibility.notes, locale)}</p> : null}
+            </div>
+          </section>
+        </section>
 
-      <section className="grid gap-5 lg:grid-cols-2">
-        <div className="rounded-3xl border border-stone-300 bg-[#fff9e8]/85 p-6">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <h2 className="text-2xl font-black text-stone-950">{text.install}</h2>
-            {skill.install.copyableText ? <CopyButton text={skill.install.copyableText} label={text.copyUsage} /> : null}
-          </div>
-          <p className="mt-3 font-semibold text-stone-800">{getLocalizedText(skill.install.label, locale)}</p>
-          <ol className="mt-4 list-decimal space-y-2 pl-5 text-sm leading-6 text-stone-700">
-            {skill.install.steps.map((step) => (
-              <li key={step.en}>{getLocalizedText(step, locale)}</li>
+        <section className="grid border-b border-[var(--line)] lg:grid-cols-[minmax(220px,4fr)_minmax(0,8fr)]">
+          <SectionKicker title={text.prompts} />
+          <div className="grid gap-0">
+            {skill.examplePrompts.map((example) => (
+              <article key={example.title.en} className="border-b border-[var(--line)] px-5 py-7 last:border-b-0 sm:px-8">
+                <div className="flex flex-wrap items-start justify-between gap-4">
+                  <h3 className="max-w-2xl font-serif text-3xl font-normal leading-none tracking-[-0.03em] text-[var(--ink)]">
+                    {getLocalizedText(example.title, locale)}
+                  </h3>
+                  <CopyButton text={getLocalizedText(example.prompt, locale)} label={text.copyPrompt} />
+                </div>
+                <p className="mt-5 max-w-4xl text-sm leading-6 text-[var(--muted-ink)]">{getLocalizedText(example.prompt, locale)}</p>
+              </article>
             ))}
-          </ol>
-        </div>
-
-        <div className="rounded-3xl border border-stone-300 bg-[#fff9e8]/85 p-6">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <h2 className="text-2xl font-black text-stone-950">{text.source}</h2>
-            <CopyButton text={skill.source.directoryUrl} label={text.copySource} />
           </div>
-          <dl className="mt-4 grid gap-3 text-sm text-stone-700">
-            <Meta label="Author" value={skill.source.author} />
-            <Meta label="Repository" value={skill.source.repoUrl} href={skill.source.repoUrl} />
-            <Meta label="Directory" value={skill.source.directoryUrl} href={skill.source.directoryUrl} />
-            <Meta label="License" value={skill.source.license} href={skill.source.licenseUrl} />
-            <Meta label="Indexed" value={skill.indexedAt} />
-            <Meta label="Reviewed" value={skill.lastReviewedAt} />
-          </dl>
-        </div>
-      </section>
+        </section>
 
-      <div className="flex flex-wrap gap-2">
-        {skill.tags.map((tag) => (
-          <Tag key={tag}>{tag}</Tag>
-        ))}
+        <section className="grid border-b border-[var(--line)] lg:grid-cols-2">
+          <div className="min-w-0 border-b border-[var(--line)] px-5 py-8 sm:px-8 lg:border-b-0 lg:border-r">
+            <div className="flex min-w-0 flex-wrap items-start justify-between gap-4">
+              <h2 className="min-w-0 font-serif text-[2.25rem] font-normal leading-[1] tracking-[-0.04em] text-[var(--ink)] lg:text-[3.25rem] lg:leading-[0.96]">
+                {text.install}
+              </h2>
+              {skill.install.copyableText ? <CopyButton text={skill.install.copyableText} label={text.copyUsage} /> : null}
+            </div>
+            <p className="mt-6 max-w-full font-medium text-[var(--ink)]">{getLocalizedText(skill.install.label, locale)}</p>
+            <ol className="mt-5 grid gap-3 text-sm leading-6 text-[var(--muted-ink)]">
+              {skill.install.steps.map((step, index) => (
+                <li key={step.en} className="grid grid-cols-[2.5rem_1fr] border-t border-[var(--line-soft)] pt-3">
+                  <span className="font-mono text-xs text-[var(--muted-ink)]">{index + 1}</span>
+                  <span>{getLocalizedText(step, locale)}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+
+          <div className="min-w-0 px-5 py-8 sm:px-8">
+            <div className="flex min-w-0 flex-wrap items-start justify-between gap-4">
+              <h2 className="min-w-0 font-serif text-[2.25rem] font-normal leading-[1] tracking-[-0.04em] text-[var(--ink)] lg:text-[3.25rem] lg:leading-[0.96]">
+                {text.source}
+              </h2>
+              <CopyButton text={skill.source.directoryUrl} label={text.copySource} />
+            </div>
+            <dl className="mt-6 grid min-w-0 gap-5 text-sm text-[var(--muted-ink)]">
+              <Meta label="Author" value={skill.source.author} />
+              <Meta label="Repository" value={skill.source.repoUrl} href={skill.source.repoUrl} />
+              <Meta label="Directory" value={skill.source.directoryUrl} href={skill.source.directoryUrl} />
+              <Meta label="License" value={skill.source.license} href={skill.source.licenseUrl} />
+              <Meta label="Indexed" value={skill.indexedAt} />
+              <Meta label="Reviewed" value={skill.lastReviewedAt} />
+            </dl>
+          </div>
+        </section>
+
+        <footer className="flex flex-wrap gap-2 bg-[var(--paper-soft)] px-5 py-6 sm:px-8">
+          {skill.tags.map((tag) => (
+            <Tag key={tag}>{tag}</Tag>
+          ))}
+        </footer>
       </div>
     </main>
   );
@@ -178,14 +228,51 @@ type ListSectionProps = {
 
 function ListSection({ title, items, locale }: ListSectionProps) {
   return (
-    <section className="rounded-3xl border border-stone-300 bg-[#fff9e8]/85 p-5">
-      <h2 className="text-xl font-black text-stone-950">{title}</h2>
-      <ul className="mt-4 list-disc space-y-2 pl-5 text-sm leading-6 text-stone-700">
+    <section className="border-b border-[var(--line)] px-5 py-8 sm:px-8 lg:border-r lg:[&:nth-child(even)]:border-r-0">
+      <h2 className="font-serif text-[2.25rem] font-normal leading-[1] tracking-[-0.04em] text-[var(--ink)] lg:text-[3.25rem] lg:leading-[0.96]">{title}</h2>
+      <ul className="mt-6 grid gap-3 text-sm leading-6 text-[var(--muted-ink)]">
         {items.map((item) => (
-          <li key={item.en}>{getLocalizedText(item, locale)}</li>
+          <li key={item.en} className="border-t border-[var(--line-soft)] pt-3">
+            {getLocalizedText(item, locale)}
+          </li>
         ))}
       </ul>
     </section>
+  );
+}
+
+type SectionKickerProps = {
+  title: string;
+};
+
+function SectionKicker({ title }: SectionKickerProps) {
+  return (
+    <div className="border-b border-[var(--line)] px-5 py-7 sm:px-8 lg:border-b-0 lg:border-r">
+      <p className="font-mono text-xs font-medium uppercase tracking-[0.1em] text-[var(--muted-ink)]">{title}</p>
+    </div>
+  );
+}
+
+type MetaBlockProps = {
+  label: string;
+  value: string;
+  href?: string;
+};
+
+function MetaBlock({ label, value, href }: MetaBlockProps) {
+  return (
+    <div className="border-b border-[var(--line)] px-5 py-6 last:border-b-0 sm:px-8">
+      <p className="font-mono text-xs font-medium uppercase tracking-[0.1em] text-[var(--muted-ink)]">{label}</p>
+      <p className="mt-4 break-words font-serif text-3xl font-normal leading-none tracking-[-0.025em] text-[var(--ink)]">
+        {href ? (
+          <a href={href} target="_blank" rel="noreferrer" className="underline decoration-[var(--line-soft)] underline-offset-4 hover:decoration-[var(--ink)]">
+            {value}
+          </a>
+        ) : (
+          value
+        )}
+      </p>
+    </div>
   );
 }
 
@@ -197,11 +284,11 @@ type MetaProps = {
 
 function Meta({ label, value, href }: MetaProps) {
   return (
-    <div>
-      <dt className="font-mono text-xs font-bold uppercase tracking-[0.16em] text-stone-500">{label}</dt>
-      <dd className="mt-1 break-words font-medium text-stone-900">
+    <div className="min-w-0 border-t border-[var(--line-soft)] pt-3">
+      <dt className="font-mono text-xs font-medium uppercase tracking-[0.1em] text-[var(--muted-ink)]">{label}</dt>
+      <dd className="mt-2 min-w-0 break-all font-medium text-[var(--ink)]">
         {href ? (
-          <a className="underline decoration-amber-700/40 underline-offset-4 hover:decoration-stone-950" href={href} target="_blank" rel="noreferrer">
+          <a className="underline decoration-[var(--line-soft)] underline-offset-4 hover:decoration-[var(--ink)]" href={href} target="_blank" rel="noreferrer">
             {value}
           </a>
         ) : (

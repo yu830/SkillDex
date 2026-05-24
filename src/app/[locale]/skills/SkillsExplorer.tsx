@@ -22,9 +22,9 @@ const copy = {
     empty: "No Skills match those filters.",
   },
   zh: {
-    search: "按名称、摘要、标签、作者或许可证搜索",
-    count: "个匹配 Skills",
-    empty: "没有 Skills 符合这些筛选条件。",
+    search: "\u6309\u540d\u79f0\u3001\u6458\u8981\u3001\u6807\u7b7e\u3001\u4f5c\u8005\u6216\u8bb8\u53ef\u8bc1\u641c\u7d22",
+    count: "\u4e2a\u5339\u914d Skills",
+    empty: "\u6ca1\u6709 Skills \u7b26\u5408\u8fd9\u4e9b\u7b5b\u9009\u6761\u4ef6\u3002",
   },
 };
 
@@ -63,8 +63,10 @@ export function SkillsExplorer({ locale, skills, categories, tags }: SkillsExplo
   }, [categoryId, locale, query, skills, status, tag, toolScope]);
 
   return (
-    <section className="space-y-5">
-      <SearchBar value={query} onChange={setQuery} placeholder={copy[locale].search} />
+    <section>
+      <div className="border-b border-[var(--line)] px-5 py-7 sm:px-8">
+        <SearchBar value={query} onChange={setQuery} placeholder={copy[locale].search} />
+      </div>
       <SkillFilter
         toolScope={toolScope}
         categoryId={categoryId}
@@ -77,17 +79,17 @@ export function SkillsExplorer({ locale, skills, categories, tags }: SkillsExplo
         onStatusChange={setStatus}
         onTagChange={setTag}
       />
-      <p className="font-mono text-sm font-semibold text-stone-500">
+      <p className="border-b border-[var(--line)] px-5 py-4 font-mono text-xs font-medium uppercase tracking-[0.1em] text-[var(--muted-ink)] sm:px-8">
         {visibleSkills.length} {copy[locale].count}
       </p>
       {visibleSkills.length > 0 ? (
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid md:grid-cols-2 xl:grid-cols-3">
           {visibleSkills.map((skill) => (
             <SkillCard key={skill.slug} skill={skill} locale={locale} />
           ))}
         </div>
       ) : (
-        <div className="rounded-3xl border border-dashed border-stone-400 bg-amber-50/80 p-8 text-center text-stone-600">{copy[locale].empty}</div>
+        <div className="border-b border-[var(--line)] px-5 py-10 text-center text-[var(--muted-ink)] sm:px-8">{copy[locale].empty}</div>
       )}
     </section>
   );

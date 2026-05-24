@@ -9,12 +9,12 @@ type LanguageSwitcherProps = {
 
 export function LanguageSwitcher({ locale, path }: LanguageSwitcherProps) {
   const otherLocale = locale === "en" ? "zh" : "en";
-  const label = otherLocale === "en" ? "English" : "中文";
+  const label = otherLocale === "en" ? "English" : "\u4e2d\u6587";
 
   return (
     <Link
       href={`/${otherLocale}${path}`}
-      className="rounded-full border border-stone-400 bg-amber-50/70 px-3 py-1.5 text-sm font-semibold text-stone-800 transition hover:bg-amber-100 focus:outline-none focus:ring-2 focus:ring-amber-700/30"
+      className="border border-[var(--line)] px-3 py-2 text-sm font-medium text-[var(--ink)] transition hover:bg-[var(--paper-soft)] focus:outline-none focus:ring-2 focus:ring-[rgba(23,21,17,0.22)]"
     >
       {label}
     </Link>

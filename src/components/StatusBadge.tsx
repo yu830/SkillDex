@@ -1,10 +1,10 @@
 import type { SkillStatus } from "@/types/skill";
 
 const styles: Record<SkillStatus, string> = {
-  active: "border-emerald-700/30 bg-emerald-100 text-emerald-900",
-  draft: "border-stone-500/30 bg-stone-100 text-stone-800",
-  experimental: "border-amber-700/30 bg-amber-100 text-amber-900",
-  archived: "border-slate-500/30 bg-slate-100 text-slate-700",
+  active: "border-[#3f6239] bg-[rgba(63,98,57,0.2)] text-[#213f1f]",
+  draft: "border-[#8b4239] bg-[rgba(139,66,57,0.2)] text-[#5f2722]",
+  experimental: "border-[#8b4239] bg-[rgba(139,66,57,0.2)] text-[#5f2722]",
+  archived: "border-[#8b4239] bg-[rgba(139,66,57,0.2)] text-[#5f2722]",
 };
 
 type StatusBadgeProps = {
@@ -13,7 +13,7 @@ type StatusBadgeProps = {
 
 export function StatusBadge({ status }: StatusBadgeProps) {
   return (
-    <span className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-semibold uppercase tracking-[0.14em] ${styles[status]}`}>
+    <span className={`inline-flex border px-2.5 py-1 font-mono text-xs font-medium uppercase tracking-[0.1em] ${styles[status]}`}>
       {status}
     </span>
   );

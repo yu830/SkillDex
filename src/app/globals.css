@@ -1,12 +1,62 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Anthropic Sans";
+  src: url("https://cdn.prod.website-files.com/67ce28cfec624e2b733f8a52/69971a00a3295036497e1a28_AnthropicSans-Roman-Web.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 300 800;
+}
+
+@font-face {
+  font-family: "Anthropic Sans";
+  src: url("https://cdn.prod.website-files.com/67ce28cfec624e2b733f8a52/69971a016067bf14b9b8f48d_AnthropicSans-Italic-Web.woff2") format("woff2");
+  font-display: swap;
+  font-style: italic;
+  font-weight: 300 800;
+}
+
+@font-face {
+  font-family: "Anthropic Serif";
+  src: url("https://cdn.prod.website-files.com/67ce28cfec624e2b733f8a52/69971a1551eb6cda0d656e8a_AnthropicSerif-Roman-Web.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 300 800;
+}
+
+@font-face {
+  font-family: "Anthropic Serif";
+  src: url("https://cdn.prod.website-files.com/67ce28cfec624e2b733f8a52/69971a15a9fb8c1107a3570e_AnthropicSerif-Italic-Web.woff2") format("woff2");
+  font-display: swap;
+  font-style: italic;
+  font-weight: 300 800;
+}
+
+@font-face {
+  font-family: "Anthropic Mono";
+  src: url("https://cdn.prod.website-files.com/67ce28cfec624e2b733f8a52/69971a2e55d24d61bc045b1a_AnthropicMono-Roman-Web.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 300 800;
+}
+
+@font-face {
+  font-family: "Anthropic Mono";
+  src: url("https://cdn.prod.website-files.com/67ce28cfec624e2b733f8a52/69971a2eb93743112c30fe9c_AnthropicMono-Italic-Web.woff2") format("woff2");
+  font-display: swap;
+  font-style: italic;
+  font-weight: 300 800;
+}
+
 :root {
-  --paper: #f5ead2;
-  --paper-soft: #fff9e8;
-  --paper-deep: #e7d2a9;
-  --ink: #241a12;
-  --muted-ink: #6d5c4b;
-  --rule: #bba27d;
+  --paper: #f5efe3;
+  --paper-soft: #fbf7ed;
+  --paper-alt: #eee5d6;
+  --ink: #171511;
+  --muted-ink: #5f594f;
+  --line: #171511;
+  --line-soft: #bbb0a2;
+  --clay: #c76f4a;
   --background: var(--paper);
   --foreground: var(--ink);
 }
@@ -16,8 +66,9 @@
   --color-foreground: var(--foreground);
   --color-paper: var(--paper);
   --color-ink: var(--ink);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: "Anthropic Sans", Arial, Helvetica, sans-serif;
+  --font-serif: "Anthropic Serif", Georgia, "Times New Roman", serif;
+  --font-mono: "Anthropic Mono", "JetBrains Mono", ui-monospace, monospace;
 }
 
 * {
@@ -31,30 +82,13 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-  background:
-    radial-gradient(circle at 20% 10%, rgba(255, 255, 255, 0.65), transparent 28rem),
-    radial-gradient(circle at 80% 0%, rgba(210, 161, 82, 0.18), transparent 24rem),
-    linear-gradient(135deg, rgba(87, 63, 37, 0.035) 25%, transparent 25%),
-    linear-gradient(225deg, rgba(87, 63, 37, 0.03) 25%, transparent 25%),
-    var(--paper);
-  background-position:
-    0 0,
-    0 0,
-    0 0,
-    12px 12px,
-    0 0;
-  background-size:
-    auto,
-    auto,
-    24px 24px,
-    24px 24px,
-    auto;
+  background: var(--paper);
   color: var(--ink);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Anthropic Sans", Arial, Helvetica, sans-serif;
 }
 
 ::selection {
-  background: #d9a441;
+  background: rgba(199, 111, 74, 0.35);
   color: var(--ink);
 }
 
