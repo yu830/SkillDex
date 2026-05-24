@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { getCategoryLabel, getLocalizedText } from "@/lib/skills";
+import { getCategoryLabel, getLocalizedText, getSourceTypeLabel, getToolScopeLabel } from "@/lib/skills";
 import type { Locale, Skill } from "@/types/skill";
 
 import { StatusBadge } from "./StatusBadge";
@@ -15,7 +15,12 @@ export function SkillCard({ skill, locale }: SkillCardProps) {
   return (
     <article className="flex h-full min-w-0 flex-col gap-5 border-b border-[var(--line)] px-5 py-7 transition hover:bg-[var(--paper-alt)] sm:px-8 md:border-r xl:[&:nth-child(3n)]:border-r-0">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <span className="font-mono text-xs font-medium uppercase tracking-[0.1em] text-[var(--muted-ink)]">{skill.toolScope}</span>
+        <div className="flex flex-wrap gap-2">
+          {skill.toolScopes.map((scope) => (
+            <Tag key={scope}>{getToolScopeLabel(scope, locale)}</Tag>
+          ))}
+          <Tag>{getSourceTypeLabel(skill.sourceType, locale)}</Tag>
+        </div>
         <StatusBadge status={skill.status} />
       </div>
       <div>

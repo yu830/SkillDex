@@ -5,7 +5,7 @@ import { CopyButton } from "@/components/CopyButton";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { StatusBadge } from "@/components/StatusBadge";
 import { Tag } from "@/components/Tag";
-import { getAllSkills, getCategoryLabel, getLocalizedText, getSkillBySlug, isLocale, LOCALES } from "@/lib/skills";
+import { getAllSkills, getCategoryLabel, getLocalizedText, getSkillBySlug, getSourceTypeLabel, getToolScopeLabel, isLocale, LOCALES } from "@/lib/skills";
 import type { Locale, LocalizedText } from "@/types/skill";
 
 type PageProps = {
@@ -29,6 +29,7 @@ const sectionTitles = {
     copySource: "Copy source URL",
     copyUsage: "Copy usage hint",
     metaTool: "Tool scope",
+    metaOwnership: "Ownership",
     metaCategory: "Category",
     metaLicense: "License",
     metaReviewed: "Reviewed",
@@ -49,6 +50,7 @@ const sectionTitles = {
     copySource: "\u590d\u5236\u6765\u6e90 URL",
     copyUsage: "\u590d\u5236\u4f7f\u7528\u63d0\u793a",
     metaTool: "\u5de5\u5177\u8303\u56f4",
+    metaOwnership: "\u5f52\u5c5e",
     metaCategory: "\u5206\u7c7b",
     metaLicense: "\u8bb8\u53ef\u8bc1",
     metaReviewed: "\u5df2\u5ba1\u9605",
@@ -77,6 +79,9 @@ export default async function SkillDetailPage({ params }: PageProps) {
 
   const locale = rawLocale as Locale;
   const text = sectionTitles[locale];
+  const toolLabels = skill.toolScopes.map((scope) => getToolScopeLabel(scope, locale));
+  const ownershipLabel = getSourceTypeLabel(skill.sourceType, locale);
+  const compatibilityToolLabels = skill.compatibility.tools.map((tool) => getToolScopeLabel(tool, locale));
 
   return (
     <main className="editorial-shell mx-auto flex w-full max-w-[1500px] flex-1 flex-col px-4 py-4 text-[var(--ink)] sm:px-6 sm:py-6 lg:px-8">
@@ -98,7 +103,10 @@ export default async function SkillDetailPage({ params }: PageProps) {
         <section className="grid border-b border-[var(--line)] lg:grid-cols-[minmax(0,8fr)_minmax(280px,4fr)]">
           <div className="border-[var(--line)] px-5 py-10 sm:px-8 sm:py-14 lg:border-r">
             <div className="mb-8 flex flex-wrap gap-2">
-              <Tag>{skill.toolScope}</Tag>
+              {toolLabels.map((label) => (
+                <Tag key={label}>{label}</Tag>
+              ))}
+              <Tag>{ownershipLabel}</Tag>
               <Tag>{getCategoryLabel(skill.categoryId, locale)}</Tag>
               <StatusBadge status={skill.status} />
             </div>
@@ -111,7 +119,8 @@ export default async function SkillDetailPage({ params }: PageProps) {
           </div>
 
           <aside className="grid bg-[var(--paper-soft)]">
-            <MetaBlock label={text.metaTool} value={skill.toolScope} />
+            <MetaBlock label={text.metaTool} value={toolLabels.join(", ")} />
+            <MetaBlock label={text.metaOwnership} value={ownershipLabel} />
             <MetaBlock label={text.metaCategory} value={getCategoryLabel(skill.categoryId, locale)} />
             <MetaBlock label={text.metaLicense} value={skill.source.license} href={skill.source.licenseUrl} />
             <MetaBlock label={text.metaReviewed} value={skill.lastReviewedAt} />
@@ -139,7 +148,7 @@ export default async function SkillDetailPage({ params }: PageProps) {
             </h2>
             <div className="mt-6 space-y-4 text-sm leading-6 text-[var(--muted-ink)]">
               <p>
-                <strong className="font-medium text-[var(--ink)]">Tools:</strong> {skill.compatibility.tools.join(", ")}
+                <strong className="font-medium text-[var(--ink)]">Tools:</strong> {compatibilityToolLabels.join(", ")}
               </p>
               <p>
                 <strong className="font-medium text-[var(--ink)]">Environments:</strong> {skill.compatibility.environments.join(", ")}

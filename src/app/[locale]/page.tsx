@@ -3,8 +3,8 @@ import { notFound } from "next/navigation";
 
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { Tag } from "@/components/Tag";
-import { getAllSkills, getCategories, getCategoryLabel, getLocalizedText, isLocale } from "@/lib/skills";
-import type { Locale, ToolScope } from "@/types/skill";
+import { getAllSkills, getCategories, getCategoryLabel, getLocalizedText, getToolScopeLabel, getToolScopes, isLocale } from "@/lib/skills";
+import type { Locale } from "@/types/skill";
 
 type PageProps = {
   params: Promise<{ locale: string }>;
@@ -55,7 +55,7 @@ export default async function LocaleHomePage({ params }: PageProps) {
   const text = copy[locale];
   const skills = getAllSkills();
   const categories = getCategories();
-  const toolScopes = Array.from(new Set(skills.map((skill) => skill.toolScope))) as ToolScope[];
+  const toolScopes = getToolScopes();
 
   return (
     <main className="editorial-shell mx-auto flex w-full max-w-[1500px] flex-1 flex-col px-4 py-4 text-[var(--ink)] sm:px-6 sm:py-6 lg:px-8">
@@ -107,7 +107,7 @@ export default async function LocaleHomePage({ params }: PageProps) {
               <p className="font-mono text-xs font-medium uppercase tracking-[0.1em] text-[var(--muted-ink)]">{text.tools}</p>
               <div className="mt-4 flex flex-wrap gap-2">
                 {toolScopes.map((scope) => (
-                  <Tag key={scope}>{scope}</Tag>
+                  <Tag key={scope}>{getToolScopeLabel(scope, locale)}</Tag>
                 ))}
               </div>
             </div>
@@ -141,7 +141,7 @@ export default async function LocaleHomePage({ params }: PageProps) {
               className="group grid min-h-36 gap-5 border-b border-[var(--line)] px-5 py-7 transition hover:bg-[var(--paper-alt)] sm:px-8 lg:grid-cols-[9rem_minmax(0,1.1fr)_minmax(16rem,0.75fr)_4rem]"
             >
               <p className="font-mono text-xs font-medium uppercase tracking-[0.1em] text-[var(--muted-ink)]">
-                {skill.toolScope} / {getCategoryLabel(skill.categoryId, locale)}
+                {skill.toolScopes.map((scope) => getToolScopeLabel(scope, locale)).join(", ")} / {getCategoryLabel(skill.categoryId, locale)}
               </p>
               <h3 className="font-serif text-[2.25rem] font-normal leading-[1] tracking-[-0.04em] text-[var(--ink)] lg:text-[3.25rem] lg:leading-[0.96]">{skill.name}</h3>
               <p className="max-w-xl text-sm leading-6 text-[var(--muted-ink)]">{getLocalizedText(skill.summary, locale)}</p>
