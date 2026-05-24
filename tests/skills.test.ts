@@ -3,13 +3,18 @@ import test from "node:test";
 
 import {
   CATEGORY_LABELS,
+  SOURCE_TYPE_LABELS,
+  TOOL_SCOPE_LABELS,
   getAllSkills,
   getCategories,
   getCategoryLabel,
   getLocalizedText,
   getSkillBySlug,
+  getSkillsBySourceType,
   getSkillsByToolScope,
+  getSourceTypeLabel,
   getTags,
+  getToolScopeLabel,
   isLocale,
 } from "#lib/skills";
 
@@ -30,6 +35,8 @@ test("catalog contains exactly the five approved third-party skills", () => {
   );
   assert.equal(skills.length, 5);
   assert.ok(skills.every((skill) => skill.sourceType === "third-party"));
+  assert.ok(skills.every((skill) => Array.isArray(skill.toolScopes)));
+  assert.ok(skills.every((skill) => !Object.hasOwn(skill, "toolScope")));
   assert.ok(skills.every((skill) => skill.visibility === "reference-only"));
   assert.ok(skills.every((skill) => skill.source.directoryUrl.startsWith("https://github.com/")));
 });
@@ -42,14 +49,35 @@ test("catalog excludes ChatGPT skills and local source paths", () => {
   assert.equal(serialized.includes("c:\\"), false);
 });
 
-test("helpers return skills by slug and tool scope", () => {
-  assert.equal(getSkillBySlug("frontend-design")?.toolScope, "claude-code");
+test("helpers return skills by slug and multi-tool scope", () => {
+  assert.deepEqual([...(getSkillBySlug("frontend-design")?.toolScopes ?? [])].sort(), ["claude-code", "codex"]);
   assert.equal(getSkillBySlug("missing-skill"), undefined);
   assert.deepEqual(
     getSkillsByToolScope("claude-code").map((skill) => skill.slug),
     ["frontend-design"],
   );
-  assert.equal(getSkillsByToolScope("codex").length, 4);
+  assert.deepEqual(
+    getSkillsByToolScope("codex").map((skill) => skill.slug).sort(),
+    ["bug-hunt-swarm", "frontend-design", "playwright", "react-component-performance", "vercel-deploy"],
+  );
+});
+
+test("ownership helpers expose stable labels and grouping", () => {
+  assert.equal(getSourceTypeLabel("own", "en"), "My skill");
+  assert.equal(getSourceTypeLabel("third-party", "en"), "Other skill");
+  assert.equal(getSourceTypeLabel("own", "zh"), "\u6211\u7684 Skill");
+  assert.equal(getSourceTypeLabel("third-party", "zh"), "\u5176\u4ed6 Skill");
+  assert.equal(getToolScopeLabel("claude-code", "en"), "Claude Code");
+  assert.equal(getToolScopeLabel("codex", "en"), "Codex");
+  assert.equal(getToolScopeLabel("claude-code", "zh"), "Claude Code");
+  assert.equal(getToolScopeLabel("codex", "zh"), "Codex");
+  assert.ok(SOURCE_TYPE_LABELS.own);
+  assert.ok(TOOL_SCOPE_LABELS.codex);
+  assert.deepEqual(getSkillsBySourceType("own"), []);
+  assert.deepEqual(
+    getSkillsBySourceType("third-party").map((skill) => skill.slug),
+    expectedSlugs,
+  );
 });
 
 test("category and tag helpers expose stable ids and labels", () => {
@@ -85,7 +113,9 @@ test("install and compatibility data are structured", () => {
     assert.ok(["reference", "manual"].includes(skill.install.type));
     assert.ok(skill.install.label.en.length > 0);
     assert.ok(skill.install.steps.length > 0);
-    assert.ok(skill.compatibility.tools.includes(skill.toolScope));
+    for (const toolScope of skill.toolScopes) {
+      assert.ok(skill.compatibility.tools.includes(toolScope));
+    }
     assert.ok(skill.compatibility.environments.length > 0);
     assert.ok(skill.compatibility.requirements.length > 0);
     assert.match(skill.indexedAt, /^\d{4}-\d{2}-\d{2}$/);

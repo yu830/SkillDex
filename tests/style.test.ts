@@ -67,6 +67,37 @@ test("shared action badges use rectangular Anthropic-style controls", () => {
   assert.doesNotMatch(copySource, /rounded-full/);
 });
 
+test("skill explorer exposes ownership filtering", () => {
+  const explorerSource = readFileSync(join(root, "src/app/[locale]/skills/SkillsExplorer.tsx"), "utf8");
+  const filterSource = readFileSync(join(root, "src/components/SkillFilter.tsx"), "utf8");
+
+  assert.match(explorerSource, /useState<SourceType \| "all">\("all"\)/);
+  assert.match(explorerSource, /skill\.sourceType !== sourceType/);
+  assert.match(explorerSource, /sourceType=\{sourceType\}/);
+  assert.match(explorerSource, /onSourceTypeChange=\{setSourceType\}/);
+  assert.match(explorerSource, /getSourceTypeLabel\(skill\.sourceType, locale\)/);
+  assert.match(filterSource, /sourceType: SourceType \| "all"/);
+  assert.match(filterSource, /onSourceTypeChange/);
+  assert.match(filterSource, /const sourceTypes/);
+  assert.match(filterSource, /label="Ownership"/);
+  assert.match(filterSource, /All ownership/);
+});
+
+test("project log records the ownership and tool-scope change", () => {
+  const source = readFileSync(join(root, "CHANGELOG.md"), "utf8");
+  const match = source.match(/## 2026-05-24\r?\n([\s\S]*?)(?:\r?\n## |$)/);
+
+  assert.ok(match);
+  const section = match[1];
+  assert.match(section, /ownership classification/i);
+  assert.match(section, /`own`/);
+  assert.match(section, /`third-party`/);
+  assert.match(section, /multi-tool compatibility/i);
+  assert.match(section, /`toolScopes`/);
+  assert.match(section, /Frontend Design/);
+  assert.match(section, /Claude Code and Codex/);
+});
+
 test("catalog and policy pages share the same editorial shell", () => {
   const files = [
     "src/app/[locale]/skills/page.tsx",

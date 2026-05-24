@@ -55,7 +55,7 @@ export interface Skill {
   summary: LocalizedText;
   description: LocalizedText;
   capabilities: LocalizedText[];
-  toolScope: ToolScope;
+  toolScopes: ToolScope[];
   categoryId: SkillCategoryId;
   status: SkillStatus;
   visibility: Visibility;

@@ -10,6 +10,8 @@ SkillDex is reference-only: it does not execute Skills, store credentials, scan 
 - TypeScript
 - Tailwind CSS
 - Static data in `src/data/skills.ts`
+- Manual ownership classification with `sourceType`
+- Multi-tool compatibility with `toolScopes`
 - Vercel-ready static/SSG deployment
 
 ## Routes
@@ -41,6 +43,9 @@ Rules for static data:
 - Do not fetch or sync Skill entries from GitHub at runtime.
 - Do not add API routes or backend data storage for the catalog.
 - Keep source metadata structured and explicit: author, repository URL, directory URL, license, and optional license URL.
+- Classify user-created Skills as `sourceType: "own"` and other public, bundled, curated, or third-party Skills as `sourceType: "third-party"`.
+- Use `toolScopes` for tool compatibility so a Skill can appear under Claude Code, Codex, or both.
+- Local Skill folders may be used as manual review candidates, but SkillDex must not scan them at runtime or build time.
 - Use stable category IDs and render display labels through the UI helper layer.
 - Use `indexedAt` and `lastReviewedAt` for catalog review dates. Do not claim upstream update timestamps unless they were actually fetched and verified.
 
@@ -80,6 +85,8 @@ Before adding a new entry:
 8. Add safe example prompts as `{ title, prompt }` objects.
 9. Keep install and compatibility information structured.
 10. Run the full verification commands before publishing.
+11. Choose the correct `sourceType`: `own` for user-created Skills, `third-party` for public, bundled, curated, or third-party Skills.
+12. Choose one or more `toolScopes` values so each Skill appears under Claude Code, Codex, or both as appropriate.
 
 Do not add a database, auth system, API routes, GitHub sync, local file scanning, online Skill execution, or ChatGPT Skill support when adding catalog entries.
 

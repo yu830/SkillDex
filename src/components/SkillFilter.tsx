@@ -1,6 +1,6 @@
 "use client";
 
-import type { SkillCategoryId, SkillStatus, ToolScope } from "@/types/skill";
+import type { SkillCategoryId, SkillStatus, SourceType, ToolScope } from "@/types/skill";
 
 type Option<T extends string> = {
   value: T;
@@ -9,12 +9,14 @@ type Option<T extends string> = {
 
 type SkillFilterProps = {
   toolScope: ToolScope | "all";
+  sourceType: SourceType | "all";
   categoryId: SkillCategoryId | "all";
   status: SkillStatus | "all";
   tag: string | "all";
   categories: Option<SkillCategoryId>[];
   tags: string[];
   onToolScopeChange: (value: ToolScope | "all") => void;
+  onSourceTypeChange: (value: SourceType | "all") => void;
   onCategoryChange: (value: SkillCategoryId | "all") => void;
   onStatusChange: (value: SkillStatus | "all") => void;
   onTagChange: (value: string | "all") => void;
@@ -24,6 +26,12 @@ const toolScopes: Option<ToolScope | "all">[] = [
   { value: "all", label: "All tools" },
   { value: "claude-code", label: "Claude Code" },
   { value: "codex", label: "Codex" },
+];
+
+const sourceTypes: Option<SourceType | "all">[] = [
+  { value: "all", label: "All ownership" },
+  { value: "own", label: "My skills" },
+  { value: "third-party", label: "Other skills" },
 ];
 
 const statuses: Option<SkillStatus | "all">[] = [
@@ -36,19 +44,22 @@ const statuses: Option<SkillStatus | "all">[] = [
 
 export function SkillFilter({
   toolScope,
+  sourceType,
   categoryId,
   status,
   tag,
   categories,
   tags,
   onToolScopeChange,
+  onSourceTypeChange,
   onCategoryChange,
   onStatusChange,
   onTagChange,
 }: SkillFilterProps) {
   return (
-    <div className="grid border-b border-[var(--line)] bg-[var(--paper-soft)] md:grid-cols-4">
+    <div className="grid border-b border-[var(--line)] bg-[var(--paper-soft)] md:grid-cols-5">
       <Select label="Tool" value={toolScope} options={toolScopes} onChange={onToolScopeChange} />
+      <Select label="Ownership" value={sourceType} options={sourceTypes} onChange={onSourceTypeChange} />
       <Select
         label="Category"
         value={categoryId}

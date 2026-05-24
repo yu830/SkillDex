@@ -1,5 +1,5 @@
 import { skills } from "#data/skills";
-import type { Locale, LocalizedText, Skill, SkillCategoryId, ToolScope } from "#types/skill";
+import type { Locale, LocalizedText, Skill, SkillCategoryId, SourceType, ToolScope } from "#types/skill";
 
 export const LOCALES: Locale[] = ["en", "zh"];
 
@@ -15,6 +15,16 @@ export const CATEGORY_LABELS: Record<SkillCategoryId, { en: string; zh?: string 
   "devops-deployment": { en: "DevOps / Deployment", zh: "DevOps / 部署" },
   "testing-qa": { en: "Testing / QA", zh: "测试 / QA" },
   other: { en: "Other", zh: "其他" },
+};
+
+export const TOOL_SCOPE_LABELS: Record<ToolScope, { en: string; zh?: string }> = {
+  "claude-code": { en: "Claude Code", zh: "Claude Code" },
+  codex: { en: "Codex", zh: "Codex" },
+};
+
+export const SOURCE_TYPE_LABELS: Record<SourceType, { en: string; zh?: string }> = {
+  own: { en: "My skill", zh: "\u6211\u7684 Skill" },
+  "third-party": { en: "Other skill", zh: "\u5176\u4ed6 Skill" },
 };
 
 export function isLocale(value: string): value is Locale {
@@ -34,7 +44,15 @@ export function getSkillBySlug(slug: string): Skill | undefined {
 }
 
 export function getSkillsByToolScope(scope: ToolScope): Skill[] {
-  return skills.filter((skill) => skill.toolScope === scope);
+  return skills.filter((skill) => skill.toolScopes.includes(scope));
+}
+
+export function getSkillsBySourceType(sourceType: SourceType): Skill[] {
+  return skills.filter((skill) => skill.sourceType === sourceType);
+}
+
+export function getToolScopes(): ToolScope[] {
+  return Array.from(new Set(skills.flatMap((skill) => skill.toolScopes))).sort();
 }
 
 export function getCategories(): SkillCategoryId[] {
@@ -47,4 +65,12 @@ export function getTags(): string[] {
 
 export function getCategoryLabel(categoryId: SkillCategoryId, locale: Locale): string {
   return getLocalizedText(CATEGORY_LABELS[categoryId], locale);
+}
+
+export function getToolScopeLabel(toolScope: ToolScope, locale: Locale): string {
+  return getLocalizedText(TOOL_SCOPE_LABELS[toolScope], locale);
+}
+
+export function getSourceTypeLabel(sourceType: SourceType, locale: Locale): string {
+  return getLocalizedText(SOURCE_TYPE_LABELS[sourceType], locale);
 }

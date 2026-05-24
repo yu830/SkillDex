@@ -5,8 +5,8 @@ import { useMemo, useState } from "react";
 import { SearchBar } from "@/components/SearchBar";
 import { SkillCard } from "@/components/SkillCard";
 import { SkillFilter } from "@/components/SkillFilter";
-import { getCategoryLabel, getLocalizedText } from "@/lib/skills";
-import type { Locale, Skill, SkillCategoryId, SkillStatus, ToolScope } from "@/types/skill";
+import { getCategoryLabel, getLocalizedText, getSourceTypeLabel, getToolScopeLabel } from "@/lib/skills";
+import type { Locale, Skill, SkillCategoryId, SkillStatus, SourceType, ToolScope } from "@/types/skill";
 
 type SkillsExplorerProps = {
   locale: Locale;
@@ -31,6 +31,7 @@ const copy = {
 export function SkillsExplorer({ locale, skills, categories, tags }: SkillsExplorerProps) {
   const [query, setQuery] = useState("");
   const [toolScope, setToolScope] = useState<ToolScope | "all">("all");
+  const [sourceType, setSourceType] = useState<SourceType | "all">("all");
   const [categoryId, setCategoryId] = useState<SkillCategoryId | "all">("all");
   const [status, setStatus] = useState<SkillStatus | "all">("all");
   const [tag, setTag] = useState<string | "all">("all");
@@ -39,7 +40,8 @@ export function SkillsExplorer({ locale, skills, categories, tags }: SkillsExplo
     const normalizedQuery = query.trim().toLowerCase();
 
     return skills.filter((skill) => {
-      if (toolScope !== "all" && skill.toolScope !== toolScope) return false;
+      if (toolScope !== "all" && !skill.toolScopes.includes(toolScope)) return false;
+      if (sourceType !== "all" && skill.sourceType !== sourceType) return false;
       if (categoryId !== "all" && skill.categoryId !== categoryId) return false;
       if (status !== "all" && skill.status !== status) return false;
       if (tag !== "all" && !skill.tags.includes(tag)) return false;
@@ -50,7 +52,10 @@ export function SkillsExplorer({ locale, skills, categories, tags }: SkillsExplo
         getLocalizedText(skill.summary, locale),
         getLocalizedText(skill.description, locale),
         getCategoryLabel(skill.categoryId, locale),
-        skill.toolScope,
+        ...skill.toolScopes,
+        ...skill.toolScopes.map((scope) => getToolScopeLabel(scope, locale)),
+        skill.sourceType,
+        getSourceTypeLabel(skill.sourceType, locale),
         skill.source.author,
         skill.source.license,
         ...skill.tags,
@@ -60,7 +65,7 @@ export function SkillsExplorer({ locale, skills, categories, tags }: SkillsExplo
 
       return searchableText.includes(normalizedQuery);
     });
-  }, [categoryId, locale, query, skills, status, tag, toolScope]);
+  }, [categoryId, locale, query, skills, sourceType, status, tag, toolScope]);
 
   return (
     <section>
@@ -69,12 +74,14 @@ export function SkillsExplorer({ locale, skills, categories, tags }: SkillsExplo
       </div>
       <SkillFilter
         toolScope={toolScope}
+        sourceType={sourceType}
         categoryId={categoryId}
         status={status}
         tag={tag}
         categories={categories.map((category) => ({ value: category, label: getCategoryLabel(category, locale) }))}
         tags={tags}
         onToolScopeChange={setToolScope}
+        onSourceTypeChange={setSourceType}
         onCategoryChange={setCategoryId}
         onStatusChange={setStatus}
         onTagChange={setTag}
