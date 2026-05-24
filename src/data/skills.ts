@@ -351,7 +351,7 @@ export const skills: Skill[] = [
     name: "Frontend Design",
     summary: {
       en: "A frontend design Skill usable from Claude Code and Codex for creating distinctive, production-grade interfaces for components, pages, applications, and visual web artifacts.",
-      zh: "用于创建具有辨识度、生产级前端界面的 Claude Code Skill，适用于组件、页面、应用和视觉类网页产物。",
+      zh: "可在 Claude Code 和 Codex 中使用的前端设计 Skill，用于创建具有辨识度、生产级的组件、页面、应用和视觉类 Web 界面。",
     },
     description: {
       en: "Use this reference when a frontend task needs polished visual direction and implementation that avoids generic AI-looking interface patterns.",
@@ -374,7 +374,7 @@ export const skills: Skill[] = [
       directoryUrl: "https://github.com/anthropics/skills/tree/main/skills/frontend-design",
       license: "Apache-2.0",
     },
-    tags: ["frontend", "design", "ui", "visual-design", "claude-code"],
+    tags: ["frontend", "design", "ui", "visual-design", "claude-code", "codex"],
     useCases: [
       { en: "Designing a polished page or component from a rough brief.", zh: "根据粗略需求设计精致页面或组件。" },
       { en: "Improving a web UI that feels generic or unfinished.", zh: "改善显得通用或未完成的 Web UI。" },
@@ -392,7 +392,7 @@ export const skills: Skill[] = [
     ],
     outputs: [
       { en: "Frontend design direction and implementation guidance.", zh: "前端设计方向和实现指导。" },
-      { en: "Polished UI code or component/page structure when used in Claude Code.", zh: "在 Claude Code 中使用时输出精致 UI 代码或组件/页面结构。" },
+      { en: "Polished UI code or component/page structure when used in Claude Code or Codex.", zh: "在 Claude Code 或 Codex 中使用时输出精致 UI 代码或组件/页面结构。" },
       { en: "Visual details such as layout, spacing, typography, and interaction states.", zh: "布局、间距、排版和交互状态等视觉细节。" },
     ],
     examplePrompts: [
@@ -413,10 +413,10 @@ export const skills: Skill[] = [
     ],
     install: {
       type: "reference",
-      label: { en: "Reference the upstream Claude Code Skill directory.", zh: "参考上游 Claude Code Skill 目录。" },
+      label: { en: "Reference the upstream Claude Code source; usage may be adapted for Claude Code or Codex.", zh: "参考上游 Claude Code 来源，并按需适配到 Claude Code 或 Codex 使用。" },
       steps: [
         { en: "Open the GitHub source directory for the Skill.", zh: "打开该 Skill 的 GitHub 源目录。" },
-        { en: "Review the repository's Claude Code Skill usage guidance before applying it.", zh: "在应用前查看仓库中的 Claude Code Skill 使用说明。" },
+        { en: "Review the upstream Claude Code guidance, then apply the Skill manually in Claude Code or Codex as appropriate.", zh: "先查看上游 Claude Code 使用说明，再按需要手动应用到 Claude Code 或 Codex。" },
       ],
       copyableText: "https://github.com/anthropics/skills/tree/main/skills/frontend-design",
     },
