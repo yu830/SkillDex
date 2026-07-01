@@ -1,4 +1,4 @@
-name: Deploy SkillDex to GitHub Pages
+name: Deploy SkillDex to Cloudflare Pages
 
 on:
   push:
@@ -8,19 +8,16 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: pages
+  group: cloudflare-pages
   cancel-in-progress: true
 
 jobs:
   build-and-deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_PROJECT_NAME: skilldex
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -39,17 +36,9 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Deploy to Cloudflare Pages
+        run: npx --yes wrangler@4.106.0 pages deploy dist --project-name "$CLOUDFLARE_PROJECT_NAME" --branch "$GITHUB_REF_NAME"
         env:
-          VITE_DEPLOY_TARGET: github-pages
-
-      - name: Configure Pages
-        uses: actions/configure-pages@v6
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v5
-        with:
-          path: ./dist
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v5
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

@@ -93,11 +93,37 @@ Each Project card should include:
 
 The confirmed GitHub repository is `https://github.com/yu830/SkillDex`.
 
-GitHub Pages deployment is prepared but not claimed as live:
+Cloudflare Pages is the preferred deployment target for this Vite static site:
 
-- Vite is configured with `base: '/SkillDex/'` for the expected project-site URL.
+- Build command: `npm run build`.
+- Build output directory: `dist`.
+- Default Vite base: `/`, which matches Cloudflare Pages root-path hosting.
+- Cloudflare Pages project name: `skilldex`.
+- Direct Upload command: `npx wrangler pages deploy dist --project-name skilldex --branch <branch-name>`.
+
+Current Cloudflare status:
+
+- Preview alias verified on 2026-07-01: `https://codex-skilldex-phase-4-cloud.skilldex.pages.dev/` returned HTTP 200.
+- Production URL `https://skilldex.pages.dev/` returned HTTP 404 because this phase deployed only a preview branch, not `main`.
+- Do not claim production deployment until a `main` deployment returns HTTP 200.
+
+Local direct upload flow:
+
+```bash
+npx wrangler whoami
+npx wrangler pages project list --json
+npm run test
+npm run build
+npx wrangler pages deploy dist --project-name skilldex --branch codex/skilldex-phase-4-cloudflare-pages
+```
+
+Do not put Cloudflare API tokens in the repository or in chat. For GitHub Actions deployment, configure repository secrets named `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`; `.github/workflows/deploy-cloudflare-pages.yml` uses those placeholders and only runs on `main` pushes or manual `workflow_dispatch`. The workflow uses `wrangler@4.106.0` and deploys the selected GitHub ref name to Cloudflare Pages, so `main` maps to production and non-main manual dispatches stay preview deployments.
+
+GitHub Pages remains as a fallback deployment workflow:
+
 - `.github/workflows/deploy-pages.yml` builds and deploys the `dist` artifact.
+- That workflow sets `VITE_DEPLOY_TARGET=github-pages`, so Vite uses `base: '/SkillDex/'` only for GitHub Pages.
 - The workflow runs only on `main` pushes and manual `workflow_dispatch`, not on feature branch pushes.
-- Expected URL after merging to `main` and enabling Pages from GitHub Actions: `https://yu830.github.io/SkillDex/`.
+- Expected fallback URL after merging to `main` and enabling Pages from GitHub Actions: `https://yu830.github.io/SkillDex/`.
 
-Before expecting a live page, enable GitHub Pages with GitHub Actions as the publishing source in repository settings. Do not treat the expected URL as verified until a `main` deployment completes and the URL returns HTTP 200.
+Do not treat any expected URL as verified until the corresponding deployment completes and the URL returns HTTP 200.
