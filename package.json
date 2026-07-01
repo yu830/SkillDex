@@ -8,7 +8,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --test --experimental-strip-types tests/*.test.ts"
+    "test": "node --test --experimental-strip-types tests/*.test.ts",
+    "verify:static-output": "node scripts/verify-static-output.mjs"
+  },
+  "engines": {
+    "node": ">=22.6.0"
   },
   "imports": {
     "#data/skills": "./src/data/skills.ts",

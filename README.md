@@ -18,15 +18,15 @@ SkillDex is reference-only: it does not execute Skills, store credentials, scan 
 
 English is the default language. The root route is a static-compatible fallback that opens English.
 
-- `/` -> `/en`
-- `/en`
-- `/en/skills`
-- `/en/skills/[slug]`
-- `/en/about`
-- `/zh`
-- `/zh/skills`
-- `/zh/skills/[slug]`
-- `/zh/about`
+- `/` -> `/en/`
+- `/en/`
+- `/en/skills/`
+- `/en/skills/[slug]/`
+- `/en/about/`
+- `/zh/`
+- `/zh/skills/`
+- `/zh/skills/[slug]/`
+- `/zh/about/`
 
 The Chinese routes are structurally supported. Chinese content may be partial and can fall back to English where needed.
 
@@ -97,9 +97,10 @@ npm run dev
 npm test
 npm run lint
 npm run build
+npm run verify:static-output
 ```
 
-Use `npm run dev` for local development, then verify with `npm test`, `npm run lint`, and `npm run build` before deployment.
+Use `npm run dev` for local development, then verify with `npm test`, `npm run lint`, `npm run build`, and `npm run verify:static-output` before deployment.
 
 `npm run build` uses Next.js static export and writes the deployable site to `out/`. The project intentionally uses static data and bounded routes, so no API route, runtime database, server action, or secret is required for the exported site.
 
@@ -111,6 +112,21 @@ python -m http.server 4179 --directory out
 ```
 
 Then open `http://127.0.0.1:4179/`, `http://127.0.0.1:4179/en/`, and one skill detail route such as `http://127.0.0.1:4179/en/skills/playwright/`.
+
+## CI gate
+
+GitHub Actions uses Node.js 22 because the test script runs Node's built-in test runner with `--experimental-strip-types`. Node 20 does not support that flag and fails before tests start. The project declares `engines.node >=22.6.0` because Node's type stripping support was introduced in Node 22.6.0.
+
+The workflow validation job runs:
+
+- `npm ci`
+- `npm run test`
+- `npm run lint`
+- `npm audit --audit-level=moderate`
+- `npm run build`
+- `npm run verify:static-output`
+
+The static output check verifies root, English, Chinese, list, about, and deep-link HTML files under `out/`, rejects static export error markers, and checks that generated asset/link URLs do not use the old `/SkillDex/` GitHub Pages base path.
 
 ## Cloudflare Pages deployment
 
@@ -134,7 +150,9 @@ npm run build
 npx wrangler pages deploy out --project-name skilldex --branch <branch-name>
 ```
 
-The repository includes `.github/workflows/deploy-cloudflare-pages.yml` for future automated deployment from `main` or manual `workflow_dispatch`. Configure these GitHub Secrets before using the workflow:
+The repository includes `.github/workflows/deploy-cloudflare-pages.yml` for future automated deployment from `main` or manual `workflow_dispatch`. The validation job can run on feature branches. The deploy job runs only on `main` push, not feature branches or manual dispatch, and fails with a clear error if Cloudflare secrets are missing.
+
+Configure these GitHub Secrets before using the deploy job:
 
 - `CLOUDFLARE_ACCOUNT_ID`
 - `CLOUDFLARE_API_TOKEN`
