@@ -136,6 +136,17 @@ Expected behavior for manual `workflow_dispatch` on any ref:
 - `deploy` job is skipped because deployment is restricted to `push` on `main`.
 - No Cloudflare production deploy occurs.
 
+Actual Phase 11 branch verification:
+
+- Command: `gh workflow run deploy-cloudflare-pages.yml --ref codex/skilldex-phase-11-ci-deploy-gate`
+- Run URL: `https://github.com/yu830/SkillDex/actions/runs/28525138272`
+- Event: `workflow_dispatch`
+- Branch: `codex/skilldex-phase-11-ci-deploy-gate`
+- Overall conclusion: success
+- `validate` job: success
+- `deploy` job: skipped
+- Production deploy executed: no
+
 Production deploy remains out of scope for this phase.
 
 ## Known Gaps
