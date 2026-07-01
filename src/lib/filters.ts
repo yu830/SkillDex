@@ -18,6 +18,10 @@ export function getTools(skills: SkillCardData[]): string[] {
   return uniqueSorted(skills.flatMap((skill) => skill.tools));
 }
 
+export function getProjectTools(projects: ProjectCardData[]): string[] {
+  return uniqueSorted(projects.flatMap((project) => project.tools));
+}
+
 export function countActiveFilters(filters: FilterState): number {
   return [
     filters.query.trim(),
@@ -54,13 +58,16 @@ export function projectMatchesFilters(project: ProjectCardData, filters: FilterS
   const query = filters.query.trim().toLowerCase();
   const queryMatches =
     !query ||
-    [project.name, project.summary, project.status, ...project.tags].join(' ').toLowerCase().includes(query);
+    [project.name, project.summary, project.status, ...project.tags, ...project.tools, ...project.evidence, ...project.highlights]
+      .join(' ')
+      .toLowerCase()
+      .includes(query);
 
   return (
     queryMatches &&
     filters.category === ALL_VALUE &&
     matchesAnySelected(project.tags, filters.tags) &&
     filters.risk === ALL_VALUE &&
-    filters.tools.length === 0
+    matchesAnySelected(project.tools, filters.tools)
   );
 }

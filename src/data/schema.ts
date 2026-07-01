@@ -12,9 +12,16 @@ export type SkillCategory =
   | 'memory'
   | 'deployment';
 
-export type ProjectStatus = 'active' | 'building' | 'planned' | 'archived';
+export type ProjectStatus = 'draft' | 'local' | 'published' | 'archived';
 
 export type LinkValue = string;
+
+export interface ProjectLinks {
+  repo: LinkValue;
+  demo: LinkValue;
+  docs: LinkValue;
+  caseStudy: LinkValue;
+}
 
 export interface SkillCardData {
   id: string;
@@ -36,9 +43,11 @@ export interface ProjectCardData {
   summary: string;
   status: ProjectStatus;
   tags: string[];
-  repo: LinkValue;
-  demo: LinkValue;
-  docs: LinkValue;
+  tools: string[];
+  links: ProjectLinks;
+  evidence: string[];
+  highlights: string[];
+  updated_at: string;
 }
 
 export interface FilterState {
@@ -71,6 +80,15 @@ export function hasRequiredProjectFields(project: ProjectCardData): boolean {
       project.type === 'project' &&
       project.summary &&
       project.status &&
-      project.tags.length > 0,
+      project.tags.length > 0 &&
+      project.tools.length > 0 &&
+      project.links &&
+      typeof project.links.repo === 'string' &&
+      typeof project.links.demo === 'string' &&
+      typeof project.links.docs === 'string' &&
+      typeof project.links.caseStudy === 'string' &&
+      project.evidence.length > 0 &&
+      project.highlights.length > 0 &&
+      project.updated_at,
   );
 }

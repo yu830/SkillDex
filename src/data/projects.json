@@ -4,65 +4,131 @@
     "name": "InsightCanvas Agent",
     "type": "project",
     "summary": "Tool-calling data analysis and visualization agent focused on turning datasets into reviewable insight artifacts.",
-    "status": "building",
+    "status": "local",
     "tags": ["tool-calling", "data-analysis", "visualization"],
-    "repo": "",
-    "demo": "",
-    "docs": ""
+    "tools": ["Codex", "OpenAI API", "Python"],
+    "links": {
+      "repo": "",
+      "demo": "",
+      "docs": "",
+      "caseStudy": ""
+    },
+    "evidence": ["local prototype", "repo link TBD", "demo TBD"],
+    "highlights": [
+      "Frames analysis output as reviewable artifacts.",
+      "Separates generated claims from verification evidence.",
+      "Designed for tool-calling data workflows."
+    ],
+    "updated_at": "2026-07-01"
   },
   {
     "id": "memorybridge-mcp",
     "name": "MemoryBridge MCP",
     "type": "project",
     "summary": "Local-first memory connector concept for portable AI project context with explicit storage boundaries.",
-    "status": "building",
+    "status": "local",
     "tags": ["mcp", "memory", "local-first"],
-    "repo": "",
-    "demo": "",
-    "docs": ""
+    "tools": ["Codex", "MCP", "Node.js"],
+    "links": {
+      "repo": "",
+      "demo": "",
+      "docs": "",
+      "caseStudy": ""
+    },
+    "evidence": ["local-first design direction", "repo link TBD", "docs TBD"],
+    "highlights": [
+      "Makes storage boundaries explicit.",
+      "Keeps durable project context portable.",
+      "Prioritizes local validation before public claims."
+    ],
+    "updated_at": "2026-07-01"
   },
   {
     "id": "repolens-rag",
     "name": "RepoLens RAG",
     "type": "project",
     "summary": "Repository analysis and retrieval workflow for grounding code questions in real files and project history.",
-    "status": "building",
+    "status": "local",
     "tags": ["rag", "repository-analysis", "developer-tools"],
-    "repo": "",
-    "demo": "",
-    "docs": ""
+    "tools": ["Codex", "RAG", "Git"],
+    "links": {
+      "repo": "",
+      "demo": "",
+      "docs": "",
+      "caseStudy": ""
+    },
+    "evidence": ["repository-analysis concept", "repo link TBD", "case study TBD"],
+    "highlights": [
+      "Grounds answers in repository files.",
+      "Supports codebase orientation and review workflows.",
+      "Keeps retrieval claims tied to available evidence."
+    ],
+    "updated_at": "2026-07-01"
   },
   {
     "id": "bug-hunter-replay",
     "name": "Bug Hunter Replay",
     "type": "project",
     "summary": "Debugging evidence project for replaying bug reports, reproduction steps, and verification traces.",
-    "status": "building",
+    "status": "local",
     "tags": ["debugging", "replay", "quality"],
-    "repo": "",
-    "demo": "",
-    "docs": ""
+    "tools": ["Codex", "GitHub", "Vitest"],
+    "links": {
+      "repo": "",
+      "demo": "",
+      "docs": "",
+      "caseStudy": ""
+    },
+    "evidence": ["debugging workflow concept", "repo link TBD", "demo TBD"],
+    "highlights": [
+      "Centers reproduction before fixes.",
+      "Records verification traces for review.",
+      "Avoids claiming fixes without fresh evidence."
+    ],
+    "updated_at": "2026-07-01"
   },
   {
     "id": "vibe-coding-review-project",
     "name": "Vibe Coding Review",
     "type": "project",
     "summary": "Review workflow for AI-assisted development that checks scope, evidence, claims, and maintainability.",
-    "status": "active",
+    "status": "local",
     "tags": ["review", "workflow", "ai-coding"],
-    "repo": "",
-    "demo": "",
-    "docs": ""
+    "tools": ["Codex", "GitHub", "Markdown"],
+    "links": {
+      "repo": "",
+      "demo": "",
+      "docs": "",
+      "caseStudy": ""
+    },
+    "evidence": ["review workflow documented locally", "repo link TBD", "case study TBD"],
+    "highlights": [
+      "Checks whether implementation matches the requested scope.",
+      "Surfaces missing tests and unsupported claims.",
+      "Keeps review findings ordered by severity."
+    ],
+    "updated_at": "2026-07-01"
   },
   {
     "id": "loopengineering",
     "name": "LoopEngineering",
     "type": "project",
     "summary": "Iterative engineering workflow concept for planning, implementation, review, and verification loops.",
-    "status": "building",
+    "status": "draft",
     "tags": ["workflow", "engineering-system", "verification"],
-    "repo": "",
-    "demo": "",
-    "docs": ""
+    "tools": ["Codex", "Markdown", "Git"],
+    "links": {
+      "repo": "",
+      "demo": "",
+      "docs": "",
+      "caseStudy": ""
+    },
+    "evidence": ["workflow concept", "repo link TBD", "demo TBD"],
+    "highlights": [
+      "Organizes work into planning, execution, review, and verification loops.",
+      "Keeps progress reports tied to commands and artifacts.",
+      "Treats unresolved blockers as explicit project state."
+    ],
+    "updated_at": "2026-07-01"
   }
 ]

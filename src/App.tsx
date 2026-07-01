@@ -9,6 +9,7 @@ import type { FilterState, ProjectCardData, RiskLevel, SkillCardData } from './d
 import {
   countActiveFilters,
   getSkillCategories,
+  getProjectTools,
   getTags,
   getTools,
   projectMatchesFilters,
@@ -24,7 +25,7 @@ const projects = rawProjects as ProjectCardData[];
 const filterOptions = {
   categories: getSkillCategories(skills),
   tags: getTags(skills, projects),
-  tools: getTools(skills),
+  tools: uniqueSorted([...getTools(skills), ...getProjectTools(projects)]),
   risks: uniqueSorted(skills.map((skill) => skill.risk_level)) as RiskLevel[],
 };
 
@@ -116,7 +117,7 @@ function App() {
         <p className="result-note" aria-live="polite">
           Showing {visibleCards} of {totalCards} cards with {activeFilterCount} active filter
           {activeFilterCount === 1 ? '' : 's'}. Project cards match search and tag filters; category, risk, and
-          compatible-tool filters hide project cards because those fields belong to Skill cards.
+          compatible-tool filters hide project cards unless their project tools match the selected tool.
         </p>
       </section>
 

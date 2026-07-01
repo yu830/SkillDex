@@ -68,14 +68,14 @@ describe('SkillDex filters', () => {
     const blockedByRisk = projectData.filter((project) =>
       projectMatchesFilters(project, { ...baseFilters, risk: 'medium' }),
     );
-    const blockedByTool = projectData.filter((project) =>
+    const toolMatches = projectData.filter((project) =>
       projectMatchesFilters(project, { ...baseFilters, tools: ['Codex'] }),
     );
 
     expect(queryMatches.map((project) => project.id)).toContain('memorybridge-mcp');
     expect(tagMatches.map((project) => project.id)).toEqual(['memorybridge-mcp', 'bug-hunter-replay']);
     expect(blockedByRisk).toEqual([]);
-    expect(blockedByTool).toEqual([]);
+    expect(toolMatches.map((project) => project.id)).toContain('insightcanvas-agent');
   });
 
   it('counts active filters without counting defaults or blank search', () => {

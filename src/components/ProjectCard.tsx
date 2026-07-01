@@ -24,16 +24,53 @@ export function ProjectCard({ project }: ProjectCardProps) {
         </div>
       </div>
       <p>{project.summary}</p>
+      <dl className="meta-list">
+        <div>
+          <dt>Status</dt>
+          <dd>{project.status}</dd>
+        </div>
+        <div>
+          <dt>Updated</dt>
+          <dd>{project.updated_at}</dd>
+        </div>
+      </dl>
       <div className="tag-row">
         {project.tags.map((tag) => (
           <span key={tag}>{tag}</span>
         ))}
       </div>
-      <div className="link-row">
-        {linkOrPending('Repo', project.repo)}
-        {linkOrPending('Demo', project.demo)}
-        {linkOrPending('Docs', project.docs)}
+      <div className="tool-row" aria-label={`${project.name} tools`}>
+        {project.tools.map((tool) => (
+          <span key={tool}>{tool}</span>
+        ))}
       </div>
+      <div className="link-row">
+        {linkOrPending('Repo', project.links.repo)}
+        {linkOrPending('Demo', project.links.demo)}
+        {linkOrPending('Docs', project.links.docs)}
+        {linkOrPending('Case study', project.links.caseStudy)}
+      </div>
+      <details className="project-details">
+        <summary aria-label={`Show details for ${project.name}`}>Details</summary>
+        <div className="detail-grid">
+          <section>
+            <h4>Evidence</h4>
+            <ul>
+              {project.evidence.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </section>
+          <section>
+            <h4>Highlights</h4>
+            <ul>
+              {project.highlights.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </section>
+        </div>
+      </details>
     </article>
   );
 }

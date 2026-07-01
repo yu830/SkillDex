@@ -29,11 +29,34 @@ Required fields:
 - `summary`
 - `status`
 - `tags`
+- `tools`
+- `links`
+- `evidence`
+- `highlights`
+- `updated_at`
+
+`status` must be one of:
+
+- `draft`
+- `local`
+- `published`
+- `archived`
+
+`links` must include:
+
 - `repo`
 - `demo`
 - `docs`
+- `caseStudy`
 
-`repo`, `demo`, and `docs` may be empty strings until real links are available.
+Each link may be an empty string until a real URL is available. The UI renders missing links as `TBD`; do not invent placeholder URLs.
+
+`evidence` should record verifiable state or gaps, such as `local prototype`, `repo link TBD`, or `demo TBD`.
+When concrete artifacts exist, prefer paths, commit ids, screenshots, validation logs, or public links. When they do not exist, keep the missing proof visible with `TBD`.
+
+`highlights` should contain 2-3 concrete capability points, not marketing claims.
+
+`updated_at` uses `YYYY-MM-DD` format.
 
 ## Validation
 
@@ -49,4 +72,5 @@ The current tests check:
 - no duplicate ids across both datasets;
 - required Skill fields;
 - required Project fields;
-- required portfolio project entries.
+- required portfolio project entries;
+- Project evidence fields and link honesty rules.

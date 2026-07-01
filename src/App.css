@@ -305,19 +305,26 @@
 }
 
 .tag-row,
+.tool-row,
 .link-row {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
 
-.tag-row span {
+.tag-row span,
+.tool-row span {
   border: 1px solid #cfd4c7;
   border-radius: 999px;
   background: #f7f7f4;
   color: #46515f;
   padding: 4px 9px;
   font-size: 0.82rem;
+}
+
+.tool-row span {
+  border-color: #d6cec2;
+  background: #fbfaf7;
 }
 
 .safety-list {
@@ -361,6 +368,45 @@
 
 .pending-link {
   color: #6b7280;
+}
+
+.project-details {
+  border-top: 1px solid #e1e2dc;
+  padding-top: 12px;
+}
+
+.project-details summary {
+  min-height: 34px;
+  color: #50613f;
+  cursor: pointer;
+  font-size: 0.94rem;
+}
+
+.project-details summary:focus-visible,
+.card a:focus-visible {
+  outline: 2px solid #50613f;
+  outline-offset: 3px;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  padding-top: 12px;
+}
+
+.detail-grid h4 {
+  margin: 0 0 8px;
+  color: #111827;
+  font-size: 0.96rem;
+}
+
+.detail-grid ul {
+  margin: 0;
+  padding-left: 18px;
+  color: #46515f;
+  font-size: 0.9rem;
+  line-height: 1.5;
 }
 
 .empty-state,
@@ -435,5 +481,9 @@
 
   .card-heading {
     display: grid;
+  }
+
+  .detail-grid {
+    grid-template-columns: 1fr;
   }
 }

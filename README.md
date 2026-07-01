@@ -30,7 +30,7 @@ Supported query parameters:
 - `tags`: repeated tag values, for example `?tags=workflow&tags=testing`.
 - `tools`: repeated compatible tool values, for example `?tools=Codex&tools=Claude+Code`.
 
-Filter groups combine conservatively: category, risk, tags, tools, and search text must all match. Within the `tags` and `tools` groups, selecting multiple values means a card may match any selected value in that group. Project cards participate in search and tag filters; category, risk, and compatible-tool filters hide Project cards because those fields belong to Skill cards.
+Filter groups combine conservatively: category, risk, tags, tools, and search text must all match. Within the `tags` and `tools` groups, selecting multiple values means a card may match any selected value in that group. Project cards participate in search, tag, and compatible-tool filters; category and risk filters remain Skill-only.
 
 ## Data Model
 
@@ -55,9 +55,14 @@ Each Project card should include:
 - `name`: display name.
 - `type`: always `project`.
 - `summary`: short, conservative project positioning.
-- `status`: `active`, `building`, `planned`, or `archived`.
+- `status`: `draft`, `local`, `published`, or `archived`.
 - `tags`: searchable project tags.
-- `repo`, `demo`, `docs`: URLs, or empty strings when not confirmed.
+- `tools`: project tool surface tags.
+- `links`: `repo`, `demo`, `docs`, and `caseStudy` URLs, or empty strings when not confirmed.
+- `evidence`: short audit notes such as `local prototype`, `repo link TBD`, or `demo TBD`.
+  Prefer concrete artifact paths, commits, screenshots, or verification records when they exist.
+- `highlights`: 2-3 concrete capability points.
+- `updated_at`: maintenance date in `YYYY-MM-DD` format.
 
 ## Adding A Skill
 
@@ -69,9 +74,11 @@ Each Project card should include:
 ## Adding A Project
 
 1. Add one object to `src/data/projects.json`.
-2. Use `active` only for work that is currently usable or documented.
-3. Use `building` for in-progress work and avoid production claims until evidence exists.
-4. Leave `repo`, `demo`, or `docs` blank until the link is real; the UI renders missing links as `TBD`.
+2. Use `published` only when a real public repo, demo, docs, or case study link exists.
+3. Use `local` or `draft` for in-progress work and avoid production claims until evidence exists.
+4. Leave `links.repo`, `links.demo`, `links.docs`, or `links.caseStudy` blank until the link is real; the UI renders missing links as `TBD`.
+5. Keep `evidence` and `highlights` specific and audit-friendly, not marketing copy.
+6. If a project has no public artifact yet, record the gap as `TBD` instead of implying proof.
 
 ## Current Scope
 
@@ -79,9 +86,18 @@ Each Project card should include:
 - Search across names, summaries, tags, and tools.
 - Filters for category, multiple tags, risk level, and multiple compatible tools.
 - URL-shareable filter state without a routing framework.
-- Skill and Project card sections.
+- Skill and Project card sections with lightweight same-page Project details.
 - Conservative visual style using Yu Serif/system serif fallbacks.
 
 ## Deployment
 
-The confirmed GitHub repository is `https://github.com/yu830/SkillDex`. Deployment can be added later through Vercel or GitHub Pages; no hosted production URL is claimed yet.
+The confirmed GitHub repository is `https://github.com/yu830/SkillDex`.
+
+GitHub Pages deployment is prepared but not claimed as live:
+
+- Vite is configured with `base: '/SkillDex/'` for the expected project-site URL.
+- `.github/workflows/deploy-pages.yml` builds and deploys the `dist` artifact.
+- The workflow runs only on `main` pushes and manual `workflow_dispatch`, not on feature branch pushes.
+- Expected URL after merging to `main` and enabling Pages from GitHub Actions: `https://yu830.github.io/SkillDex/`.
+
+Before expecting a live page, enable GitHub Pages with GitHub Actions as the publishing source in repository settings. Do not treat the expected URL as verified until a `main` deployment completes and the URL returns HTTP 200.
