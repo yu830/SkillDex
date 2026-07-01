@@ -28,10 +28,13 @@ test("all required route and component files exist", () => {
   }
 });
 
-test("root route redirects to the English locale", () => {
+test("root route provides a static-compatible English locale fallback", () => {
   const source = readFileSync(join(root, "src/app/page.tsx"), "utf8");
 
-  assert.match(source, /redirect\(["']\/en["']\)/);
+  assert.doesNotMatch(source, /next\/navigation/);
+  assert.match(source, /httpEquiv=["']refresh["']/);
+  assert.match(source, /url=\/en\//);
+  assert.match(source, /href=["']\/en\/["']/);
 });
 
 test("locale routes are statically bounded to English and Chinese", () => {
@@ -46,6 +49,7 @@ test("skill detail route statically generates locales and slugs", () => {
   const source = readFileSync(join(root, "src/app/[locale]/skills/[slug]/page.tsx"), "utf8");
 
   assert.match(source, /generateStaticParams/);
+  assert.match(source, /dynamicParams\s*=\s*false/);
   assert.match(source, /notFound\(\)/);
   assert.match(source, /getAllSkills/);
   assert.match(source, /getSkillBySlug/);

@@ -12,11 +12,11 @@ SkillDex is reference-only: it does not execute Skills, store credentials, scan 
 - Static data in `src/data/skills.ts`
 - Manual ownership classification with `sourceType`
 - Multi-tool compatibility with `toolScopes`
-- Vercel-ready static/SSG deployment
+- Cloudflare Pages static export via `next build` -> `out/`
 
 ## Routes
 
-English is the default language. The root route redirects to English.
+English is the default language. The root route is a static-compatible fallback that opens English.
 
 - `/` -> `/en`
 - `/en`
@@ -101,6 +101,40 @@ npm run build
 
 Use `npm run dev` for local development, then verify with `npm test`, `npm run lint`, and `npm run build` before deployment.
 
-## Vercel deployment
+`npm run build` uses Next.js static export and writes the deployable site to `out/`. The project intentionally uses static data and bounded routes, so no API route, runtime database, server action, or secret is required for the exported site.
 
-SkillDex is intended to deploy as a standard Next.js project on Vercel. The MVP uses static data and prerendered routes, so no database, server runtime, environment variables, or API keys are required for deployment.
+To smoke-test the exported site locally:
+
+```bash
+npm run build
+python -m http.server 4179 --directory out
+```
+
+Then open `http://127.0.0.1:4179/`, `http://127.0.0.1:4179/en/`, and one skill detail route such as `http://127.0.0.1:4179/en/skills/playwright/`.
+
+## Cloudflare Pages deployment
+
+Cloudflare Pages is the target production platform for the static SkillDex app. The expected Pages configuration is:
+
+- Build command: `npm run build`
+- Build output directory: `out`
+- Project name: `skilldex`
+- Production branch: `main`
+
+For a manual preview deployment from a feature branch:
+
+```bash
+npm run build
+npx wrangler pages deploy out --project-name skilldex --branch <branch-name>
+```
+
+The repository includes `.github/workflows/deploy-cloudflare-pages.yml` for future automated deployment from `main` or manual `workflow_dispatch`. Configure these GitHub Secrets before using the workflow:
+
+- `CLOUDFLARE_ACCOUNT_ID`
+- `CLOUDFLARE_API_TOKEN`
+
+Do not commit Cloudflare tokens, `.env`, `.dev.vars`, or account metadata. The production URL `https://skilldex.pages.dev/` should only be claimed live after a production deployment from `main` is executed and verified with HTTP 200.
+
+## Other deployment paths
+
+The current app is intentionally constrained for static export, so Cloudflare Pages can host it without OpenNext or Workers after the export and preview checks pass. If future features introduce server-only Next.js behavior such as API routes, middleware, cookies, headers, server actions, runtime redirects, or ISR, re-evaluate the deployment target and consider Cloudflare's OpenNext/Workers path instead of forcing a static export.

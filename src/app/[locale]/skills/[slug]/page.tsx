@@ -12,6 +12,8 @@ type PageProps = {
   params: Promise<{ locale: string; slug: string }>;
 };
 
+export const dynamicParams = false;
+
 const sectionTitles = {
   en: {
     overview: "Overview",
