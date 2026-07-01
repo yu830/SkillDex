@@ -1,0 +1,68 @@
+[
+  {
+    "id": "insightcanvas-agent",
+    "name": "InsightCanvas Agent",
+    "type": "project",
+    "summary": "Tool-calling data analysis and visualization agent focused on turning datasets into reviewable insight artifacts.",
+    "status": "building",
+    "tags": ["tool-calling", "data-analysis", "visualization"],
+    "repo": "",
+    "demo": "",
+    "docs": ""
+  },
+  {
+    "id": "memorybridge-mcp",
+    "name": "MemoryBridge MCP",
+    "type": "project",
+    "summary": "Local-first memory connector concept for portable AI project context with explicit storage boundaries.",
+    "status": "building",
+    "tags": ["mcp", "memory", "local-first"],
+    "repo": "",
+    "demo": "",
+    "docs": ""
+  },
+  {
+    "id": "repolens-rag",
+    "name": "RepoLens RAG",
+    "type": "project",
+    "summary": "Repository analysis and retrieval workflow for grounding code questions in real files and project history.",
+    "status": "building",
+    "tags": ["rag", "repository-analysis", "developer-tools"],
+    "repo": "",
+    "demo": "",
+    "docs": ""
+  },
+  {
+    "id": "bug-hunter-replay",
+    "name": "Bug Hunter Replay",
+    "type": "project",
+    "summary": "Debugging evidence project for replaying bug reports, reproduction steps, and verification traces.",
+    "status": "building",
+    "tags": ["debugging", "replay", "quality"],
+    "repo": "",
+    "demo": "",
+    "docs": ""
+  },
+  {
+    "id": "vibe-coding-review-project",
+    "name": "Vibe Coding Review",
+    "type": "project",
+    "summary": "Review workflow for AI-assisted development that checks scope, evidence, claims, and maintainability.",
+    "status": "active",
+    "tags": ["review", "workflow", "ai-coding"],
+    "repo": "",
+    "demo": "",
+    "docs": ""
+  },
+  {
+    "id": "loopengineering",
+    "name": "LoopEngineering",
+    "type": "project",
+    "summary": "Iterative engineering workflow concept for planning, implementation, review, and verification loops.",
+    "status": "building",
+    "tags": ["workflow", "engineering-system", "verification"],
+    "repo": "",
+    "demo": "",
+    "docs": ""
+  }
+]
