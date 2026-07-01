@@ -44,9 +44,9 @@ export interface ProjectCardData {
 export interface FilterState {
   query: string;
   category: string;
-  tag: string;
   risk: string;
-  tool: string;
+  tags: string[];
+  tools: string[];
 }
 
 export function hasRequiredSkillFields(skill: SkillCardData): boolean {

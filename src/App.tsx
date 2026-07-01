@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { FilterBar } from './components/FilterBar';
 import { ProjectCard } from './components/ProjectCard';
 import { SearchBox } from './components/SearchBox';
@@ -7,7 +7,7 @@ import rawProjects from './data/projects.json';
 import rawSkills from './data/skills.json';
 import type { FilterState, ProjectCardData, RiskLevel, SkillCardData } from './data/schema';
 import {
-  ALL_VALUE,
+  countActiveFilters,
   getSkillCategories,
   getTags,
   getTools,
@@ -15,26 +15,41 @@ import {
   skillMatchesFilters,
   uniqueSorted,
 } from './lib/filters';
+import { DEFAULT_FILTERS, parseFiltersFromSearch, serializeFiltersToSearch } from './lib/urlState';
 import './App.css';
 
 const skills = rawSkills as SkillCardData[];
 const projects = rawProjects as ProjectCardData[];
 
-const initialFilters: FilterState = {
-  query: '',
-  category: ALL_VALUE,
-  tag: ALL_VALUE,
-  risk: ALL_VALUE,
-  tool: ALL_VALUE,
+const filterOptions = {
+  categories: getSkillCategories(skills),
+  tags: getTags(skills, projects),
+  tools: getTools(skills),
+  risks: uniqueSorted(skills.map((skill) => skill.risk_level)) as RiskLevel[],
 };
 
 function App() {
-  const [filters, setFilters] = useState<FilterState>(initialFilters);
+  const [filters, setFilters] = useState<FilterState>(() =>
+    parseFiltersFromSearch(typeof window === 'undefined' ? '' : window.location.search, filterOptions),
+  );
 
-  const categories = useMemo(() => getSkillCategories(skills), []);
-  const tags = useMemo(() => getTags(skills, projects), []);
-  const tools = useMemo(() => getTools(skills), []);
-  const risks = useMemo(() => uniqueSorted(skills.map((skill) => skill.risk_level)) as RiskLevel[], []);
+  useEffect(() => {
+    const nextSearch = serializeFiltersToSearch(filters);
+    const nextUrl = `${window.location.pathname}${nextSearch}${window.location.hash}`;
+
+    if (nextUrl !== `${window.location.pathname}${window.location.search}${window.location.hash}`) {
+      window.history.replaceState(null, '', nextUrl);
+    }
+  }, [filters]);
+
+  useEffect(() => {
+    const restoreFromUrl = () => {
+      setFilters(parseFiltersFromSearch(window.location.search, filterOptions));
+    };
+
+    window.addEventListener('popstate', restoreFromUrl);
+    return () => window.removeEventListener('popstate', restoreFromUrl);
+  }, []);
 
   const filteredSkills = useMemo(
     () => skills.filter((skill) => skillMatchesFilters(skill, filters)),
@@ -48,6 +63,7 @@ function App() {
 
   const totalCards = skills.length + projects.length;
   const visibleCards = filteredSkills.length + filteredProjects.length;
+  const activeFilterCount = countActiveFilters(filters);
 
   return (
     <main className="app-shell">
@@ -75,7 +91,7 @@ function App() {
               <span>Project cards</span>
             </div>
             <div>
-              <strong>{tags.length}</strong>
+              <strong>{filterOptions.tags.length}</strong>
               <span>Tags</span>
             </div>
             <div>
@@ -90,23 +106,30 @@ function App() {
         <SearchBox value={filters.query} onChange={(query) => setFilters({ ...filters, query })} />
         <FilterBar
           filters={filters}
-          categories={categories}
-          tags={tags}
-          tools={tools}
-          risks={risks}
+          categories={filterOptions.categories}
+          tags={filterOptions.tags}
+          tools={filterOptions.tools}
+          risks={filterOptions.risks}
           onChange={setFilters}
-          onReset={() => setFilters(initialFilters)}
+          onReset={() => setFilters(DEFAULT_FILTERS)}
         />
-        <p className="result-note">
-          Showing {visibleCards} of {totalCards} cards. Project cards appear when category, risk, and tool
-          filters are set to all.
+        <p className="result-note" aria-live="polite">
+          Showing {visibleCards} of {totalCards} cards with {activeFilterCount} active filter
+          {activeFilterCount === 1 ? '' : 's'}. Project cards match search and tag filters; category, risk, and
+          compatible-tool filters hide project cards because those fields belong to Skill cards.
         </p>
       </section>
 
       {visibleCards === 0 ? (
         <section className="empty-state" aria-live="polite">
           <h2>No matching cards</h2>
-          <p>Try clearing one filter or searching by a broader tool, tag, or workflow term.</p>
+          <p>
+            Clear filters, remove one selected tag/tool, or shorten the search term. The URL will update when
+            filters change, so the recovered state is shareable too.
+          </p>
+          <button className="reset-button" type="button" onClick={() => setFilters(DEFAULT_FILTERS)}>
+            Clear all filters
+          </button>
         </section>
       ) : null}
 

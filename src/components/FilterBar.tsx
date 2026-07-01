@@ -16,62 +16,81 @@ function titleCase(value: string): string {
 }
 
 export function FilterBar({ filters, categories, tags, tools, risks, onChange, onReset }: FilterBarProps) {
-  const update = (key: keyof FilterState, value: string) => {
+  const update = (key: 'category' | 'risk', value: string) => {
     onChange({ ...filters, [key]: value });
+  };
+
+  const toggleValue = (key: 'tags' | 'tools', value: string) => {
+    const current = filters[key];
+    const next = current.includes(value)
+      ? current.filter((item) => item !== value)
+      : [...current, value].sort((a, b) => a.localeCompare(b));
+
+    onChange({ ...filters, [key]: next });
   };
 
   return (
     <section className="filter-bar" aria-label="SkillDex filters">
-      <label>
-        <span>Category</span>
-        <select value={filters.category} onChange={(event) => update('category', event.target.value)}>
-          <option value={ALL_VALUE}>All categories</option>
-          {categories.map((category) => (
-            <option value={category} key={category}>
-              {titleCase(category)}
-            </option>
-          ))}
-        </select>
-      </label>
+      <div className="select-row">
+        <label>
+          <span>Category</span>
+          <select value={filters.category} onChange={(event) => update('category', event.target.value)}>
+            <option value={ALL_VALUE}>All categories</option>
+            {categories.map((category) => (
+              <option value={category} key={category}>
+                {titleCase(category)}
+              </option>
+            ))}
+          </select>
+        </label>
 
-      <label>
-        <span>Tag</span>
-        <select value={filters.tag} onChange={(event) => update('tag', event.target.value)}>
-          <option value={ALL_VALUE}>All tags</option>
+        <label>
+          <span>Risk</span>
+          <select value={filters.risk} onChange={(event) => update('risk', event.target.value)}>
+            <option value={ALL_VALUE}>All risk levels</option>
+            {risks.map((risk) => (
+              <option value={risk} key={risk}>
+                {titleCase(risk)}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+
+      <fieldset className="multi-filter">
+        <legend>Tags</legend>
+        <div className="check-grid">
           {tags.map((tag) => (
-            <option value={tag} key={tag}>
-              {tag}
-            </option>
+            <label key={tag}>
+              <input
+                type="checkbox"
+                checked={filters.tags.includes(tag)}
+                onChange={() => toggleValue('tags', tag)}
+              />
+              <span>{tag}</span>
+            </label>
           ))}
-        </select>
-      </label>
+        </div>
+      </fieldset>
 
-      <label>
-        <span>Risk</span>
-        <select value={filters.risk} onChange={(event) => update('risk', event.target.value)}>
-          <option value={ALL_VALUE}>All risk levels</option>
-          {risks.map((risk) => (
-            <option value={risk} key={risk}>
-              {titleCase(risk)}
-            </option>
-          ))}
-        </select>
-      </label>
-
-      <label>
-        <span>Compatible tool</span>
-        <select value={filters.tool} onChange={(event) => update('tool', event.target.value)}>
-          <option value={ALL_VALUE}>All tools</option>
+      <fieldset className="multi-filter">
+        <legend>Compatible tools</legend>
+        <div className="check-grid check-grid--tools">
           {tools.map((tool) => (
-            <option value={tool} key={tool}>
-              {tool}
-            </option>
+            <label key={tool}>
+              <input
+                type="checkbox"
+                checked={filters.tools.includes(tool)}
+                onChange={() => toggleValue('tools', tool)}
+              />
+              <span>{tool}</span>
+            </label>
           ))}
-        </select>
-      </label>
+        </div>
+      </fieldset>
 
       <button className="reset-button" type="button" onClick={onReset}>
-        Reset
+        Clear filters
       </button>
     </section>
   );

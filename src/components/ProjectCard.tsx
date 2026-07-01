@@ -10,7 +10,7 @@ function linkOrPending(label: string, href: string) {
       {label}
     </a>
   ) : (
-    <span className="pending-link">{label} pending</span>
+    <span className="pending-link">{label} TBD</span>
   );
 }
 

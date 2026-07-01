@@ -41,7 +41,7 @@ export function SkillCard({ skill }: SkillCardProps) {
           Repository
         </a>
       ) : (
-        <span className="pending-link">Repository pending</span>
+        <span className="pending-link">Repository TBD</span>
       )}
     </article>
   );

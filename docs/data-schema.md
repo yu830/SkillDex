@@ -17,7 +17,7 @@ Required fields:
 - `repo`
 - `safety_notes`
 
-`repo` may be an empty string when a real repository URL has not been confirmed. The UI renders this as pending instead of inventing a link.
+`repo` may be an empty string when a real repository URL has not been confirmed. The UI renders this as `TBD` instead of inventing a link.
 
 ## Project Cards
 

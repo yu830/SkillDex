@@ -7,7 +7,7 @@ SkillDex should be useful as a portfolio surface without overstating project mat
 - Describe what exists now, not what is planned.
 - Do not claim deployment, users, stars, production adoption, certifications, or benchmarks without evidence.
 - Use `building` for incomplete projects.
-- Leave unknown links blank; the UI will show them as pending.
+- Leave unknown links blank; the UI will show them as `TBD`.
 
 ## Skill Cards
 

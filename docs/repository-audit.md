@@ -28,5 +28,5 @@ Phase 1 establishes a local MVP only. Because no remote is configured, this phas
 ## Follow-Up Needs
 
 - Add a GitHub remote before any push.
-- Replace pending project links with real repository, demo, and documentation URLs.
+- Replace `TBD` project links with real repository, demo, and documentation URLs.
 - Capture screenshots in a later visual polish or deployment phase.

@@ -98,6 +98,11 @@
   font-size: 0.86rem;
 }
 
+.search-box small {
+  color: #6b7280;
+  font-size: 0.8rem;
+}
+
 .search-box input,
 .filter-bar select {
   width: 100%;
@@ -111,6 +116,7 @@
 
 .search-box input:focus,
 .filter-bar select:focus,
+.multi-filter input:focus-visible,
 .reset-button:focus {
   outline: 2px solid #50613f;
   outline-offset: 2px;
@@ -118,10 +124,58 @@
 
 .filter-bar {
   display: grid;
-  grid-template-columns: repeat(4, minmax(140px, 1fr)) auto;
-  gap: 14px;
-  align-items: end;
+  grid-template-columns: minmax(220px, 0.6fr) minmax(0, 1.2fr) minmax(0, 0.9fr) auto;
+  gap: 16px;
+  align-items: start;
   margin-top: 18px;
+}
+
+.select-row {
+  display: grid;
+  gap: 14px;
+}
+
+.multi-filter {
+  min-width: 0;
+  margin: 0;
+  border: 1px solid #d7d8d2;
+  border-radius: 6px;
+  background: #ffffff;
+  padding: 12px;
+}
+
+.multi-filter legend {
+  color: #46515f;
+  font-size: 0.86rem;
+  padding: 0 4px;
+}
+
+.check-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-height: 178px;
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.check-grid label {
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid #cfd4c7;
+  border-radius: 999px;
+  background: #f7f7f4;
+  color: #46515f;
+  padding: 5px 9px;
+  cursor: pointer;
+}
+
+.check-grid input {
+  width: 16px;
+  height: 16px;
+  accent-color: #50613f;
 }
 
 .reset-button {
@@ -132,6 +186,7 @@
   color: #ffffff;
   padding: 10px 16px;
   cursor: pointer;
+  align-self: start;
 }
 
 .reset-button:hover {
@@ -321,6 +376,10 @@
   margin-top: 12px;
 }
 
+.empty-state .reset-button {
+  margin-top: 18px;
+}
+
 @media (max-width: 900px) {
   .hero-grid,
   .section-heading {
@@ -328,14 +387,17 @@
     display: grid;
   }
 
-  .filter-bar,
   .card-grid,
   .project-grid {
     grid-template-columns: 1fr 1fr;
   }
 
+  .filter-bar {
+    grid-template-columns: 1fr;
+  }
+
   .reset-button {
-    grid-column: 1 / -1;
+    width: 100%;
   }
 }
 
@@ -355,7 +417,6 @@
   }
 
   .stats-panel,
-  .filter-bar,
   .card-grid,
   .project-grid {
     grid-template-columns: 1fr;

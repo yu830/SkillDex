@@ -177,6 +177,6 @@
     "risk_level": "low",
     "license": "MIT",
     "repo": "",
-    "safety_notes": ["Avoid inflated metrics.", "Unknown links should remain blank or marked pending."]
+    "safety_notes": ["Avoid inflated metrics.", "Unknown links should remain blank or marked TBD."]
   }
 ]

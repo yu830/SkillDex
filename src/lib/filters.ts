@@ -18,6 +18,20 @@ export function getTools(skills: SkillCardData[]): string[] {
   return uniqueSorted(skills.flatMap((skill) => skill.tools));
 }
 
+export function countActiveFilters(filters: FilterState): number {
+  return [
+    filters.query.trim(),
+    filters.category !== ALL_VALUE ? filters.category : '',
+    filters.risk !== ALL_VALUE ? filters.risk : '',
+    ...filters.tags,
+    ...filters.tools,
+  ].filter(Boolean).length;
+}
+
+function matchesAnySelected(values: string[], selectedValues: string[]): boolean {
+  return selectedValues.length === 0 || selectedValues.some((value) => values.includes(value));
+}
+
 export function skillMatchesFilters(skill: SkillCardData, filters: FilterState): boolean {
   const query = filters.query.trim().toLowerCase();
   const queryMatches =
@@ -30,9 +44,9 @@ export function skillMatchesFilters(skill: SkillCardData, filters: FilterState):
   return (
     queryMatches &&
     (filters.category === ALL_VALUE || skill.category === filters.category) &&
-    (filters.tag === ALL_VALUE || skill.tags.includes(filters.tag)) &&
     (filters.risk === ALL_VALUE || skill.risk_level === filters.risk) &&
-    (filters.tool === ALL_VALUE || skill.tools.includes(filters.tool))
+    matchesAnySelected(skill.tags, filters.tags) &&
+    matchesAnySelected(skill.tools, filters.tools)
   );
 }
 
@@ -45,8 +59,8 @@ export function projectMatchesFilters(project: ProjectCardData, filters: FilterS
   return (
     queryMatches &&
     filters.category === ALL_VALUE &&
-    (filters.tag === ALL_VALUE || project.tags.includes(filters.tag)) &&
+    matchesAnySelected(project.tags, filters.tags) &&
     filters.risk === ALL_VALUE &&
-    filters.tool === ALL_VALUE
+    filters.tools.length === 0
   );
 }
