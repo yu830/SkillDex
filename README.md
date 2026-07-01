@@ -114,7 +114,13 @@ Then open `http://127.0.0.1:4179/`, `http://127.0.0.1:4179/en/`, and one skill d
 
 ## Cloudflare Pages deployment
 
-Cloudflare Pages is the target production platform for the static SkillDex app. The expected Pages configuration is:
+Cloudflare Pages is the production platform for the static SkillDex app.
+
+Current public entry:
+
+- `https://skilldex.pages.dev/`
+
+The expected Pages configuration is:
 
 - Build command: `npm run build`
 - Build output directory: `out`
@@ -133,7 +139,7 @@ The repository includes `.github/workflows/deploy-cloudflare-pages.yml` for futu
 - `CLOUDFLARE_ACCOUNT_ID`
 - `CLOUDFLARE_API_TOKEN`
 
-Do not commit Cloudflare tokens, `.env`, `.dev.vars`, or account metadata. The production URL `https://skilldex.pages.dev/` should only be claimed live after a production deployment from `main` is executed and verified with HTTP 200.
+Do not commit Cloudflare tokens, `.env`, `.dev.vars`, or account metadata. Production status should only be updated after a deployment from `main` is executed and the public URL is verified with HTTP 200.
 
 ## Other deployment paths
 
