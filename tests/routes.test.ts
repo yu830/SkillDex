@@ -10,6 +10,8 @@ const requiredFiles = [
   "src/app/[locale]/layout.tsx",
   "src/app/[locale]/page.tsx",
   "src/app/[locale]/about/page.tsx",
+  "src/app/[locale]/projects/page.tsx",
+  "src/app/[locale]/projects/[slug]/page.tsx",
   "src/app/[locale]/skills/page.tsx",
   "src/app/[locale]/skills/SkillsExplorer.tsx",
   "src/app/[locale]/skills/[slug]/page.tsx",
@@ -54,6 +56,24 @@ test("skill detail route statically generates locales and slugs", () => {
   assert.match(source, /notFound\(\)/);
   assert.match(source, /getAllSkills/);
   assert.match(source, /getSkillBySlug/);
+});
+
+test("project detail route statically generates locales and project slugs", () => {
+  const source = readFileSync(join(root, "src/app/[locale]/projects/[slug]/page.tsx"), "utf8");
+
+  assert.match(source, /generateStaticParams/);
+  assert.match(source, /dynamicParams\s*=\s*false/);
+  assert.match(source, /notFound\(\)/);
+  assert.match(source, /getProjectStaticParams/);
+  assert.match(source, /getProjectEvidenceBySlug/);
+});
+
+test("project cards use locale-aware detail route links", () => {
+  const source = readFileSync(join(root, "src/components/ProjectEvidenceCard.tsx"), "utf8");
+
+  assert.match(source, /next\/link/);
+  assert.match(source, /getProjectPath\(locale,\s*project\.slug\)/);
+  assert.match(source, /Open evidence record/);
 });
 
 test("MVP does not define API routes", () => {

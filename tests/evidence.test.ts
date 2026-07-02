@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { getAllProjectEvidence } from "#lib/projects";
+import { getAllProjectEvidence, getProjectEvidenceBySlug, getProjectPath, getProjectStaticParams } from "#lib/projects";
 import { getAllSkills, getSkillBySlug, getSkillSearchText, getSkillsBySourceType, getSkillsByToolScope } from "#lib/skills";
 import { isEvidence } from "#lib/evidence";
 
@@ -47,7 +47,44 @@ test("required portfolio projects all have evidence", () => {
     assert.equal(isEvidence(project.evidence), true, project.name);
     assert.match(project.updatedAt, /^\d{4}-\d{2}-\d{2}$/);
     assert.ok(project.highlights.length >= 2, project.name);
+    assert.ok(project.problem.length >= 2, project.name);
+    assert.ok(project.approach.length >= 2, project.name);
+    assert.ok(project.nextSteps.length >= 2, project.name);
     assert.ok(project.evidence.artifacts && project.evidence.artifacts.length > 0, project.name);
+  }
+});
+
+test("project slugs are unique, stable, and statically routable", () => {
+  const projects = getAllProjectEvidence();
+  const slugs = projects.map((project) => project.slug);
+
+  assert.equal(new Set(slugs).size, slugs.length);
+  for (const slug of slugs) {
+    assert.match(slug, /^[a-z0-9-]+$/);
+    assert.equal(getProjectEvidenceBySlug(slug)?.slug, slug);
+    assert.equal(getProjectPath("en", slug), `/en/projects/${slug}`);
+  }
+
+  const routeKeys = new Set(getProjectStaticParams().map((param) => `${param.locale}/${param.slug}`));
+  for (const slug of slugs) {
+    assert.equal(routeKeys.has(`en/${slug}`), true, slug);
+    assert.equal(routeKeys.has(`zh/${slug}`), true, slug);
+  }
+});
+
+test("project TBD evidence stays unlinked until proof is verified", () => {
+  const projects = getAllProjectEvidence();
+  const tbdArtifacts = projects.flatMap((project) =>
+    (project.evidence.artifacts ?? [])
+      .filter((artifact) => `${artifact.label} ${artifact.summary ?? ""}`.toLowerCase().includes("tbd"))
+      .map((artifact) => ({ project: project.name, artifact })),
+  );
+
+  assert.ok(tbdArtifacts.length > 0);
+
+  for (const { project, artifact } of tbdArtifacts) {
+    assert.equal(artifact.href, undefined, `${project} ${artifact.label}`);
+    assert.doesNotMatch(`${artifact.label} ${artifact.summary ?? ""}`, /https?:\/\//i, `${project} ${artifact.label}`);
   }
 });
 

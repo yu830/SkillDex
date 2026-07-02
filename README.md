@@ -22,10 +22,14 @@ English is the default language. The root route is a static-compatible fallback 
 
 - `/` -> `/en/`
 - `/en/`
+- `/en/projects/`
+- `/en/projects/[slug]/`
 - `/en/skills/`
 - `/en/skills/[slug]/`
 - `/en/about/`
 - `/zh/`
+- `/zh/projects/`
+- `/zh/projects/[slug]/`
 - `/zh/skills/`
 - `/zh/skills/[slug]/`
 - `/zh/about/`
@@ -36,6 +40,7 @@ The Chinese routes are structurally supported. Chinese content may be partial an
 
 The MVP catalog is maintained manually in `src/data/skills.ts`.
 Portfolio project evidence is maintained manually in `src/data/projects.ts`.
+Project detail pages are static views over the same file at `/<locale>/projects/<slug>/`. They do not fetch at runtime, call GitHub, or add new proof claims.
 
 Rules for static data:
 
@@ -66,6 +71,7 @@ Skill and project records can include an `evidence` object:
 Allowed artifact kinds are `repo`, `demo`, `doc`, `case-study`, `workflow`, `benchmark`, and `note`.
 
 Project evidence records also include `highlights`, `tags`, `toolScopes`, and `updatedAt`. Keep project records specific and conservative: use `TBD` or a note artifact when public proof is missing.
+Project detail routes use `slug` as the stable route key and render project summaries, problem statements, approach notes, evidence artifacts, proof boundaries, and next steps from the static project record.
 
 ## Third-party reference-only content policy
 
@@ -130,7 +136,7 @@ npm run build
 python -m http.server 4179 --directory out
 ```
 
-Then open `http://127.0.0.1:4179/`, `http://127.0.0.1:4179/en/`, and one skill detail route such as `http://127.0.0.1:4179/en/skills/playwright/`.
+Then open `http://127.0.0.1:4179/`, `http://127.0.0.1:4179/en/`, one project detail route such as `http://127.0.0.1:4179/en/projects/insightcanvas-agent/`, and one skill detail route such as `http://127.0.0.1:4179/en/skills/playwright/`.
 
 ## CI gate
 

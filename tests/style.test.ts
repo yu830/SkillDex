@@ -56,6 +56,21 @@ test("skill detail page uses the same editorial type system as the home page", (
   assert.doesNotMatch(source, /bg-\[#fff9e8\]/);
 });
 
+test("project pages keep the same editorial evidence surface", () => {
+  const indexSource = readFileSync(join(root, "src/app/[locale]/projects/page.tsx"), "utf8");
+  const detailSource = readFileSync(join(root, "src/app/[locale]/projects/[slug]/page.tsx"), "utf8");
+
+  assert.match(indexSource, /editorial-shell/);
+  assert.match(indexSource, /Project evidence/);
+  assert.match(indexSource, /ProjectEvidenceCard/);
+  assert.match(detailSource, /editorial-shell/);
+  assert.match(detailSource, /Proof boundary/);
+  assert.match(detailSource, /No verified URL attached/);
+  assert.match(detailSource, /font-serif text-\[4\.25rem\]/);
+  assert.doesNotMatch(indexSource, /clamp\(|vw|rounded-3xl|shadow-\[/);
+  assert.doesNotMatch(detailSource, /clamp\(|vw|rounded-3xl|shadow-\[/);
+});
+
 test("shared action badges use rectangular Anthropic-style controls", () => {
   const statusSource = readFileSync(join(root, "src/components/StatusBadge.tsx"), "utf8");
   const copySource = readFileSync(join(root, "src/components/CopyButton.tsx"), "utf8");
@@ -104,6 +119,8 @@ test("project log records the ownership and tool-scope change", () => {
 test("catalog and policy pages share the same editorial shell", () => {
   const files = [
     "src/app/[locale]/skills/page.tsx",
+    "src/app/[locale]/projects/page.tsx",
+    "src/app/[locale]/projects/[slug]/page.tsx",
     "src/app/[locale]/skills/SkillsExplorer.tsx",
     "src/app/[locale]/about/page.tsx",
     "src/components/SearchBar.tsx",

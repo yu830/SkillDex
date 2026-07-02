@@ -44,10 +44,15 @@ Project records include:
 - `slug`
 - `name`
 - `summary`
+- `problem`
+- `approach`
 - `highlights`
+- `nextSteps`
 - `tags`
 - `toolScopes`
 - `evidence`
 - `updatedAt`
+
+`slug` is the stable ASCII route key for static project detail pages at `/<locale>/projects/<slug>/`. Each project route is generated at build time from `src/data/projects.ts`; there is no API route, database, runtime fetch, GitHub sync, or local folder scan.
 
 Missing public proof must remain visible as a `TBD` summary or a `note` artifact. Do not fill placeholder URLs.

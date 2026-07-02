@@ -25,6 +25,8 @@ Preferred evidence artifacts for third-party Skills:
 
 Project records should describe proof state honestly. If a project is planned or a local prototype, say so directly.
 
+Project detail pages may expand the record with problem, approach, evidence, proof-boundary, and next-step sections, but they must preserve the same proof status. A missing repository, demo, benchmark, or case study stays `TBD`, pending, or note-style evidence until a real public artifact is verified.
+
 Required project evidence records:
 
 - InsightCanvas Agent
