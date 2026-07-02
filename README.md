@@ -152,6 +152,14 @@ The workflow validation job runs:
 - `npm run build`
 - `npm run verify:static-output`
 
+Release readiness should use the same audit path as GitHub Actions: install with `npm ci`, then run `npm audit --audit-level=moderate` in the configured Node 22 environment. The current GitHub Actions runner has verified this path with Node 22 and npm 10.9.8. If a local npm 10.9.3 run reports `Invalid package tree` through npm's retiring quick audit endpoint, record it as a local npm/tooling issue and run the CI-parity audit command:
+
+```bash
+npx --yes npm@10.9.8 audit --audit-level=moderate
+```
+
+`npx npm@latest audit --audit-level=moderate` can be useful diagnostic evidence, but it should not replace the release gate unless the workflow is intentionally changed to use that npm CLI.
+
 The static output check verifies root, English, Chinese, list, about, and deep-link HTML files under `out/`, rejects static export error markers, and checks that generated asset/link URLs do not use the old `/SkillDex/` GitHub Pages base path.
 
 ## Cloudflare Pages deployment
