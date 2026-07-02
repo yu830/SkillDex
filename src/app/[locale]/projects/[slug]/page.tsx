@@ -3,9 +3,9 @@ import { notFound } from "next/navigation";
 
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { Tag } from "@/components/Tag";
-import { getProjectEvidenceBySlug, getProjectStaticParams } from "@/lib/projects";
-import { getLocalizedText, getToolScopeLabel, isLocale } from "@/lib/skills";
-import type { EvidenceArtifact, Locale, LocalizedText } from "@/types/skill";
+import { getProjectEvidenceBySlug, getProjectRelatedSkills, getProjectStaticParams } from "@/lib/projects";
+import { getCategoryLabel, getLocalizedText, getSkillPath, getSourceTypeLabel, getToolScopeLabel, isLocale } from "@/lib/skills";
+import type { EvidenceArtifact, Locale, LocalizedText, Skill } from "@/types/skill";
 
 type PageProps = {
   params: Promise<{ locale: string; slug: string }>;
@@ -24,6 +24,9 @@ const copy = {
     approach: "Approach",
     evidence: "Evidence artifacts",
     boundary: "Proof boundary",
+    relatedSkills: "Related skills",
+    relatedSkillsNote:
+      "Related skills are navigation and workflow-capability links. They do not replace evidence artifacts and should not be read as proof that a project is shipped.",
     nextSteps: "Next steps",
     tags: "Tags",
     status: "Status",
@@ -45,6 +48,9 @@ const copy = {
     approach: "\u65b9\u6cd5",
     evidence: "\u8bc1\u636e\u6761\u76ee",
     boundary: "\u8bc1\u636e\u8fb9\u754c",
+    relatedSkills: "\u76f8\u5173 Skills",
+    relatedSkillsNote:
+      "\u76f8\u5173 Skills \u4ec5\u8868\u793a\u5bfc\u822a\u548c\u5de5\u4f5c\u6d41\u80fd\u529b\u6620\u5c04\uff0c\u4e0d\u80fd\u66ff\u4ee3 evidence artifacts\uff0c\u4e5f\u4e0d\u4ee3\u8868\u9879\u76ee\u5df2\u4ea4\u4ed8\u3002",
     nextSteps: "\u4e0b\u4e00\u6b65",
     tags: "\u6807\u7b7e",
     status: "\u72b6\u6001",
@@ -81,6 +87,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
   const locale = rawLocale as Locale;
   const text = copy[locale];
   const toolLabels = project.toolScopes.map((scope) => getToolScopeLabel(scope, locale));
+  const relatedSkills = getProjectRelatedSkills(project);
 
   return (
     <main className="editorial-shell mx-auto flex w-full max-w-[1500px] flex-1 flex-col px-4 py-4 text-[var(--ink)] sm:px-6 sm:py-6 lg:px-8">
@@ -171,6 +178,18 @@ export default async function ProjectDetailPage({ params }: PageProps) {
         </section>
 
         <section className="grid border-b border-[var(--line)] lg:grid-cols-[minmax(220px,4fr)_minmax(0,8fr)]">
+          <SectionKicker title={text.relatedSkills} />
+          <div className="px-5 py-8 sm:px-8">
+            <p className="max-w-4xl text-sm leading-7 text-[var(--muted-ink)]">{text.relatedSkillsNote}</p>
+            <ul className="mt-6 grid gap-4">
+              {relatedSkills.map((skill) => (
+                <RelatedSkillItem key={skill.slug} skill={skill} locale={locale} />
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        <section className="grid border-b border-[var(--line)] lg:grid-cols-[minmax(220px,4fr)_minmax(0,8fr)]">
           <SectionKicker title={text.nextSteps} />
           <div className="px-5 py-8 sm:px-8">
             <ul className="grid gap-3 text-sm leading-6 text-[var(--muted-ink)]">
@@ -195,6 +214,30 @@ export default async function ProjectDetailPage({ params }: PageProps) {
         </footer>
       </div>
     </main>
+  );
+}
+
+type RelatedSkillItemProps = {
+  skill: Skill;
+  locale: Locale;
+};
+
+function RelatedSkillItem({ skill, locale }: RelatedSkillItemProps) {
+  return (
+    <li className="border-t border-[var(--line-soft)] pt-4">
+      <div className="flex flex-wrap gap-2">
+        <Tag>{skill.status}</Tag>
+        <Tag>{getCategoryLabel(skill.categoryId, locale)}</Tag>
+        <Tag>{getSourceTypeLabel(skill.sourceType, locale)}</Tag>
+      </div>
+      <Link
+        href={getSkillPath(locale, skill.slug)}
+        className="mt-4 inline-block font-serif text-2xl font-normal leading-snug tracking-normal text-[var(--ink)] underline decoration-[var(--line-soft)] underline-offset-4 hover:decoration-[var(--ink)]"
+      >
+        {skill.name}
+      </Link>
+      <p className="mt-3 max-w-3xl text-sm leading-6 text-[var(--muted-ink)]">{getLocalizedText(skill.summary, locale)}</p>
+    </li>
   );
 }
 

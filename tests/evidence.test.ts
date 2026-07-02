@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { getAllProjectEvidence, getProjectEvidenceBySlug, getProjectPath, getProjectStaticParams } from "#lib/projects";
-import { getAllSkills, getSkillBySlug, getSkillSearchText, getSkillsBySourceType, getSkillsByToolScope } from "#lib/skills";
+import { getAllProjectEvidence, getProjectEvidenceBySlug, getProjectPath, getProjectRelatedSkills, getProjectStaticParams } from "#lib/projects";
+import { getAllSkills, getSkillBySlug, getSkillPath, getSkillSearchText, getSkillsBySourceType, getSkillsByToolScope } from "#lib/skills";
 import { isEvidence } from "#lib/evidence";
 
 const requiredProjectNames = [
@@ -86,6 +86,30 @@ test("project TBD evidence stays unlinked until proof is verified", () => {
     assert.equal(artifact.href, undefined, `${project} ${artifact.label}`);
     assert.doesNotMatch(`${artifact.label} ${artifact.summary ?? ""}`, /https?:\/\//i, `${project} ${artifact.label}`);
   }
+});
+
+test("project related skill slugs are populated, valid, and diverse", () => {
+  const projects = getAllProjectEvidence();
+  const skillSlugs = new Set(getAllSkills().map((skill) => skill.slug));
+  const coveredSkillSlugs = new Set<string>();
+
+  for (const project of projects) {
+    assert.ok(project.relatedSkillSlugs.length >= 1, project.name);
+    assert.equal(new Set(project.relatedSkillSlugs).size, project.relatedSkillSlugs.length, project.name);
+
+    const relatedSkills = getProjectRelatedSkills(project);
+    assert.equal(relatedSkills.length, project.relatedSkillSlugs.length, project.name);
+
+    for (const slug of project.relatedSkillSlugs) {
+      assert.equal(skillSlugs.has(slug), true, `${project.name} references missing Skill ${slug}`);
+      assert.equal(getSkillBySlug(slug)?.slug, slug);
+      assert.equal(getSkillPath("en", slug), `/en/skills/${slug}`);
+      assert.equal(getSkillPath("zh", slug), `/zh/skills/${slug}`);
+      coveredSkillSlugs.add(slug);
+    }
+  }
+
+  assert.ok(coveredSkillSlugs.size >= 6, `expected at least 6 related Skills, found ${coveredSkillSlugs.size}`);
 });
 
 test("at least ten skills have structured evidence", () => {

@@ -50,9 +50,12 @@ Project records include:
 - `nextSteps`
 - `tags`
 - `toolScopes`
+- `relatedSkillSlugs`
 - `evidence`
 - `updatedAt`
 
 `slug` is the stable ASCII route key for static project detail pages at `/<locale>/projects/<slug>/`. Each project route is generated at build time from `src/data/projects.ts`; there is no API route, database, runtime fetch, GitHub sync, or local folder scan.
+
+`relatedSkillSlugs` maps a project to existing Skill records for navigation and capability context. Every slug must exist in `src/data/skills.ts`, every project should list at least one related Skill, and the relationship must not be treated as evidence proof.
 
 Missing public proof must remain visible as a `TBD` summary or a `note` artifact. Do not fill placeholder URLs.

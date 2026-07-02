@@ -68,6 +68,16 @@ test("project detail route statically generates locales and project slugs", () =
   assert.match(source, /getProjectEvidenceBySlug/);
 });
 
+test("project detail route renders related skills with locale-aware links", () => {
+  const source = readFileSync(join(root, "src/app/[locale]/projects/[slug]/page.tsx"), "utf8");
+
+  assert.match(source, /Related skills/);
+  assert.match(source, /Related skills are navigation and workflow-capability links/);
+  assert.match(source, /getProjectRelatedSkills/);
+  assert.match(source, /getSkillPath\(locale,\s*skill\.slug\)/);
+  assert.match(source, /getLocalizedText\(skill\.summary,\s*locale\)/);
+});
+
 test("project cards use locale-aware detail route links", () => {
   const source = readFileSync(join(root, "src/components/ProjectEvidenceCard.tsx"), "utf8");
 

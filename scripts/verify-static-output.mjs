@@ -41,6 +41,24 @@ const forbiddenChecks = [
   },
 ];
 
+const contentChecks = [
+  {
+    file: "out/en/projects/insightcanvas-agent/index.html",
+    label: "InsightCanvas related Skill links",
+    matches: (html) => html.includes("Related skills") && html.includes('href="/en/skills/frontend-design/"') && html.includes("not be read as proof"),
+  },
+  {
+    file: "out/zh/projects/insightcanvas-agent/index.html",
+    label: "InsightCanvas Chinese related Skill links",
+    matches: (html) => html.includes('href="/zh/skills/frontend-design/"') && html.includes('href="/zh/skills/vibe-coding-review/"'),
+  },
+  {
+    file: "out/en/projects/loopengineering/index.html",
+    label: "LoopEngineering related Skill links",
+    matches: (html) => html.includes("Related skills") && html.includes('href="/en/skills/vercel-deploy/"') && html.includes('href="/en/skills/playwright/"'),
+  },
+];
+
 const missing = requiredFiles.filter((file) => !existsSync(file));
 
 if (missing.length > 0) {
@@ -55,6 +73,13 @@ const foundMarkers = requiredFiles.flatMap((file) => {
 
 if (foundMarkers.length > 0) {
   console.error(`Unexpected static export markers: ${foundMarkers.join(", ")}`);
+  process.exit(1);
+}
+
+const missingContent = contentChecks.filter((check) => !check.matches(readFileSync(check.file, "utf8"))).map((check) => `${check.file}: ${check.label}`);
+
+if (missingContent.length > 0) {
+  console.error(`Missing static export content: ${missingContent.join(", ")}`);
   process.exit(1);
 }
 

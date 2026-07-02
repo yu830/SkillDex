@@ -27,6 +27,8 @@ Project records should describe proof state honestly. If a project is planned or
 
 Project detail pages may expand the record with problem, approach, evidence, proof-boundary, and next-step sections, but they must preserve the same proof status. A missing repository, demo, benchmark, or case study stays `TBD`, pending, or note-style evidence until a real public artifact is verified.
 
+Project detail pages may also list related Skills. Related Skills are navigation and capability mappings only; they do not replace evidence artifacts, prove that a project shipped, or justify adding unverified external links.
+
 Required project evidence records:
 
 - InsightCanvas Agent

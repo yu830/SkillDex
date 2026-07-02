@@ -65,6 +65,8 @@ test("project pages keep the same editorial evidence surface", () => {
   assert.match(indexSource, /ProjectEvidenceCard/);
   assert.match(detailSource, /editorial-shell/);
   assert.match(detailSource, /Proof boundary/);
+  assert.match(detailSource, /Related skills/);
+  assert.match(detailSource, /workflow-capability links/);
   assert.match(detailSource, /No verified URL attached/);
   assert.match(detailSource, /font-serif text-\[4\.25rem\]/);
   assert.doesNotMatch(indexSource, /clamp\(|vw|rounded-3xl|shadow-\[/);

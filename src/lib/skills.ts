@@ -43,6 +43,10 @@ export function getSkillBySlug(slug: string): Skill | undefined {
   return skills.find((skill) => skill.slug === slug);
 }
 
+export function getSkillPath(locale: Locale, slug: string) {
+  return `/${locale}/skills/${slug}`;
+}
+
 export function getSkillsByToolScope(scope: ToolScope): Skill[] {
   return skills.filter((skill) => skill.toolScopes.includes(scope));
 }

@@ -10,6 +10,7 @@ export interface ProjectEvidenceRecord {
   nextSteps: LocalizedText[];
   tags: string[];
   toolScopes: ToolScope[];
+  relatedSkillSlugs: string[];
   evidence: Evidence;
   updatedAt: string;
 }

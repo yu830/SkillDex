@@ -72,6 +72,7 @@ Allowed artifact kinds are `repo`, `demo`, `doc`, `case-study`, `workflow`, `ben
 
 Project evidence records also include `highlights`, `tags`, `toolScopes`, and `updatedAt`. Keep project records specific and conservative: use `TBD` or a note artifact when public proof is missing.
 Project detail routes use `slug` as the stable route key and render project summaries, problem statements, approach notes, evidence artifacts, proof boundaries, and next steps from the static project record.
+Project detail routes may also render `relatedSkillSlugs` as locale-aware links to existing Skill detail pages. These links are navigation and capability context only; they are not evidence proof.
 
 ## Third-party reference-only content policy
 

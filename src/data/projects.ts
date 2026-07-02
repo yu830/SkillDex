@@ -27,6 +27,7 @@ export const projectEvidence: ProjectEvidenceRecord[] = [
     ],
     tags: ["agent", "analysis-canvas", "portfolio"],
     toolScopes: ["codex"],
+    relatedSkillSlugs: ["frontend-design", "vibe-coding-review"],
     evidence: {
       status: "planned",
       lastVerified: VERIFIED_DATE,
@@ -62,6 +63,7 @@ export const projectEvidence: ProjectEvidenceRecord[] = [
     ],
     tags: ["mcp", "memory", "local-first"],
     toolScopes: ["codex"],
+    relatedSkillSlugs: ["mcp-builder"],
     evidence: {
       status: "prototype",
       lastVerified: VERIFIED_DATE,
@@ -96,6 +98,7 @@ export const projectEvidence: ProjectEvidenceRecord[] = [
     ],
     tags: ["rag", "repository-analysis", "code-search"],
     toolScopes: ["codex"],
+    relatedSkillSlugs: ["vibe-coding-review", "mcp-builder"],
     evidence: {
       status: "prototype",
       lastVerified: VERIFIED_DATE,
@@ -130,6 +133,7 @@ export const projectEvidence: ProjectEvidenceRecord[] = [
     ],
     tags: ["debugging", "replay", "qa"],
     toolScopes: ["codex"],
+    relatedSkillSlugs: ["gh-fix-ci", "playwright", "vibe-coding-review"],
     evidence: {
       status: "prototype",
       lastVerified: VERIFIED_DATE,
@@ -164,6 +168,7 @@ export const projectEvidence: ProjectEvidenceRecord[] = [
     ],
     tags: ["project-governance", "review-gate", "scope-control"],
     toolScopes: ["claude-code", "codex"],
+    relatedSkillSlugs: ["vibe-coding-review", "gh-address-comments", "gh-fix-ci", "skill-creator"],
     evidence: {
       status: "implemented",
       lastVerified: VERIFIED_DATE,
@@ -202,6 +207,7 @@ export const projectEvidence: ProjectEvidenceRecord[] = [
     ],
     tags: ["engineering-process", "verification", "delivery-loop"],
     toolScopes: ["codex"],
+    relatedSkillSlugs: ["vibe-coding-review", "gh-address-comments", "gh-fix-ci", "playwright", "vercel-deploy"],
     evidence: {
       status: "research",
       lastVerified: VERIFIED_DATE,
