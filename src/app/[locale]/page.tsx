@@ -2,7 +2,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { ProjectEvidenceCard } from "@/components/ProjectEvidenceCard";
 import { Tag } from "@/components/Tag";
+import { getAllProjectEvidence } from "@/lib/projects";
 import { getAllSkills, getCategories, getCategoryLabel, getLocalizedText, getToolScopeLabel, getToolScopes, isLocale } from "@/lib/skills";
 import type { Locale } from "@/types/skill";
 
@@ -23,6 +25,8 @@ const copy = {
     categories: "Categories",
     featured: "Featured skills",
     featuredTitle: "Reusable workflows, shown as a browsable index.",
+    projects: "Project evidence",
+    projectsTitle: "Portfolio work is marked by proof state, not claims.",
     archiveLabel: "Reference-only SkillDex archive",
     archiveSummary: "Source-grounded summaries, compatibility notes, licenses, and safe prompt starters",
     boundaryLabel: "Boundary",
@@ -40,6 +44,8 @@ const copy = {
     categories: "\u5206\u7c7b",
     featured: "\u7cbe\u9009 Skills",
     featuredTitle: "\u53ef\u590d\u7528\u5de5\u4f5c\u6d41\uff0c\u4ee5\u7d22\u5f15\u5f62\u5f0f\u5448\u73b0\u3002",
+    projects: "\u9879\u76ee\u8bc1\u636e",
+    projectsTitle: "\u4f5c\u54c1\u9879\u76ee\u6309\u8bc1\u636e\u72b6\u6001\u5448\u73b0\uff0c\u800c\u4e0d\u662f\u6309\u5ba3\u4f20\u53e3\u5f84\u5448\u73b0\u3002",
     archiveLabel: "\u4ec5\u4f9b\u53c2\u8003\u7684 SkillDex \u6863\u6848",
     archiveSummary: "\u57fa\u4e8e\u6765\u6e90\u7684\u6458\u8981\u3001\u517c\u5bb9\u6027\u8bf4\u660e\u3001\u8bb8\u53ef\u8bc1\u548c\u5b89\u5168\u63d0\u793a\u8bcd",
     boundaryLabel: "\u8fb9\u754c",
@@ -54,6 +60,7 @@ export default async function LocaleHomePage({ params }: PageProps) {
   const locale = rawLocale as Locale;
   const text = copy[locale];
   const skills = getAllSkills();
+  const projects = getAllProjectEvidence();
   const categories = getCategories();
   const toolScopes = getToolScopes();
 
@@ -149,6 +156,23 @@ export default async function LocaleHomePage({ params }: PageProps) {
                 {index + 1}
               </span>
             </Link>
+          ))}
+        </section>
+
+        <section className="grid border-b border-[var(--line)] lg:grid-cols-[minmax(220px,4fr)_minmax(0,8fr)]">
+          <div className="border-b border-[var(--line)] px-5 py-7 sm:px-8 lg:border-b-0 lg:border-r">
+            <p className="font-mono text-xs font-medium uppercase tracking-[0.1em] text-[var(--muted-ink)]">{text.projects}</p>
+          </div>
+          <div className="px-5 py-7 sm:px-8">
+            <h2 className="max-w-3xl font-serif text-[2.75rem] font-normal leading-[1] tracking-[-0.045em] text-[var(--ink)] sm:text-[3.75rem] sm:leading-[0.98] lg:text-[4.5rem]">
+              {text.projectsTitle}
+            </h2>
+          </div>
+        </section>
+
+        <section aria-label={text.projects} className="grid md:grid-cols-2 xl:grid-cols-3">
+          {projects.map((project) => (
+            <ProjectEvidenceCard key={project.slug} project={project} locale={locale} />
           ))}
         </section>
 

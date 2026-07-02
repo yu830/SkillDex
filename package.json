@@ -15,8 +15,12 @@
     "node": ">=22.6.0"
   },
   "imports": {
+    "#data/projects": "./src/data/projects.ts",
     "#data/skills": "./src/data/skills.ts",
+    "#lib/evidence": "./src/lib/evidence.ts",
+    "#lib/projects": "./src/lib/projects.ts",
     "#lib/skills": "./src/lib/skills.ts",
+    "#types/project": "./src/types/project.ts",
     "#types/skill": "./src/types/skill.ts"
   },
   "dependencies": {

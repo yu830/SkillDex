@@ -3,6 +3,8 @@ export type ToolScope = "claude-code" | "codex";
 export type SkillStatus = "active" | "draft" | "experimental" | "archived";
 export type Visibility = "public" | "reference-only" | "private";
 export type SourceType = "own" | "third-party";
+export type EvidenceStatus = "implemented" | "prototype" | "planned" | "research";
+export type EvidenceArtifactKind = "repo" | "demo" | "doc" | "case-study" | "workflow" | "benchmark" | "note";
 
 export type SkillCategoryId =
   | "coding"
@@ -49,6 +51,19 @@ export interface ExamplePrompt {
   prompt: LocalizedText;
 }
 
+export interface EvidenceArtifact {
+  label: string;
+  kind: EvidenceArtifactKind;
+  href?: string;
+  summary?: string;
+}
+
+export interface Evidence {
+  status: EvidenceStatus;
+  artifacts?: EvidenceArtifact[];
+  lastVerified?: string;
+}
+
 export interface Skill {
   slug: string;
   name: string;
@@ -69,6 +84,7 @@ export interface Skill {
   examplePrompts: ExamplePrompt[];
   install: SkillInstall;
   compatibility: SkillCompatibility;
+  evidence?: Evidence;
   indexedAt: string;
   lastReviewedAt: string;
 }

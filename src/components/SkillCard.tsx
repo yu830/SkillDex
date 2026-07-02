@@ -33,6 +33,15 @@ export function SkillCard({ skill, locale }: SkillCardProps) {
           <Tag key={tag}>{tag}</Tag>
         ))}
       </div>
+      {skill.evidence ? (
+        <div className="border-t border-[var(--line-soft)] pt-4 text-sm leading-6 text-[var(--muted-ink)]">
+          <p className="font-mono text-xs font-medium uppercase tracking-[0.1em] text-[var(--muted-ink)]">Evidence</p>
+          <p className="mt-2">
+            <span className="font-medium text-[var(--ink)]">{skill.evidence.status}</span>
+            {skill.evidence.artifacts?.[0]?.summary ? ` - ${skill.evidence.artifacts[0].summary}` : null}
+          </p>
+        </div>
+      ) : null}
       <div className="mt-auto flex items-center justify-between gap-3 border-t border-[var(--line-soft)] pt-4 text-sm">
         <span className="font-mono text-xs text-[var(--muted-ink)]">{skill.source.license}</span>
         <Link className="font-medium text-[var(--ink)] underline decoration-[var(--line-soft)] underline-offset-4 hover:decoration-[var(--ink)]" href={`/${locale}/skills/${skill.slug}`}>

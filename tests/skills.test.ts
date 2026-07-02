@@ -24,16 +24,21 @@ const expectedSlugs = [
   "vibe-coding-review",
   "guizang-ppt-skill",
   "frontend-design",
+  "skill-creator",
+  "claude-api",
+  "mcp-builder",
+  "gh-fix-ci",
+  "gh-address-comments",
 ];
 
-test("catalog contains exactly the five approved skills", () => {
+test("catalog contains the approved evidence-ready skills", () => {
   const skills = getAllSkills();
 
   assert.deepEqual(
     skills.map((skill) => skill.slug),
     expectedSlugs,
   );
-  assert.equal(skills.length, 5);
+  assert.equal(skills.length, 10);
   assert.equal(getSkillBySlug("vibe-coding-review")?.sourceType, "own");
   assert.equal(getSkillBySlug("guizang-ppt-skill")?.sourceType, "third-party");
   assert.ok(skills.every((skill) => Array.isArray(skill.toolScopes)));
@@ -55,11 +60,11 @@ test("helpers return skills by slug and multi-tool scope", () => {
   assert.equal(getSkillBySlug("missing-skill"), undefined);
   assert.deepEqual(
     getSkillsByToolScope("claude-code").map((skill) => skill.slug).sort(),
-    ["frontend-design", "guizang-ppt-skill", "vibe-coding-review"],
+    ["claude-api", "frontend-design", "guizang-ppt-skill", "mcp-builder", "skill-creator", "vibe-coding-review"],
   );
   assert.deepEqual(
     getSkillsByToolScope("codex").map((skill) => skill.slug).sort(),
-    ["frontend-design", "guizang-ppt-skill", "playwright", "vercel-deploy", "vibe-coding-review"],
+    ["frontend-design", "gh-address-comments", "gh-fix-ci", "guizang-ppt-skill", "playwright", "vercel-deploy", "vibe-coding-review"],
   );
 });
 
@@ -77,7 +82,7 @@ test("ownership helpers expose stable labels and grouping", () => {
   assert.deepEqual(getSkillsBySourceType("own").map((skill) => skill.slug), ["vibe-coding-review"]);
   assert.deepEqual(
     getSkillsBySourceType("third-party").map((skill) => skill.slug),
-    ["vercel-deploy", "playwright", "guizang-ppt-skill", "frontend-design"],
+    ["vercel-deploy", "playwright", "guizang-ppt-skill", "frontend-design", "skill-creator", "claude-api", "mcp-builder", "gh-fix-ci", "gh-address-comments"],
   );
 });
 
@@ -122,5 +127,6 @@ test("install and compatibility data are structured", () => {
     assert.ok(skill.compatibility.requirements.length > 0);
     assert.match(skill.indexedAt, /^\d{4}-\d{2}-\d{2}$/);
     assert.match(skill.lastReviewedAt, /^\d{4}-\d{2}-\d{2}$/);
+    assert.ok(skill.evidence);
   }
 });

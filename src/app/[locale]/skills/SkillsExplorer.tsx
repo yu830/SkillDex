@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import { SearchBar } from "@/components/SearchBar";
 import { SkillCard } from "@/components/SkillCard";
 import { SkillFilter } from "@/components/SkillFilter";
-import { getCategoryLabel, getLocalizedText, getSourceTypeLabel, getToolScopeLabel } from "@/lib/skills";
+import { getCategoryLabel, getSkillSearchText } from "@/lib/skills";
 import type { Locale, Skill, SkillCategoryId, SkillStatus, SourceType, ToolScope } from "@/types/skill";
 
 type SkillsExplorerProps = {
@@ -47,21 +47,7 @@ export function SkillsExplorer({ locale, skills, categories, tags }: SkillsExplo
       if (tag !== "all" && !skill.tags.includes(tag)) return false;
       if (!normalizedQuery) return true;
 
-      const searchableText = [
-        skill.name,
-        getLocalizedText(skill.summary, locale),
-        getLocalizedText(skill.description, locale),
-        getCategoryLabel(skill.categoryId, locale),
-        ...skill.toolScopes,
-        ...skill.toolScopes.map((scope) => getToolScopeLabel(scope, locale)),
-        skill.sourceType,
-        getSourceTypeLabel(skill.sourceType, locale),
-        skill.source.author,
-        skill.source.license,
-        ...skill.tags,
-      ]
-        .join(" ")
-        .toLowerCase();
+      const searchableText = getSkillSearchText(skill, locale);
 
       return searchableText.includes(normalizedQuery);
     });

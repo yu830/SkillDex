@@ -63,6 +63,28 @@ export function getTags(): string[] {
   return Array.from(new Set(skills.flatMap((skill) => skill.tags))).sort();
 }
 
+export function getSkillSearchText(skill: Skill, locale: Locale): string {
+  return [
+    skill.name,
+    getLocalizedText(skill.summary, locale),
+    getLocalizedText(skill.description, locale),
+    getCategoryLabel(skill.categoryId, locale),
+    ...skill.toolScopes,
+    ...skill.toolScopes.map((scope) => getToolScopeLabel(scope, locale)),
+    skill.sourceType,
+    getSourceTypeLabel(skill.sourceType, locale),
+    skill.source.author,
+    skill.source.license,
+    ...skill.tags,
+    skill.evidence?.status,
+    skill.evidence?.lastVerified,
+    ...(skill.evidence?.artifacts ?? []).flatMap((artifact) => [artifact.label, artifact.kind, artifact.summary, artifact.href]),
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+}
+
 export function getCategoryLabel(categoryId: SkillCategoryId, locale: Locale): string {
   return getLocalizedText(CATEGORY_LABELS[categoryId], locale);
 }

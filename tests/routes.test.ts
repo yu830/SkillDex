@@ -15,6 +15,7 @@ const requiredFiles = [
   "src/app/[locale]/skills/[slug]/page.tsx",
   "src/components/CopyButton.tsx",
   "src/components/LanguageSwitcher.tsx",
+  "src/components/ProjectEvidenceCard.tsx",
   "src/components/SearchBar.tsx",
   "src/components/SkillCard.tsx",
   "src/components/SkillFilter.tsx",

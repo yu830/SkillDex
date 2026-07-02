@@ -25,6 +25,7 @@ const sectionTitles = {
     prompts: "Safe example prompts",
     install: "Installation / usage",
     compatibility: "Compatibility",
+    evidence: "Evidence summary",
     source: "Source metadata",
     back: "Back to skills",
     copyPrompt: "Copy prompt",
@@ -46,6 +47,7 @@ const sectionTitles = {
     prompts: "\u5b89\u5168\u793a\u4f8b\u63d0\u793a\u8bcd",
     install: "\u5b89\u88c5 / \u4f7f\u7528",
     compatibility: "\u517c\u5bb9\u6027",
+    evidence: "\u8bc1\u636e\u6458\u8981",
     source: "\u6765\u6e90\u5143\u6570\u636e",
     back: "\u8fd4\u56de Skills",
     copyPrompt: "\u590d\u5236\u63d0\u793a\u8bcd",
@@ -166,6 +168,35 @@ export default async function SkillDetailPage({ params }: PageProps) {
             </div>
           </section>
         </section>
+
+        {skill.evidence ? (
+          <section className="grid border-b border-[var(--line)] lg:grid-cols-[minmax(220px,4fr)_minmax(0,8fr)]">
+            <SectionKicker title={text.evidence} />
+            <div className="px-5 py-8 sm:px-8">
+              <div className="flex flex-wrap gap-2">
+                <Tag>{skill.evidence.status}</Tag>
+                {skill.evidence.lastVerified ? <Tag>Verified {skill.evidence.lastVerified}</Tag> : null}
+              </div>
+              <ul className="mt-6 grid gap-4 text-sm leading-6 text-[var(--muted-ink)]">
+                {(skill.evidence.artifacts ?? []).map((artifact) => (
+                  <li key={`${artifact.kind}-${artifact.label}`} className="border-t border-[var(--line-soft)] pt-4">
+                    <p className="font-medium text-[var(--ink)]">
+                      {artifact.href ? (
+                        <a className="underline decoration-[var(--line-soft)] underline-offset-4 hover:decoration-[var(--ink)]" href={artifact.href} target={artifact.href.startsWith("/") ? undefined : "_blank"} rel={artifact.href.startsWith("/") ? undefined : "noreferrer"}>
+                          {artifact.label}
+                        </a>
+                      ) : (
+                        artifact.label
+                      )}
+                      <span className="ml-2 font-mono text-xs uppercase tracking-[0.1em] text-[var(--muted-ink)]">{artifact.kind}</span>
+                    </p>
+                    {artifact.summary ? <p className="mt-2">{artifact.summary}</p> : null}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        ) : null}
 
         <section className="grid border-b border-[var(--line)] lg:grid-cols-[minmax(220px,4fr)_minmax(0,8fr)]">
           <SectionKicker title={text.prompts} />

@@ -30,6 +30,8 @@ test("home page uses editorial grid rows instead of rounded feature cards", () =
   assert.match(source, /editorial-shell/);
   assert.match(source, /font-serif text-2xl font-normal/);
   assert.match(source, /Featured skills/);
+  assert.match(source, /Project evidence/);
+  assert.match(source, /getAllProjectEvidence/);
   assert.match(source, /No online execution/);
   assert.match(source, /leading-\[1\.02\]/);
   assert.doesNotMatch(source, /clamp\(/);
@@ -45,6 +47,7 @@ test("skill detail page uses the same editorial type system as the home page", (
   assert.match(source, /editorial-shell/);
   assert.match(source, /font-serif text-2xl font-normal/);
   assert.match(source, /font-serif text-\[4\.25rem\]/);
+  assert.match(source, /Evidence summary/);
   assert.match(source, /leading-\[1\.02\]/);
   assert.doesNotMatch(source, /clamp\(/);
   assert.doesNotMatch(source, /vw/);
@@ -75,7 +78,7 @@ test("skill explorer exposes ownership filtering", () => {
   assert.match(explorerSource, /skill\.sourceType !== sourceType/);
   assert.match(explorerSource, /sourceType=\{sourceType\}/);
   assert.match(explorerSource, /onSourceTypeChange=\{setSourceType\}/);
-  assert.match(explorerSource, /getSourceTypeLabel\(skill\.sourceType, locale\)/);
+  assert.match(explorerSource, /getSkillSearchText\(skill, locale\)/);
   assert.match(filterSource, /sourceType: SourceType \| "all"/);
   assert.match(filterSource, /onSourceTypeChange/);
   assert.match(filterSource, /const sourceTypes/);
@@ -106,6 +109,7 @@ test("catalog and policy pages share the same editorial shell", () => {
     "src/components/SearchBar.tsx",
     "src/components/SkillFilter.tsx",
     "src/components/SkillCard.tsx",
+    "src/components/ProjectEvidenceCard.tsx",
   ];
 
   for (const file of files) {

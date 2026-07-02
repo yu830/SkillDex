@@ -1,6 +1,7 @@
 import type { Skill } from "#types/skill";
 
 const REVIEW_DATE = "2026-05-21";
+const EVIDENCE_DATE = "2026-07-02";
 
 export const skills: Skill[] = [
   {
@@ -85,6 +86,18 @@ export const skills: Skill[] = [
         { en: "Deployment actions depend on local Vercel authentication and network access.", zh: "部署操作取决于本地 Vercel 认证和网络访问。" },
       ],
       notes: { en: "SkillDex links to the source only; it does not deploy anything.", zh: "SkillDex 仅链接到来源，不执行任何部署。" },
+    },
+    evidence: {
+      status: "implemented",
+      lastVerified: EVIDENCE_DATE,
+      artifacts: [
+        {
+          label: "Source directory",
+          kind: "repo",
+          href: "https://github.com/openai/skills/tree/main/skills/.curated/vercel-deploy",
+          summary: "Public source directory and license metadata are represented as reference-only catalog evidence.",
+        },
+      ],
     },
     indexedAt: REVIEW_DATE,
     lastReviewedAt: REVIEW_DATE,
@@ -172,6 +185,18 @@ export const skills: Skill[] = [
       ],
       notes: { en: "SkillDex provides prompts and source links only, not browser execution.", zh: "SkillDex 仅提供提示词和来源链接，不执行浏览器操作。" },
     },
+    evidence: {
+      status: "implemented",
+      lastVerified: EVIDENCE_DATE,
+      artifacts: [
+        {
+          label: "Source directory",
+          kind: "repo",
+          href: "https://github.com/openai/skills/tree/main/skills/.curated/playwright",
+          summary: "Public source directory and license metadata are represented as reference-only catalog evidence.",
+        },
+      ],
+    },
     indexedAt: REVIEW_DATE,
     lastReviewedAt: REVIEW_DATE,
   },
@@ -257,6 +282,18 @@ export const skills: Skill[] = [
         { en: "Requires explicit user approval before changing scope or moving phases.", zh: "变更范围或切换阶段前需要明确用户批准。" },
       ],
       notes: { en: "SkillDex catalogs the workflow only; it does not enforce project governance automatically.", zh: "SkillDex 只编目该工作流，不会自动执行项目治理。" },
+    },
+    evidence: {
+      status: "implemented",
+      lastVerified: EVIDENCE_DATE,
+      artifacts: [
+        {
+          label: "Owned catalog record",
+          kind: "doc",
+          href: "/en/skills/vibe-coding-review/",
+          summary: "The owned workflow is represented in SkillDex with source, scope, and review-gate metadata.",
+        },
+      ],
     },
     indexedAt: REVIEW_DATE,
     lastReviewedAt: REVIEW_DATE,
@@ -345,6 +382,18 @@ export const skills: Skill[] = [
       ],
       notes: { en: "SkillDex links to the source only; it does not reproduce the full Skill or generate decks online.", zh: "SkillDex 只链接到来源，不复制完整 Skill，也不在线生成 deck。" },
     },
+    evidence: {
+      status: "implemented",
+      lastVerified: EVIDENCE_DATE,
+      artifacts: [
+        {
+          label: "Source repository",
+          kind: "repo",
+          href: "https://github.com/op7418/guizang-ppt-skill",
+          summary: "Public source repository is linked as reference-only evidence; SkillDex does not copy the full Skill.",
+        },
+      ],
+    },
     indexedAt: REVIEW_DATE,
     lastReviewedAt: REVIEW_DATE,
   },
@@ -431,7 +480,489 @@ export const skills: Skill[] = [
       ],
       notes: { en: "SkillDex links to the Skill source and does not reproduce its full text.", zh: "SkillDex 链接到 Skill 来源，不复制其全文。" },
     },
+    evidence: {
+      status: "implemented",
+      lastVerified: EVIDENCE_DATE,
+      artifacts: [
+        {
+          label: "Source directory",
+          kind: "repo",
+          href: "https://github.com/anthropics/skills/tree/main/skills/frontend-design",
+          summary: "Public source directory and license metadata are represented as reference-only catalog evidence.",
+        },
+      ],
+    },
     indexedAt: REVIEW_DATE,
     lastReviewedAt: REVIEW_DATE,
+  },
+  {
+    slug: "skill-creator",
+    name: "Skill Creator",
+    summary: {
+      en: "A Claude Skill for creating, improving, and evaluating Skills with explicit trigger descriptions and test prompts.",
+    },
+    description: {
+      en: "Use this reference when a user wants to design a new Skill, revise an existing Skill, or evaluate whether a Skill triggers and performs as intended.",
+    },
+    capabilities: [
+      { en: "Guides intent capture before drafting a Skill." },
+      { en: "Describes Skill structure, metadata, bundled resources, and progressive disclosure." },
+      { en: "Supports qualitative and quantitative evaluation loops for Skill revisions." },
+    ],
+    toolScopes: ["claude-code"],
+    categoryId: "project-management",
+    status: "active",
+    visibility: "reference-only",
+    sourceType: "third-party",
+    source: {
+      author: "anthropics",
+      repoUrl: "https://github.com/anthropics/skills",
+      directoryUrl: "https://github.com/anthropics/skills/tree/main/skills/skill-creator",
+      license: "Apache-2.0",
+      licenseUrl: "https://raw.githubusercontent.com/anthropics/skills/main/skills/skill-creator/LICENSE.txt",
+    },
+    tags: ["skills", "evaluation", "prompting", "claude-code"],
+    useCases: [
+      { en: "Drafting a new Skill from an observed workflow." },
+      { en: "Improving an existing Skill after test runs or user review." },
+      { en: "Creating trigger-focused evaluation prompts." },
+    ],
+    antiUseCases: [
+      { en: "Creating misleading or unsafe Skills." },
+      { en: "Copying private workflow details into a public Skill without review." },
+      { en: "Treating subjective feedback as a substitute for explicit test cases." },
+    ],
+    inputs: [
+      { en: "Skill intent, trigger conditions, expected outputs, and example tasks." },
+      { en: "Existing Skill draft or workflow notes when available." },
+      { en: "Evaluation criteria or user feedback from previous runs." },
+    ],
+    outputs: [
+      { en: "Draft or revised Skill instructions." },
+      { en: "Test prompts and evaluation notes." },
+      { en: "Recommendations for trigger description improvements." },
+    ],
+    examplePrompts: [
+      {
+        title: { en: "Draft a Skill" },
+        prompt: {
+          en: "Use the Skill Creator reference to turn this repeated workflow into a Skill draft with clear trigger conditions and two test prompts.",
+        },
+      },
+      {
+        title: { en: "Improve a Skill" },
+        prompt: {
+          en: "Use the Skill Creator reference to review this Skill description and propose a tighter evaluation plan.",
+        },
+      },
+    ],
+    install: {
+      type: "reference",
+      label: { en: "Reference the upstream public Skill directory." },
+      steps: [
+        { en: "Open the GitHub source directory for the Skill." },
+        { en: "Review the current upstream instructions before using this as a Skill-writing reference." },
+      ],
+      copyableText: "https://github.com/anthropics/skills/tree/main/skills/skill-creator",
+    },
+    compatibility: {
+      tools: ["claude-code"],
+      environments: ["Claude Code or compatible Skill runtime", "Skill authoring workspace"],
+      requirements: [
+        { en: "Requires a concrete workflow or Skill draft to evaluate." },
+        { en: "Skill evaluation quality depends on realistic test prompts and user review." },
+      ],
+      notes: { en: "SkillDex links to the source only; it does not run Skill evaluations." },
+    },
+    evidence: {
+      status: "implemented",
+      lastVerified: EVIDENCE_DATE,
+      artifacts: [
+        {
+          label: "Source directory",
+          kind: "repo",
+          href: "https://github.com/anthropics/skills/tree/main/skills/skill-creator",
+          summary: "Public source directory and Apache-2.0 license file were checked for this catalog entry.",
+        },
+      ],
+    },
+    indexedAt: EVIDENCE_DATE,
+    lastReviewedAt: EVIDENCE_DATE,
+  },
+  {
+    slug: "claude-api",
+    name: "Claude API",
+    summary: {
+      en: "A Claude Skill for building or reviewing Claude API and Anthropic SDK integrations with current model, streaming, tool, and migration guidance.",
+    },
+    description: {
+      en: "Use this reference when a task involves Claude or Anthropic API implementation details and needs provider-specific SDK verification instead of memory-based guesses.",
+    },
+    capabilities: [
+      { en: "Routes implementation work to language-specific Claude API guidance." },
+      { en: "Calls out API drift around models, streaming, tool use, and parameter shapes." },
+      { en: "Frames provider-boundary checks before editing code." },
+    ],
+    toolScopes: ["claude-code"],
+    categoryId: "coding",
+    status: "active",
+    visibility: "reference-only",
+    sourceType: "third-party",
+    source: {
+      author: "anthropics",
+      repoUrl: "https://github.com/anthropics/skills",
+      directoryUrl: "https://github.com/anthropics/skills/tree/main/skills/claude-api",
+      license: "Apache-2.0",
+      licenseUrl: "https://raw.githubusercontent.com/anthropics/skills/main/skills/claude-api/LICENSE.txt",
+    },
+    tags: ["claude-api", "anthropic-sdk", "llm", "tools", "streaming"],
+    useCases: [
+      { en: "Checking Claude SDK usage before writing integration code." },
+      { en: "Reviewing model or parameter migration work." },
+      { en: "Separating Anthropic-specific implementation from other providers." },
+    ],
+    antiUseCases: [
+      { en: "OpenAI, Gemini, or provider-neutral API implementation work." },
+      { en: "Answering current API questions without checking the source." },
+      { en: "Storing API keys or credentials in SkillDex." },
+    ],
+    inputs: [
+      { en: "Target language, existing API code, or intended Claude feature." },
+      { en: "Provider boundary information from the repository or user request." },
+      { en: "Relevant SDK or raw HTTP constraint." },
+    ],
+    outputs: [
+      { en: "Provider-specific implementation guidance." },
+      { en: "Migration or compatibility notes." },
+      { en: "Verification steps for the target language." },
+    ],
+    examplePrompts: [
+      {
+        title: { en: "Review API usage" },
+        prompt: {
+          en: "Use the Claude API reference to check this TypeScript integration for current Anthropic SDK patterns before editing it.",
+        },
+      },
+      {
+        title: { en: "Plan a migration" },
+        prompt: {
+          en: "Use the Claude API reference to identify migration risks before moving this project to a newer Claude model.",
+        },
+      },
+    ],
+    install: {
+      type: "reference",
+      label: { en: "Reference the upstream public Skill directory." },
+      steps: [
+        { en: "Open the GitHub source directory for the Skill." },
+        { en: "Review the provider-boundary and language-detection rules before applying the guidance." },
+      ],
+      copyableText: "https://github.com/anthropics/skills/tree/main/skills/claude-api",
+    },
+    compatibility: {
+      tools: ["claude-code"],
+      environments: ["Claude Code or compatible Skill runtime", "Claude API or Anthropic SDK project"],
+      requirements: [
+        { en: "Requires a Claude/Anthropic API task, not another provider's SDK." },
+        { en: "Implementation details should be verified against current official documentation." },
+      ],
+      notes: { en: "SkillDex catalogs the reference and does not make API calls." },
+    },
+    evidence: {
+      status: "implemented",
+      lastVerified: EVIDENCE_DATE,
+      artifacts: [
+        {
+          label: "Source directory",
+          kind: "repo",
+          href: "https://github.com/anthropics/skills/tree/main/skills/claude-api",
+          summary: "Public source directory and Apache-2.0 license file were checked for this catalog entry.",
+        },
+      ],
+    },
+    indexedAt: EVIDENCE_DATE,
+    lastReviewedAt: EVIDENCE_DATE,
+  },
+  {
+    slug: "mcp-builder",
+    name: "MCP Builder",
+    summary: {
+      en: "A Claude Skill for designing and implementing MCP servers with clear tool names, schemas, transports, and evaluation coverage.",
+    },
+    description: {
+      en: "Use this reference when building an MCP server and deciding how to map an external API or service into useful tools for LLM clients.",
+    },
+    capabilities: [
+      { en: "Frames MCP server planning around API coverage, workflow tools, and context management." },
+      { en: "Covers TypeScript and Python implementation paths." },
+      { en: "Includes review, test, and evaluation expectations for MCP quality." },
+    ],
+    toolScopes: ["claude-code"],
+    categoryId: "coding",
+    status: "active",
+    visibility: "reference-only",
+    sourceType: "third-party",
+    source: {
+      author: "anthropics",
+      repoUrl: "https://github.com/anthropics/skills",
+      directoryUrl: "https://github.com/anthropics/skills/tree/main/skills/mcp-builder",
+      license: "Apache-2.0",
+      licenseUrl: "https://raw.githubusercontent.com/anthropics/skills/main/skills/mcp-builder/LICENSE.txt",
+    },
+    tags: ["mcp", "tools", "typescript", "python", "evaluation"],
+    useCases: [
+      { en: "Planning MCP tools for an external API." },
+      { en: "Implementing typed MCP server infrastructure." },
+      { en: "Creating evaluations for realistic MCP tasks." },
+    ],
+    antiUseCases: [
+      { en: "Adding broad API wrappers without task-oriented tool descriptions." },
+      { en: "Skipping authentication, transport, or pagination design." },
+      { en: "Claiming an MCP server works without inspector or build verification." },
+    ],
+    inputs: [
+      { en: "External API documentation, target language, and transport constraints." },
+      { en: "Candidate tool names, input schemas, and expected outputs." },
+      { en: "Evaluation questions or representative user tasks." },
+    ],
+    outputs: [
+      { en: "MCP server design and implementation plan." },
+      { en: "Tool schema and response-format guidance." },
+      { en: "Testing and evaluation checklist." },
+    ],
+    examplePrompts: [
+      {
+        title: { en: "Plan an MCP server" },
+        prompt: {
+          en: "Use the MCP Builder reference to plan a TypeScript MCP server for this external service before implementation.",
+        },
+      },
+      {
+        title: { en: "Review tools" },
+        prompt: {
+          en: "Use the MCP Builder reference to review whether these tool names, schemas, and outputs are agent-friendly.",
+        },
+      },
+    ],
+    install: {
+      type: "reference",
+      label: { en: "Reference the upstream public Skill directory." },
+      steps: [
+        { en: "Open the GitHub source directory for the Skill." },
+        { en: "Review the MCP planning, implementation, and evaluation sections before building a server." },
+      ],
+      copyableText: "https://github.com/anthropics/skills/tree/main/skills/mcp-builder",
+    },
+    compatibility: {
+      tools: ["claude-code"],
+      environments: ["Claude Code or compatible Skill runtime", "TypeScript or Python MCP server workspace"],
+      requirements: [
+        { en: "Requires a concrete service/API target and an MCP client context." },
+        { en: "Testing depends on local build tools and MCP Inspector or equivalent verification." },
+      ],
+      notes: { en: "SkillDex catalogs the reference and does not run MCP servers." },
+    },
+    evidence: {
+      status: "implemented",
+      lastVerified: EVIDENCE_DATE,
+      artifacts: [
+        {
+          label: "Source directory",
+          kind: "repo",
+          href: "https://github.com/anthropics/skills/tree/main/skills/mcp-builder",
+          summary: "Public source directory and Apache-2.0 license file were checked for this catalog entry.",
+        },
+      ],
+    },
+    indexedAt: EVIDENCE_DATE,
+    lastReviewedAt: EVIDENCE_DATE,
+  },
+  {
+    slug: "gh-fix-ci",
+    name: "GH Fix CI",
+    summary: {
+      en: "A Codex Skill for investigating failing GitHub Actions checks, reading logs with gh, and preparing a bounded fix plan.",
+    },
+    description: {
+      en: "Use this reference when a current branch or pull request has failing GitHub Actions checks and the next step is diagnosis before implementation.",
+    },
+    capabilities: [
+      { en: "Uses gh to locate PR checks and workflow runs." },
+      { en: "Extracts actionable GitHub Actions log snippets." },
+      { en: "Separates external CI providers from GitHub Actions scope." },
+    ],
+    toolScopes: ["codex"],
+    categoryId: "devops-deployment",
+    status: "active",
+    visibility: "reference-only",
+    sourceType: "third-party",
+    source: {
+      author: "openai",
+      repoUrl: "https://github.com/openai/skills",
+      directoryUrl: "https://github.com/openai/skills/tree/main/skills/.curated/gh-fix-ci",
+      license: "Apache-2.0",
+      licenseUrl: "https://raw.githubusercontent.com/openai/skills/main/skills/.curated/gh-fix-ci/LICENSE.txt",
+    },
+    tags: ["github-actions", "ci", "gh", "debugging", "codex"],
+    useCases: [
+      { en: "Diagnosing a failing GitHub Actions run on a PR." },
+      { en: "Summarizing log context before proposing a fix." },
+      { en: "Rechecking CI status after a targeted patch." },
+    ],
+    antiUseCases: [
+      { en: "Debugging non-GitHub CI systems as if they were Actions." },
+      { en: "Implementing a fix before the failure context is known." },
+      { en: "Assuming gh authentication or workflow scopes are already available." },
+    ],
+    inputs: [
+      { en: "Repository path and optional PR number or URL." },
+      { en: "GitHub CLI authentication state." },
+      { en: "Relevant failing check or workflow run context." },
+    ],
+    outputs: [
+      { en: "Failing check summary with run URL when available." },
+      { en: "Relevant log excerpt and failure classification." },
+      { en: "Fix plan and verification recommendation." },
+    ],
+    examplePrompts: [
+      {
+        title: { en: "Investigate failing checks" },
+        prompt: {
+          en: "Use the GH Fix CI skill to inspect the failing GitHub Actions checks on this branch and summarize the actionable log lines.",
+        },
+      },
+      {
+        title: { en: "Plan a CI fix" },
+        prompt: {
+          en: "Use the GH Fix CI skill to draft a minimal fix plan for this failed workflow before changing files.",
+        },
+      },
+    ],
+    install: {
+      type: "reference",
+      label: { en: "Reference the upstream curated Skill directory." },
+      steps: [
+        { en: "Open the GitHub source directory for the Skill." },
+        { en: "Confirm gh authentication before applying the workflow in a repository." },
+      ],
+      copyableText: "https://github.com/openai/skills/tree/main/skills/.curated/gh-fix-ci",
+    },
+    compatibility: {
+      tools: ["codex"],
+      environments: ["Codex CLI or compatible Codex skill runtime", "GitHub repository with Actions checks"],
+      requirements: [
+        { en: "Requires gh CLI access to the target repository." },
+        { en: "Only GitHub Actions logs are in scope; external provider URLs remain reference-only." },
+      ],
+      notes: { en: "SkillDex links to the source and does not inspect CI logs itself." },
+    },
+    evidence: {
+      status: "implemented",
+      lastVerified: EVIDENCE_DATE,
+      artifacts: [
+        {
+          label: "Source directory",
+          kind: "repo",
+          href: "https://github.com/openai/skills/tree/main/skills/.curated/gh-fix-ci",
+          summary: "Public source directory and Apache-2.0 license file were checked for this catalog entry.",
+        },
+      ],
+    },
+    indexedAt: EVIDENCE_DATE,
+    lastReviewedAt: EVIDENCE_DATE,
+  },
+  {
+    slug: "gh-address-comments",
+    name: "GH Address Comments",
+    summary: {
+      en: "A Codex Skill for collecting GitHub PR review or issue comments and helping address selected threads with gh CLI context.",
+    },
+    description: {
+      en: "Use this reference when the current branch has GitHub review comments that need triage before deciding which changes to implement.",
+    },
+    capabilities: [
+      { en: "Finds the current branch PR and fetches comments or review threads." },
+      { en: "Summarizes required follow-up before implementation." },
+      { en: "Keeps authentication and rate-limit issues explicit." },
+    ],
+    toolScopes: ["codex"],
+    categoryId: "project-management",
+    status: "active",
+    visibility: "reference-only",
+    sourceType: "third-party",
+    source: {
+      author: "openai",
+      repoUrl: "https://github.com/openai/skills",
+      directoryUrl: "https://github.com/openai/skills/tree/main/skills/.curated/gh-address-comments",
+      license: "Apache-2.0",
+      licenseUrl: "https://raw.githubusercontent.com/openai/skills/main/skills/.curated/gh-address-comments/LICENSE.txt",
+    },
+    tags: ["github", "review-comments", "pull-request", "gh", "codex"],
+    useCases: [
+      { en: "Reviewing unresolved PR comments before editing code." },
+      { en: "Numbering comment threads so the user can choose what to address." },
+      { en: "Handling GitHub auth or rate-limit blockers transparently." },
+    ],
+    antiUseCases: [
+      { en: "Applying every review suggestion without user selection." },
+      { en: "Treating comments as approval to change unrelated files." },
+      { en: "Fetching private review content without repository authorization." },
+    ],
+    inputs: [
+      { en: "Current branch, PR number or URL, and repository context." },
+      { en: "GitHub CLI authentication state." },
+      { en: "User-selected review threads to address." },
+    ],
+    outputs: [
+      { en: "Comment summary and numbered action list." },
+      { en: "Patch plan for selected threads." },
+      { en: "Verification notes after comments are addressed." },
+    ],
+    examplePrompts: [
+      {
+        title: { en: "Summarize review threads" },
+        prompt: {
+          en: "Use the GH Address Comments skill to list unresolved PR comments on this branch and summarize what each one asks for.",
+        },
+      },
+      {
+        title: { en: "Address selected comments" },
+        prompt: {
+          en: "Use the GH Address Comments skill to address only the selected review comments and leave unrelated files alone.",
+        },
+      },
+    ],
+    install: {
+      type: "reference",
+      label: { en: "Reference the upstream curated Skill directory." },
+      steps: [
+        { en: "Open the GitHub source directory for the Skill." },
+        { en: "Confirm gh authentication and repository access before applying the workflow." },
+      ],
+      copyableText: "https://github.com/openai/skills/tree/main/skills/.curated/gh-address-comments",
+    },
+    compatibility: {
+      tools: ["codex"],
+      environments: ["Codex CLI or compatible Codex skill runtime", "GitHub pull request workflow"],
+      requirements: [
+        { en: "Requires gh CLI access to the repository and PR comments." },
+        { en: "Implementation should wait until the user selects which comments to address." },
+      ],
+      notes: { en: "SkillDex links to the source and does not fetch PR comments itself." },
+    },
+    evidence: {
+      status: "implemented",
+      lastVerified: EVIDENCE_DATE,
+      artifacts: [
+        {
+          label: "Source directory",
+          kind: "repo",
+          href: "https://github.com/openai/skills/tree/main/skills/.curated/gh-address-comments",
+          summary: "Public source directory and Apache-2.0 license file were checked for this catalog entry.",
+        },
+      ],
+    },
+    indexedAt: EVIDENCE_DATE,
+    lastReviewedAt: EVIDENCE_DATE,
   },
 ];

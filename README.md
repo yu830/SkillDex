@@ -10,8 +10,10 @@ SkillDex is reference-only: it does not execute Skills, store credentials, scan 
 - TypeScript
 - Tailwind CSS
 - Static data in `src/data/skills.ts`
+- Static project evidence in `src/data/projects.ts`
 - Manual ownership classification with `sourceType`
 - Multi-tool compatibility with `toolScopes`
+- Evidence metadata for proof state, artifacts, and verification date
 - Cloudflare Pages static export via `next build` -> `out/`
 
 ## Routes
@@ -33,6 +35,7 @@ The Chinese routes are structurally supported. Chinese content may be partial an
 ## Static data policy
 
 The MVP catalog is maintained manually in `src/data/skills.ts`.
+Portfolio project evidence is maintained manually in `src/data/projects.ts`.
 
 Rules for static data:
 
@@ -48,6 +51,21 @@ Rules for static data:
 - Local Skill folders may be used as manual review candidates, but SkillDex must not scan them at runtime or build time.
 - Use stable category IDs and render display labels through the UI helper layer.
 - Use `indexedAt` and `lastReviewedAt` for catalog review dates. Do not claim upstream update timestamps unless they were actually fetched and verified.
+- Use `evidence.lastVerified` only after a human review in the current phase. Do not imply live freshness.
+- Do not invent repository links, demo URLs, case studies, benchmarks, deployment status, CI results, user counts, stars, or production proof.
+- If a project has no verified external link, record a `note` artifact or a `TBD` summary instead of filling a fake URL.
+
+## Evidence schema
+
+Skill and project records can include an `evidence` object:
+
+- `status`: one of `implemented`, `prototype`, `planned`, or `research`
+- `artifacts`: optional proof items with `label`, `kind`, optional `href`, and optional `summary`
+- `lastVerified`: date of the manual review in `YYYY-MM-DD` format
+
+Allowed artifact kinds are `repo`, `demo`, `doc`, `case-study`, `workflow`, `benchmark`, and `note`.
+
+Project evidence records also include `highlights`, `tags`, `toolScopes`, and `updatedAt`. Keep project records specific and conservative: use `TBD` or a note artifact when public proof is missing.
 
 ## Third-party reference-only content policy
 
@@ -87,6 +105,7 @@ Before adding a new entry:
 10. Run the full verification commands before publishing.
 11. Choose the correct `sourceType`: `own` for user-created Skills, `third-party` for public, bundled, curated, or third-party Skills.
 12. Choose one or more `toolScopes` values so each Skill appears under Claude Code, Codex, or both as appropriate.
+13. Add `evidence` only for facts reviewed in this phase. Prefer source links, workflow notes, or `TBD` summaries over unverified claims.
 
 Do not add a database, auth system, API routes, GitHub sync, local file scanning, online Skill execution, or ChatGPT Skill support when adding catalog entries.
 
