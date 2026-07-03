@@ -74,6 +74,7 @@ Project evidence records also include `highlights`, `tags`, `toolScopes`, and `u
 Project detail routes use `slug` as the stable route key and render project summaries, problem statements, approach notes, evidence artifacts, proof boundaries, and next steps from the static project record.
 Project detail routes may also render `relatedSkillSlugs` as locale-aware links to existing Skill detail pages. These links are navigation and capability context only; they are not evidence proof.
 Relationship edits should use `docs/relationship-review-checklist.md` and keep `docs/relationship-matrix.md` synchronized with `src/data/projects.ts`.
+Pull requests should use `.github/pull_request_template.md` to confirm relationship-review, validation, and secret-safety boundaries.
 
 ## Third-party reference-only content policy
 

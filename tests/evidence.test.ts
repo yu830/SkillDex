@@ -228,6 +228,51 @@ test("relationship review checklist documents real slugs, commands, and proof bo
   }
 });
 
+test("pull request template exposes relationship review guardrails", () => {
+  const template = readFileSync(".github/pull_request_template.md", "utf8");
+  const checklist = readFileSync("docs/relationship-review-checklist.md", "utf8");
+  const packageJson = JSON.parse(readFileSync("package.json", "utf8"));
+
+  assert.match(checklist, /\.github\/pull_request_template\.md/);
+  assert.match(template, /docs\/relationship-review-checklist\.md/);
+  assert.match(template, /docs\/relationship-matrix\.md/);
+  assert.match(template, /relatedSkillSlugs/);
+  assert.match(template, /navigation and review context only/i);
+  assert.match(template, /not proof or evidence artifacts/i);
+  assert.match(template, /does not print, request, or store secret values/i);
+  assert.doesNotMatch(template, /CLOUDFLARE_(ACCOUNT_ID|API_TOKEN)=/);
+
+  const commands = [
+    "npm run test",
+    "npm run lint",
+    "npm run build",
+    "npm run verify:static-output",
+    "npx --yes npm@10.9.8 audit --audit-level=moderate",
+  ];
+
+  for (const command of commands) {
+    assert.ok(template.includes(command), command);
+  }
+
+  const scripts = packageJson.scripts as Record<string, string>;
+  for (const match of template.matchAll(/npm run ([\w:-]+)/g)) {
+    assert.ok(scripts[match[1]], `missing package script for ${match[0]}`);
+  }
+
+  for (const misleadingPhrase of [
+    "relationship is evidence",
+    "relationship is proof",
+    "matrix is evidence",
+    "matrix is proof",
+    "related projects are evidence",
+    "related projects prove",
+    "built with this Skill",
+    "powered by this Skill",
+  ]) {
+    assert.equal(template.includes(misleadingPhrase), false, misleadingPhrase);
+  }
+});
+
 test("at least ten skills have structured evidence", () => {
   const skillsWithEvidence = getAllSkills().filter((skill) => isEvidence(skill.evidence));
 

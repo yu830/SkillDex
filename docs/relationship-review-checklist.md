@@ -2,6 +2,8 @@
 
 Use this checklist before changing any Project `relatedSkillSlugs` value or updating the relationship matrix. This document is a maintenance guardrail only. It is not an evidence artifact, proof that a project shipped, or proof that a Skill was used.
 
+Pull requests should also use `.github/pull_request_template.md`, which reuses these relationship review gates as a short PR review surface.
+
 ## Current Review Surface
 
 - Relationship data owner: `src/data/projects.ts`
