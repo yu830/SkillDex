@@ -15,6 +15,14 @@ SkillDex is a reference-only catalog and portfolio evidence surface. It should m
 
 Skill records should summarize real Claude Code or Codex Skills. They must keep source metadata, license, ownership, and compatibility explicit.
 
+### Risk classification
+
+Every Skill record must include `riskLevel` as `low`, `medium`, or `high`.
+
+Risk is a review and usage-caution label. It helps users filter the catalog by how much care a Skill needs before use or adaptation. It must not be written as evidence, proof of safety, production readiness, or a verified security result.
+
+Use `high` for Skills that touch deployments, API credentials, security analysis, MCP servers, CI, or external systems. Use `medium` for Skills that can materially affect code, release, or workflow quality. Use `low` only for bounded documentation, formatting, or low-impact helper workflows.
+
 Preferred evidence artifacts for third-party Skills:
 
 - `repo` for public source directories

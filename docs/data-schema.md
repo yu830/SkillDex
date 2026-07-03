@@ -14,7 +14,17 @@ Each Skill keeps source metadata explicit:
 - `source.license`
 - optional `source.licenseUrl`
 
-Skills also carry `sourceType`, `toolScopes`, category, status, tags, install guidance, compatibility notes, and review dates.
+Skills also carry `sourceType`, `toolScopes`, category, status, `riskLevel`, tags, install guidance, compatibility notes, and review dates.
+
+`riskLevel` is a required manual classification with one of these values:
+
+- `low`
+- `medium`
+- `high`
+
+Risk is a catalog-maintenance and usage-caution signal for applying or adapting a Skill. It is not a proof artifact, security certification, production-readiness claim, or substitute for `evidence`.
+
+Use `high` for Skills that involve deployments, credentials, security review, MCP servers, CI, or external systems. Use `medium` for Skills that can materially affect code quality or workflow outcomes. Reserve `low` for bounded documentation, formatting, or other low-impact helpers.
 
 ## Evidence
 

@@ -3,20 +3,25 @@ import test from "node:test";
 
 import {
   CATEGORY_LABELS,
+  RISK_LEVEL_LABELS,
   SOURCE_TYPE_LABELS,
   TOOL_SCOPE_LABELS,
   getAllSkills,
   getCategories,
   getCategoryLabel,
   getLocalizedText,
+  getRiskLevelLabel,
   getSkillBySlug,
+  getSkillSearchText,
   getSkillsBySourceType,
+  getSkillsByRiskLevel,
   getSkillsByToolScope,
   getSourceTypeLabel,
   getTags,
   getToolScopeLabel,
   isLocale,
 } from "#lib/skills";
+import { getAllProjectEvidence } from "#lib/projects";
 
 const expectedSlugs = [
   "vercel-deploy",
@@ -29,6 +34,10 @@ const expectedSlugs = [
   "mcp-builder",
   "gh-fix-ci",
   "gh-address-comments",
+  "cloudflare-deploy",
+  "security-threat-model",
+  "migrate-to-codex",
+  "webapp-testing",
 ];
 
 test("catalog contains the approved evidence-ready skills", () => {
@@ -38,7 +47,8 @@ test("catalog contains the approved evidence-ready skills", () => {
     skills.map((skill) => skill.slug),
     expectedSlugs,
   );
-  assert.equal(skills.length, 10);
+  assert.equal(skills.length, 14);
+  assert.ok(skills.length + getAllProjectEvidence().length >= 20);
   assert.equal(getSkillBySlug("vibe-coding-review")?.sourceType, "own");
   assert.equal(getSkillBySlug("guizang-ppt-skill")?.sourceType, "third-party");
   assert.ok(skills.every((skill) => Array.isArray(skill.toolScopes)));
@@ -60,11 +70,22 @@ test("helpers return skills by slug and multi-tool scope", () => {
   assert.equal(getSkillBySlug("missing-skill"), undefined);
   assert.deepEqual(
     getSkillsByToolScope("claude-code").map((skill) => skill.slug).sort(),
-    ["claude-api", "frontend-design", "guizang-ppt-skill", "mcp-builder", "skill-creator", "vibe-coding-review"],
+    ["claude-api", "frontend-design", "guizang-ppt-skill", "mcp-builder", "skill-creator", "vibe-coding-review", "webapp-testing"],
   );
   assert.deepEqual(
     getSkillsByToolScope("codex").map((skill) => skill.slug).sort(),
-    ["frontend-design", "gh-address-comments", "gh-fix-ci", "guizang-ppt-skill", "playwright", "vercel-deploy", "vibe-coding-review"],
+    [
+      "cloudflare-deploy",
+      "frontend-design",
+      "gh-address-comments",
+      "gh-fix-ci",
+      "guizang-ppt-skill",
+      "migrate-to-codex",
+      "playwright",
+      "security-threat-model",
+      "vercel-deploy",
+      "vibe-coding-review",
+    ],
   );
 });
 
@@ -82,8 +103,38 @@ test("ownership helpers expose stable labels and grouping", () => {
   assert.deepEqual(getSkillsBySourceType("own").map((skill) => skill.slug), ["vibe-coding-review"]);
   assert.deepEqual(
     getSkillsBySourceType("third-party").map((skill) => skill.slug),
-    ["vercel-deploy", "playwright", "guizang-ppt-skill", "frontend-design", "skill-creator", "claude-api", "mcp-builder", "gh-fix-ci", "gh-address-comments"],
+    [
+      "vercel-deploy",
+      "playwright",
+      "guizang-ppt-skill",
+      "frontend-design",
+      "skill-creator",
+      "claude-api",
+      "mcp-builder",
+      "gh-fix-ci",
+      "gh-address-comments",
+      "cloudflare-deploy",
+      "security-threat-model",
+      "migrate-to-codex",
+      "webapp-testing",
+    ],
   );
+});
+
+test("risk helpers expose stable labels and filtering", () => {
+  const skills = getAllSkills();
+  const riskLevels = ["low", "medium", "high"] as const;
+
+  assert.ok(skills.every((skill) => riskLevels.includes(skill.riskLevel)));
+  assert.equal(getRiskLevelLabel("low", "en"), "Low risk");
+  assert.equal(getRiskLevelLabel("medium", "en"), "Medium risk");
+  assert.equal(getRiskLevelLabel("high", "en"), "High risk");
+  assert.equal(getRiskLevelLabel("high", "zh"), "\u9ad8\u98ce\u9669");
+  assert.ok(RISK_LEVEL_LABELS.medium);
+
+  assert.deepEqual(getSkillsByRiskLevel("low").map((skill) => skill.slug), ["guizang-ppt-skill"]);
+  assert.deepEqual(getSkillsByRiskLevel("high").map((skill) => skill.slug), ["claude-api", "mcp-builder", "cloudflare-deploy", "security-threat-model"]);
+  assert.match(getSkillSearchText(getSkillBySlug("cloudflare-deploy")!, "en"), /high risk/);
 });
 
 test("category and tag helpers expose stable ids and labels", () => {

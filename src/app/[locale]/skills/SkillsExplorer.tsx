@@ -6,7 +6,7 @@ import { SearchBar } from "@/components/SearchBar";
 import { SkillCard } from "@/components/SkillCard";
 import { SkillFilter } from "@/components/SkillFilter";
 import { getCategoryLabel, getSkillSearchText } from "@/lib/skills";
-import type { Locale, Skill, SkillCategoryId, SkillStatus, SourceType, ToolScope } from "@/types/skill";
+import type { Locale, Skill, SkillCategoryId, SkillRiskLevel, SkillStatus, SourceType, ToolScope } from "@/types/skill";
 
 type SkillsExplorerProps = {
   locale: Locale;
@@ -34,6 +34,7 @@ export function SkillsExplorer({ locale, skills, categories, tags }: SkillsExplo
   const [sourceType, setSourceType] = useState<SourceType | "all">("all");
   const [categoryId, setCategoryId] = useState<SkillCategoryId | "all">("all");
   const [status, setStatus] = useState<SkillStatus | "all">("all");
+  const [riskLevel, setRiskLevel] = useState<SkillRiskLevel | "all">("all");
   const [tag, setTag] = useState<string | "all">("all");
 
   const visibleSkills = useMemo(() => {
@@ -44,6 +45,7 @@ export function SkillsExplorer({ locale, skills, categories, tags }: SkillsExplo
       if (sourceType !== "all" && skill.sourceType !== sourceType) return false;
       if (categoryId !== "all" && skill.categoryId !== categoryId) return false;
       if (status !== "all" && skill.status !== status) return false;
+      if (riskLevel !== "all" && skill.riskLevel !== riskLevel) return false;
       if (tag !== "all" && !skill.tags.includes(tag)) return false;
       if (!normalizedQuery) return true;
 
@@ -51,7 +53,7 @@ export function SkillsExplorer({ locale, skills, categories, tags }: SkillsExplo
 
       return searchableText.includes(normalizedQuery);
     });
-  }, [categoryId, locale, query, skills, sourceType, status, tag, toolScope]);
+  }, [categoryId, locale, query, riskLevel, skills, sourceType, status, tag, toolScope]);
 
   return (
     <section>
@@ -63,6 +65,7 @@ export function SkillsExplorer({ locale, skills, categories, tags }: SkillsExplo
         sourceType={sourceType}
         categoryId={categoryId}
         status={status}
+        riskLevel={riskLevel}
         tag={tag}
         categories={categories.map((category) => ({ value: category, label: getCategoryLabel(category, locale) }))}
         tags={tags}
@@ -70,6 +73,7 @@ export function SkillsExplorer({ locale, skills, categories, tags }: SkillsExplo
         onSourceTypeChange={setSourceType}
         onCategoryChange={setCategoryId}
         onStatusChange={setStatus}
+        onRiskLevelChange={setRiskLevel}
         onTagChange={setTag}
       />
       <p className="border-b border-[var(--line)] px-5 py-4 font-mono text-xs font-medium uppercase tracking-[0.1em] text-[var(--muted-ink)] sm:px-8">

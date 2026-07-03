@@ -24,6 +24,7 @@ export const skills: Skill[] = [
     toolScopes: ["codex"],
     categoryId: "devops-deployment",
     status: "active",
+    riskLevel: "medium",
     visibility: "reference-only",
     sourceType: "third-party",
     source: {
@@ -122,6 +123,7 @@ export const skills: Skill[] = [
     toolScopes: ["codex"],
     categoryId: "testing-qa",
     status: "active",
+    riskLevel: "medium",
     visibility: "reference-only",
     sourceType: "third-party",
     source: {
@@ -220,6 +222,7 @@ export const skills: Skill[] = [
     toolScopes: ["claude-code", "codex"],
     categoryId: "project-management",
     status: "active",
+    riskLevel: "medium",
     visibility: "reference-only",
     sourceType: "own",
     source: {
@@ -318,6 +321,7 @@ export const skills: Skill[] = [
     toolScopes: ["claude-code", "codex"],
     categoryId: "design-image",
     status: "active",
+    riskLevel: "low",
     visibility: "reference-only",
     sourceType: "third-party",
     source: {
@@ -417,6 +421,7 @@ export const skills: Skill[] = [
     toolScopes: ["claude-code", "codex"],
     categoryId: "design-image",
     status: "active",
+    riskLevel: "medium",
     visibility: "reference-only",
     sourceType: "third-party",
     source: {
@@ -512,6 +517,7 @@ export const skills: Skill[] = [
     toolScopes: ["claude-code"],
     categoryId: "project-management",
     status: "active",
+    riskLevel: "medium",
     visibility: "reference-only",
     sourceType: "third-party",
     source: {
@@ -606,6 +612,7 @@ export const skills: Skill[] = [
     toolScopes: ["claude-code"],
     categoryId: "coding",
     status: "active",
+    riskLevel: "high",
     visibility: "reference-only",
     sourceType: "third-party",
     source: {
@@ -700,6 +707,7 @@ export const skills: Skill[] = [
     toolScopes: ["claude-code"],
     categoryId: "coding",
     status: "active",
+    riskLevel: "high",
     visibility: "reference-only",
     sourceType: "third-party",
     source: {
@@ -794,6 +802,7 @@ export const skills: Skill[] = [
     toolScopes: ["codex"],
     categoryId: "devops-deployment",
     status: "active",
+    riskLevel: "medium",
     visibility: "reference-only",
     sourceType: "third-party",
     source: {
@@ -888,6 +897,7 @@ export const skills: Skill[] = [
     toolScopes: ["codex"],
     categoryId: "project-management",
     status: "active",
+    riskLevel: "medium",
     visibility: "reference-only",
     sourceType: "third-party",
     source: {
@@ -958,6 +968,382 @@ export const skills: Skill[] = [
           label: "Source directory",
           kind: "repo",
           href: "https://github.com/openai/skills/tree/main/skills/.curated/gh-address-comments",
+          summary: "Public source directory and Apache-2.0 license file were checked for this catalog entry.",
+        },
+      ],
+    },
+    indexedAt: EVIDENCE_DATE,
+    lastReviewedAt: EVIDENCE_DATE,
+  },
+  {
+    slug: "cloudflare-deploy",
+    name: "Cloudflare Deploy",
+    summary: {
+      en: "A Codex Skill for deploying applications and infrastructure to Cloudflare using Workers, Pages, and related platform services.",
+    },
+    description: {
+      en: "Use this reference when a project needs Cloudflare deployment planning, Wrangler checks, Pages deployment boundaries, or production verification notes.",
+    },
+    capabilities: [
+      { en: "Routes Cloudflare deployment work toward the relevant product surface." },
+      { en: "Calls out authentication and Wrangler checks before deployment." },
+      { en: "Keeps production deploy evidence separate from deployment preparation." },
+    ],
+    toolScopes: ["codex"],
+    categoryId: "devops-deployment",
+    status: "active",
+    riskLevel: "high",
+    visibility: "reference-only",
+    sourceType: "third-party",
+    source: {
+      author: "openai",
+      repoUrl: "https://github.com/openai/skills",
+      directoryUrl: "https://github.com/openai/skills/tree/main/skills/.curated/cloudflare-deploy",
+      license: "Apache-2.0",
+      licenseUrl: "https://raw.githubusercontent.com/openai/skills/main/skills/.curated/cloudflare-deploy/LICENSE.txt",
+    },
+    tags: ["cloudflare", "deployment", "wrangler", "pages", "workers"],
+    useCases: [
+      { en: "Preparing a Cloudflare Pages deployment with explicit build output and verification steps." },
+      { en: "Checking Wrangler authentication before production deploy." },
+      { en: "Separating preview, production, and documentation-only release boundaries." },
+    ],
+    antiUseCases: [
+      { en: "Storing Cloudflare account IDs or API tokens in SkillDex." },
+      { en: "Claiming a Pages deployment is live before HTTP 200 is verified." },
+      { en: "Using Cloudflare Workers or databases when a static Pages site is sufficient." },
+    ],
+    inputs: [
+      { en: "Target Cloudflare product, build command, output directory, branch, and authentication state." },
+      { en: "Repository deployment workflow and production URL expectations." },
+    ],
+    outputs: [
+      { en: "Deployment path decision and command checklist." },
+      { en: "Preview or production verification notes when deployment actually runs." },
+      { en: "Blocked-state explanation when auth or project access is missing." },
+    ],
+    examplePrompts: [
+      {
+        title: { en: "Prepare Cloudflare Pages deploy" },
+        prompt: {
+          en: "Use the Cloudflare Deploy reference to verify this static site can deploy to Cloudflare Pages without changing secrets or production settings.",
+        },
+      },
+      {
+        title: { en: "Review deploy boundary" },
+        prompt: {
+          en: "Use the Cloudflare Deploy reference to distinguish preview deployment, production deployment, and documentation-only release evidence.",
+        },
+      },
+    ],
+    install: {
+      type: "reference",
+      label: { en: "Reference the upstream curated Skill directory." },
+      steps: [
+        { en: "Open the GitHub source directory for the Skill." },
+        { en: "Review the current Wrangler and Cloudflare product decision guidance before applying it." },
+      ],
+      copyableText: "https://github.com/openai/skills/tree/main/skills/.curated/cloudflare-deploy",
+    },
+    compatibility: {
+      tools: ["codex"],
+      environments: ["Codex CLI or compatible Codex skill runtime", "Cloudflare Pages or Workers project"],
+      requirements: [
+        { en: "Requires explicit user approval before production deploys." },
+        { en: "Requires Cloudflare authentication outside SkillDex; tokens must not be stored in catalog data." },
+      ],
+      notes: { en: "SkillDex links to the source only; it does not deploy to Cloudflare." },
+    },
+    evidence: {
+      status: "implemented",
+      lastVerified: EVIDENCE_DATE,
+      artifacts: [
+        {
+          label: "Source directory",
+          kind: "repo",
+          href: "https://github.com/openai/skills/tree/main/skills/.curated/cloudflare-deploy",
+          summary: "Public source directory and Apache-2.0 license file were checked for this catalog entry.",
+        },
+      ],
+    },
+    indexedAt: EVIDENCE_DATE,
+    lastReviewedAt: EVIDENCE_DATE,
+  },
+  {
+    slug: "security-threat-model",
+    name: "Security Threat Model",
+    summary: {
+      en: "A Codex Skill for repository-grounded threat modeling across assets, trust boundaries, attacker paths, and mitigations.",
+    },
+    description: {
+      en: "Use this reference when a codebase or deployment path needs a scoped AppSec threat model anchored in repository evidence.",
+    },
+    capabilities: [
+      { en: "Frames assets, trust boundaries, attacker capabilities, abuse paths, and mitigations." },
+      { en: "Requires repository evidence instead of generic security checklists." },
+      { en: "Produces concise Markdown threat-model output for review." },
+    ],
+    toolScopes: ["codex"],
+    categoryId: "testing-qa",
+    status: "active",
+    riskLevel: "high",
+    visibility: "reference-only",
+    sourceType: "third-party",
+    source: {
+      author: "openai",
+      repoUrl: "https://github.com/openai/skills",
+      directoryUrl: "https://github.com/openai/skills/tree/main/skills/.curated/security-threat-model",
+      license: "Apache-2.0",
+      licenseUrl: "https://raw.githubusercontent.com/openai/skills/main/skills/.curated/security-threat-model/LICENSE.txt",
+    },
+    tags: ["security", "threat-modeling", "appsec", "review", "risk"],
+    useCases: [
+      { en: "Threat modeling a repository before deployment." },
+      { en: "Documenting trust boundaries around auth, secrets, external APIs, or generated artifacts." },
+      { en: "Reviewing mitigations for realistic abuse paths." },
+    ],
+    antiUseCases: [
+      { en: "Replacing a formal security review for high-risk production systems." },
+      { en: "Creating generic security advice without repository evidence." },
+      { en: "Treating relationship or evidence metadata as proof that a system is secure." },
+    ],
+    inputs: [
+      { en: "Repository path, in-scope components, deployment model, exposure, and auth expectations." },
+      { en: "Existing architecture notes or evidence gathered from the repo." },
+    ],
+    outputs: [
+      { en: "Threat model with assets, trust boundaries, abuse paths, and mitigations." },
+      { en: "Explicit assumptions and out-of-scope items." },
+      { en: "Concrete follow-up checks for security review." },
+    ],
+    examplePrompts: [
+      {
+        title: { en: "Model deployment threats" },
+        prompt: {
+          en: "Use the Security Threat Model reference to enumerate trust boundaries and abuse paths for this static deployment workflow.",
+        },
+      },
+      {
+        title: { en: "Review secret boundaries" },
+        prompt: {
+          en: "Use the Security Threat Model reference to inspect how this repo handles tokens, generated output, and production deploy permissions.",
+        },
+      },
+    ],
+    install: {
+      type: "reference",
+      label: { en: "Reference the upstream curated Skill directory." },
+      steps: [
+        { en: "Open the GitHub source directory for the Skill." },
+        { en: "Collect repository evidence before applying the threat-model workflow." },
+      ],
+      copyableText: "https://github.com/openai/skills/tree/main/skills/.curated/security-threat-model",
+    },
+    compatibility: {
+      tools: ["codex"],
+      environments: ["Codex CLI or compatible Codex skill runtime", "Repository with security-relevant architecture or deployment context"],
+      requirements: [
+        { en: "Requires a concrete in-scope repository or path." },
+        { en: "Security claims should stay tied to observable repo evidence." },
+      ],
+      notes: { en: "SkillDex catalogs the review workflow only; it does not perform security scanning." },
+    },
+    evidence: {
+      status: "implemented",
+      lastVerified: EVIDENCE_DATE,
+      artifacts: [
+        {
+          label: "Source directory",
+          kind: "repo",
+          href: "https://github.com/openai/skills/tree/main/skills/.curated/security-threat-model",
+          summary: "Public source directory and Apache-2.0 license file were checked for this catalog entry.",
+        },
+      ],
+    },
+    indexedAt: EVIDENCE_DATE,
+    lastReviewedAt: EVIDENCE_DATE,
+  },
+  {
+    slug: "migrate-to-codex",
+    name: "Migrate to Codex",
+    summary: {
+      en: "A Codex Skill for moving supported instruction files, skills, agents, and MCP configuration into Codex project or global files.",
+    },
+    description: {
+      en: "Use this reference when a project needs a bounded migration from Claude-style artifacts into Codex-compatible instructions and configuration.",
+    },
+    capabilities: [
+      { en: "Defines migration order for instructions, skills, agents, and MCP configuration." },
+      { en: "Preserves unrelated Codex configuration while checking generated artifacts." },
+      { en: "Calls out source and target boundaries before modifying developer tooling." },
+    ],
+    toolScopes: ["codex"],
+    categoryId: "project-management",
+    status: "active",
+    riskLevel: "medium",
+    visibility: "reference-only",
+    sourceType: "third-party",
+    source: {
+      author: "openai",
+      repoUrl: "https://github.com/openai/skills",
+      directoryUrl: "https://github.com/openai/skills/tree/main/skills/.curated/migrate-to-codex",
+      license: "Apache-2.0",
+      licenseUrl: "https://raw.githubusercontent.com/openai/skills/main/skills/.curated/migrate-to-codex/LICENSE.txt",
+    },
+    tags: ["codex", "migration", "skills", "agents", "mcp"],
+    useCases: [
+      { en: "Migrating project instructions into Codex-readable files." },
+      { en: "Checking generated Codex artifacts after a tooling migration." },
+      { en: "Documenting migration boundaries before touching shared configuration." },
+    ],
+    antiUseCases: [
+      { en: "Blindly overwriting unrelated Codex configuration." },
+      { en: "Migrating secrets or local-only paths into a public repository." },
+      { en: "Editing source Claude artifacts when the target is Codex configuration." },
+    ],
+    inputs: [
+      { en: "Selected source artifacts, target Codex scope, and existing config boundaries." },
+      { en: "Repository or global config location where migration is explicitly approved." },
+    ],
+    outputs: [
+      { en: "Migration checklist and generated Codex artifacts." },
+      { en: "Validation report for migrated instructions, skills, agents, or MCP config." },
+      { en: "Blocked-state notes when source or target boundaries are unclear." },
+    ],
+    examplePrompts: [
+      {
+        title: { en: "Plan Codex migration" },
+        prompt: {
+          en: "Use the Migrate to Codex reference to inspect which project instructions can safely move into Codex files without touching secrets.",
+        },
+      },
+      {
+        title: { en: "Verify migration output" },
+        prompt: {
+          en: "Use the Migrate to Codex reference to check generated Codex instructions and report any unrelated config that should stay unchanged.",
+        },
+      },
+    ],
+    install: {
+      type: "reference",
+      label: { en: "Reference the upstream curated Skill directory." },
+      steps: [
+        { en: "Open the GitHub source directory for the Skill." },
+        { en: "Confirm the chosen migration source and Codex target before applying any changes." },
+      ],
+      copyableText: "https://github.com/openai/skills/tree/main/skills/.curated/migrate-to-codex",
+    },
+    compatibility: {
+      tools: ["codex"],
+      environments: ["Codex CLI or compatible Codex skill runtime", "Project or global Codex configuration workspace"],
+      requirements: [
+        { en: "Requires an explicit migration target." },
+        { en: "Generated files must be reviewed before commit." },
+      ],
+      notes: { en: "SkillDex links to the source only; it does not migrate local configuration." },
+    },
+    evidence: {
+      status: "implemented",
+      lastVerified: EVIDENCE_DATE,
+      artifacts: [
+        {
+          label: "Source directory",
+          kind: "repo",
+          href: "https://github.com/openai/skills/tree/main/skills/.curated/migrate-to-codex",
+          summary: "Public source directory and Apache-2.0 license file were checked for this catalog entry.",
+        },
+      ],
+    },
+    indexedAt: EVIDENCE_DATE,
+    lastReviewedAt: EVIDENCE_DATE,
+  },
+  {
+    slug: "webapp-testing",
+    name: "Webapp Testing",
+    summary: {
+      en: "A Claude Skill for testing local web applications with Playwright scripts, browser logs, screenshots, and server lifecycle helpers.",
+    },
+    description: {
+      en: "Use this reference when a frontend change needs browser-level verification beyond static tests or build checks.",
+    },
+    capabilities: [
+      { en: "Guides local web app testing with Playwright-backed scripts." },
+      { en: "Supports browser log inspection and screenshot capture when useful." },
+      { en: "Keeps server lifecycle handling explicit for local smoke tests." },
+    ],
+    toolScopes: ["claude-code"],
+    categoryId: "testing-qa",
+    status: "active",
+    riskLevel: "medium",
+    visibility: "reference-only",
+    sourceType: "third-party",
+    source: {
+      author: "anthropics",
+      repoUrl: "https://github.com/anthropics/skills",
+      directoryUrl: "https://github.com/anthropics/skills/tree/main/skills/webapp-testing",
+      license: "Apache-2.0",
+      licenseUrl: "https://raw.githubusercontent.com/anthropics/skills/main/skills/webapp-testing/LICENSE.txt",
+    },
+    tags: ["webapp", "testing", "playwright", "browser", "smoke-test"],
+    useCases: [
+      { en: "Checking a local web app after a UI or route change." },
+      { en: "Capturing browser logs for an interaction failure." },
+      { en: "Running a smoke flow while managing a local dev or static server." },
+    ],
+    antiUseCases: [
+      { en: "Replacing unit tests, linting, or static export verification." },
+      { en: "Claiming production health from a local-only smoke test." },
+      { en: "Testing pages that require credentials without explicit authorization." },
+    ],
+    inputs: [
+      { en: "Local web app URL, server command, target route, and expected UI behavior." },
+      { en: "Known browser errors or screenshots when debugging a failure." },
+    ],
+    outputs: [
+      { en: "Browser smoke result with routes, interactions, and console notes." },
+      { en: "Screenshot or log evidence when captured by the testing workflow." },
+      { en: "Failure summary with reproduction steps." },
+    ],
+    examplePrompts: [
+      {
+        title: { en: "Smoke test UI" },
+        prompt: {
+          en: "Use the Webapp Testing reference to verify the local static export loads, filters render, and a detail-page link can be clicked.",
+        },
+      },
+      {
+        title: { en: "Debug browser flow" },
+        prompt: {
+          en: "Use the Webapp Testing reference to inspect browser console output for this failing local interaction and summarize the reproduction path.",
+        },
+      },
+    ],
+    install: {
+      type: "reference",
+      label: { en: "Reference the upstream public Skill directory." },
+      steps: [
+        { en: "Open the GitHub source directory for the Skill." },
+        { en: "Review the current Playwright helper guidance before applying it locally." },
+      ],
+      copyableText: "https://github.com/anthropics/skills/tree/main/skills/webapp-testing",
+    },
+    compatibility: {
+      tools: ["claude-code"],
+      environments: ["Claude Code or compatible Skill runtime", "Local web application with browser automation available"],
+      requirements: [
+        { en: "Requires a runnable local web app or static server." },
+        { en: "Browser smoke results should be paired with test/build output before release." },
+      ],
+      notes: { en: "SkillDex links to the source only; it does not run browser tests online." },
+    },
+    evidence: {
+      status: "implemented",
+      lastVerified: EVIDENCE_DATE,
+      artifacts: [
+        {
+          label: "Source directory",
+          kind: "repo",
+          href: "https://github.com/anthropics/skills/tree/main/skills/webapp-testing",
           summary: "Public source directory and Apache-2.0 license file were checked for this catalog entry.",
         },
       ],

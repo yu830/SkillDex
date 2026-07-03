@@ -6,7 +6,7 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { StatusBadge } from "@/components/StatusBadge";
 import { Tag } from "@/components/Tag";
 import { getProjectPath, getProjectsByRelatedSkillSlug } from "@/lib/projects";
-import { getAllSkills, getCategoryLabel, getLocalizedText, getSkillBySlug, getSourceTypeLabel, getToolScopeLabel, isLocale, LOCALES } from "@/lib/skills";
+import { getAllSkills, getCategoryLabel, getLocalizedText, getRiskLevelLabel, getSkillBySlug, getSourceTypeLabel, getToolScopeLabel, isLocale, LOCALES } from "@/lib/skills";
 import type { ProjectEvidenceRecord } from "@/types/project";
 import type { Locale, LocalizedText } from "@/types/skill";
 
@@ -42,6 +42,7 @@ const sectionTitles = {
     metaTool: "Tool scope",
     metaOwnership: "Ownership",
     metaCategory: "Category",
+    metaRisk: "Risk",
     metaLicense: "License",
     metaReviewed: "Reviewed",
   },
@@ -70,6 +71,7 @@ const sectionTitles = {
     metaTool: "\u5de5\u5177\u8303\u56f4",
     metaOwnership: "\u5f52\u5c5e",
     metaCategory: "\u5206\u7c7b",
+    metaRisk: "\u98ce\u9669",
     metaLicense: "\u8bb8\u53ef\u8bc1",
     metaReviewed: "\u5df2\u5ba1\u9605",
   },
@@ -141,6 +143,7 @@ export default async function SkillDetailPage({ params }: PageProps) {
             <MetaBlock label={text.metaTool} value={toolLabels.join(", ")} />
             <MetaBlock label={text.metaOwnership} value={ownershipLabel} />
             <MetaBlock label={text.metaCategory} value={getCategoryLabel(skill.categoryId, locale)} />
+            <MetaBlock label={text.metaRisk} value={getRiskLevelLabel(skill.riskLevel, locale)} />
             <MetaBlock label={text.metaLicense} value={skill.source.license} href={skill.source.licenseUrl} />
             <MetaBlock label={text.metaReviewed} value={skill.lastReviewedAt} />
           </aside>

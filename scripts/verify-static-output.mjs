@@ -11,6 +11,8 @@ const relatedSkillProjectLinks = {
   "gh-address-comments": ["vibe-coding-review", "loopengineering"],
 };
 
+const phase33SkillSlugs = ["cloudflare-deploy", "security-threat-model", "migrate-to-codex", "webapp-testing"];
+
 const requiredFiles = [
   "out/index.html",
   "out/en/index.html",
@@ -24,6 +26,7 @@ const requiredFiles = [
   "out/en/projects/loopengineering/index.html",
   "out/en/skills/index.html",
   ...Object.keys(relatedSkillProjectLinks).map((skillSlug) => `out/en/skills/${skillSlug}/index.html`),
+  ...phase33SkillSlugs.map((skillSlug) => `out/en/skills/${skillSlug}/index.html`),
   "out/zh/index.html",
   "out/zh/about/index.html",
   "out/zh/projects/index.html",
@@ -36,6 +39,7 @@ const requiredFiles = [
   "out/zh/skills/index.html",
   "out/zh/skills/frontend-design/index.html",
   "out/zh/skills/vibe-coding-review/index.html",
+  ...phase33SkillSlugs.map((skillSlug) => `out/zh/skills/${skillSlug}/index.html`),
 ];
 
 const forbiddenChecks = [
@@ -54,6 +58,24 @@ const forbiddenChecks = [
 ];
 
 const contentChecks = [
+  {
+    file: "out/en/skills/index.html",
+    label: "Skill risk filter and Phase 33 catalog entries",
+    matches: (html) =>
+      html.includes("Risk") &&
+      html.includes("All risks") &&
+      html.includes("High risk") &&
+      /14\s*(?:<!--\s*-->\s*)*matching skills/.test(html) &&
+      html.includes("Cloudflare Deploy") &&
+      html.includes("Security Threat Model") &&
+      html.includes("Migrate to Codex") &&
+      html.includes("Webapp Testing"),
+  },
+  {
+    file: "out/zh/skills/index.html",
+    label: "Chinese Skill risk filter",
+    matches: (html) => html.includes("All risks") && html.includes("High risk") && html.includes("Cloudflare Deploy"),
+  },
   {
     file: "out/en/projects/insightcanvas-agent/index.html",
     label: "InsightCanvas related Skill links",

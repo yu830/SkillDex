@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { getCategoryLabel, getLocalizedText, getSourceTypeLabel, getToolScopeLabel } from "@/lib/skills";
+import { getCategoryLabel, getLocalizedText, getRiskLevelLabel, getSourceTypeLabel, getToolScopeLabel } from "@/lib/skills";
 import type { Locale, Skill } from "@/types/skill";
 
 import { StatusBadge } from "./StatusBadge";
@@ -22,6 +22,9 @@ export function SkillCard({ skill, locale }: SkillCardProps) {
           <Tag>{getSourceTypeLabel(skill.sourceType, locale)}</Tag>
         </div>
         <StatusBadge status={skill.status} />
+      </div>
+      <div className="flex flex-wrap gap-2">
+        <Tag>Risk: {getRiskLevelLabel(skill.riskLevel, locale)}</Tag>
       </div>
       <div>
         <h2 className="font-serif text-[2.25rem] font-normal leading-[1] tracking-[-0.04em] text-[var(--ink)]">{skill.name}</h2>

@@ -1,6 +1,6 @@
 "use client";
 
-import type { SkillCategoryId, SkillStatus, SourceType, ToolScope } from "@/types/skill";
+import type { SkillCategoryId, SkillRiskLevel, SkillStatus, SourceType, ToolScope } from "@/types/skill";
 
 type Option<T extends string> = {
   value: T;
@@ -12,6 +12,7 @@ type SkillFilterProps = {
   sourceType: SourceType | "all";
   categoryId: SkillCategoryId | "all";
   status: SkillStatus | "all";
+  riskLevel: SkillRiskLevel | "all";
   tag: string | "all";
   categories: Option<SkillCategoryId>[];
   tags: string[];
@@ -19,6 +20,7 @@ type SkillFilterProps = {
   onSourceTypeChange: (value: SourceType | "all") => void;
   onCategoryChange: (value: SkillCategoryId | "all") => void;
   onStatusChange: (value: SkillStatus | "all") => void;
+  onRiskLevelChange: (value: SkillRiskLevel | "all") => void;
   onTagChange: (value: string | "all") => void;
 };
 
@@ -42,11 +44,19 @@ const statuses: Option<SkillStatus | "all">[] = [
   { value: "archived", label: "Archived" },
 ];
 
+const riskLevels: Option<SkillRiskLevel | "all">[] = [
+  { value: "all", label: "All risks" },
+  { value: "low", label: "Low risk" },
+  { value: "medium", label: "Medium risk" },
+  { value: "high", label: "High risk" },
+];
+
 export function SkillFilter({
   toolScope,
   sourceType,
   categoryId,
   status,
+  riskLevel,
   tag,
   categories,
   tags,
@@ -54,10 +64,11 @@ export function SkillFilter({
   onSourceTypeChange,
   onCategoryChange,
   onStatusChange,
+  onRiskLevelChange,
   onTagChange,
 }: SkillFilterProps) {
   return (
-    <div className="grid border-b border-[var(--line)] bg-[var(--paper-soft)] md:grid-cols-5">
+    <div className="grid border-b border-[var(--line)] bg-[var(--paper-soft)] md:grid-cols-3 xl:grid-cols-6">
       <Select label="Tool" value={toolScope} options={toolScopes} onChange={onToolScopeChange} />
       <Select label="Ownership" value={sourceType} options={sourceTypes} onChange={onSourceTypeChange} />
       <Select
@@ -67,6 +78,7 @@ export function SkillFilter({
         onChange={onCategoryChange}
       />
       <Select label="Status" value={status} options={statuses} onChange={onStatusChange} />
+      <Select label="Risk" value={riskLevel} options={riskLevels} onChange={onRiskLevelChange} />
       <Select
         label="Tag"
         value={tag}

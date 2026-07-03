@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import { getAllProjectEvidence, getProjectEvidenceBySlug, getProjectPath, getProjectRelatedSkills, getProjectStaticParams, getProjectsByRelatedSkillSlug } from "#lib/projects";
-import { getAllSkills, getSkillBySlug, getSkillPath, getSkillSearchText, getSkillsBySourceType, getSkillsByToolScope } from "#lib/skills";
+import { getAllSkills, getSkillBySlug, getSkillPath, getSkillSearchText, getSkillsByRiskLevel, getSkillsBySourceType, getSkillsByToolScope } from "#lib/skills";
 import { isEvidence } from "#lib/evidence";
 
 const requiredProjectNames = [
@@ -273,10 +273,11 @@ test("pull request template exposes relationship review guardrails", () => {
   }
 });
 
-test("at least ten skills have structured evidence", () => {
+test("all current skills have structured evidence", () => {
   const skillsWithEvidence = getAllSkills().filter((skill) => isEvidence(skill.evidence));
 
-  assert.ok(skillsWithEvidence.length >= 10);
+  assert.equal(skillsWithEvidence.length, getAllSkills().length);
+  assert.ok(skillsWithEvidence.length >= 14);
   assert.ok(skillsWithEvidence.every((skill) => skill.evidence?.lastVerified === "2026-07-02"));
 });
 
@@ -284,7 +285,9 @@ test("search and filter helpers still return the established records", () => {
   assert.equal(getSkillBySlug("playwright")?.name, "Playwright");
   assert.ok(getSkillsByToolScope("codex").some((skill) => skill.slug === "playwright"));
   assert.deepEqual(getSkillsBySourceType("own").map((skill) => skill.slug), ["vibe-coding-review"]);
+  assert.deepEqual(getSkillsByRiskLevel("high").map((skill) => skill.slug), ["claude-api", "mcp-builder", "cloudflare-deploy", "security-threat-model"]);
   assert.match(getSkillSearchText(getSkillBySlug("playwright")!, "en"), /browser automation/);
+  assert.match(getSkillSearchText(getSkillBySlug("cloudflare-deploy")!, "en"), /high risk/);
   assert.match(getSkillSearchText(getSkillBySlug("gh-fix-ci")!, "en"), /github actions/);
   assert.match(getSkillSearchText(getSkillBySlug("vibe-coding-review")!, "en"), /owned catalog record/);
 });

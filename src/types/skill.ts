@@ -1,6 +1,7 @@
 export type Locale = "en" | "zh";
 export type ToolScope = "claude-code" | "codex";
 export type SkillStatus = "active" | "draft" | "experimental" | "archived";
+export type SkillRiskLevel = "low" | "medium" | "high";
 export type Visibility = "public" | "reference-only" | "private";
 export type SourceType = "own" | "third-party";
 export type EvidenceStatus = "implemented" | "prototype" | "planned" | "research";
@@ -73,6 +74,7 @@ export interface Skill {
   toolScopes: ToolScope[];
   categoryId: SkillCategoryId;
   status: SkillStatus;
+  riskLevel: SkillRiskLevel;
   visibility: Visibility;
   sourceType: SourceType;
   source: SkillSource;

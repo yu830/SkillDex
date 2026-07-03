@@ -90,20 +90,34 @@ test("shared action badges use rectangular Anthropic-style controls", () => {
   assert.doesNotMatch(copySource, /rounded-full/);
 });
 
-test("skill explorer exposes ownership filtering", () => {
+test("skill explorer exposes ownership and risk filtering", () => {
   const explorerSource = readFileSync(join(root, "src/app/[locale]/skills/SkillsExplorer.tsx"), "utf8");
   const filterSource = readFileSync(join(root, "src/components/SkillFilter.tsx"), "utf8");
+  const cardSource = readFileSync(join(root, "src/components/SkillCard.tsx"), "utf8");
+  const detailSource = readFileSync(join(root, "src/app/[locale]/skills/[slug]/page.tsx"), "utf8");
 
   assert.match(explorerSource, /useState<SourceType \| "all">\("all"\)/);
+  assert.match(explorerSource, /useState<SkillRiskLevel \| "all">\("all"\)/);
   assert.match(explorerSource, /skill\.sourceType !== sourceType/);
+  assert.match(explorerSource, /skill\.riskLevel !== riskLevel/);
   assert.match(explorerSource, /sourceType=\{sourceType\}/);
+  assert.match(explorerSource, /riskLevel=\{riskLevel\}/);
   assert.match(explorerSource, /onSourceTypeChange=\{setSourceType\}/);
+  assert.match(explorerSource, /onRiskLevelChange=\{setRiskLevel\}/);
   assert.match(explorerSource, /getSkillSearchText\(skill, locale\)/);
   assert.match(filterSource, /sourceType: SourceType \| "all"/);
+  assert.match(filterSource, /riskLevel: SkillRiskLevel \| "all"/);
   assert.match(filterSource, /onSourceTypeChange/);
+  assert.match(filterSource, /onRiskLevelChange/);
   assert.match(filterSource, /const sourceTypes/);
+  assert.match(filterSource, /const riskLevels/);
   assert.match(filterSource, /label="Ownership"/);
+  assert.match(filterSource, /label="Risk"/);
   assert.match(filterSource, /All ownership/);
+  assert.match(filterSource, /All risks/);
+  assert.match(cardSource, /Risk: \{getRiskLevelLabel\(skill\.riskLevel, locale\)\}/);
+  assert.match(detailSource, /metaRisk: "Risk"/);
+  assert.match(detailSource, /getRiskLevelLabel\(skill\.riskLevel, locale\)/);
 });
 
 test("project log records the ownership and tool-scope change", () => {

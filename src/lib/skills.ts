@@ -1,5 +1,5 @@
 import { skills } from "#data/skills";
-import type { Locale, LocalizedText, Skill, SkillCategoryId, SourceType, ToolScope } from "#types/skill";
+import type { Locale, LocalizedText, Skill, SkillCategoryId, SkillRiskLevel, SourceType, ToolScope } from "#types/skill";
 
 export const LOCALES: Locale[] = ["en", "zh"];
 
@@ -25,6 +25,12 @@ export const TOOL_SCOPE_LABELS: Record<ToolScope, { en: string; zh?: string }> =
 export const SOURCE_TYPE_LABELS: Record<SourceType, { en: string; zh?: string }> = {
   own: { en: "My skill", zh: "\u6211\u7684 Skill" },
   "third-party": { en: "Other skill", zh: "\u5176\u4ed6 Skill" },
+};
+
+export const RISK_LEVEL_LABELS: Record<SkillRiskLevel, { en: string; zh?: string }> = {
+  low: { en: "Low risk", zh: "\u4f4e\u98ce\u9669" },
+  medium: { en: "Medium risk", zh: "\u4e2d\u7b49\u98ce\u9669" },
+  high: { en: "High risk", zh: "\u9ad8\u98ce\u9669" },
 };
 
 export function isLocale(value: string): value is Locale {
@@ -55,6 +61,10 @@ export function getSkillsBySourceType(sourceType: SourceType): Skill[] {
   return skills.filter((skill) => skill.sourceType === sourceType);
 }
 
+export function getSkillsByRiskLevel(riskLevel: SkillRiskLevel): Skill[] {
+  return skills.filter((skill) => skill.riskLevel === riskLevel);
+}
+
 export function getToolScopes(): ToolScope[] {
   return Array.from(new Set(skills.flatMap((skill) => skill.toolScopes))).sort();
 }
@@ -77,6 +87,8 @@ export function getSkillSearchText(skill: Skill, locale: Locale): string {
     ...skill.toolScopes.map((scope) => getToolScopeLabel(scope, locale)),
     skill.sourceType,
     getSourceTypeLabel(skill.sourceType, locale),
+    skill.riskLevel,
+    getRiskLevelLabel(skill.riskLevel, locale),
     skill.source.author,
     skill.source.license,
     ...skill.tags,
@@ -99,4 +111,8 @@ export function getToolScopeLabel(toolScope: ToolScope, locale: Locale): string 
 
 export function getSourceTypeLabel(sourceType: SourceType, locale: Locale): string {
   return getLocalizedText(SOURCE_TYPE_LABELS[sourceType], locale);
+}
+
+export function getRiskLevelLabel(riskLevel: SkillRiskLevel, locale: Locale): string {
+  return getLocalizedText(RISK_LEVEL_LABELS[riskLevel], locale);
 }

@@ -13,6 +13,7 @@ SkillDex is reference-only: it does not execute Skills, store credentials, scan 
 - Static project evidence in `src/data/projects.ts`
 - Manual ownership classification with `sourceType`
 - Multi-tool compatibility with `toolScopes`
+- Manual catalog risk classification with `riskLevel`
 - Evidence metadata for proof state, artifacts, and verification date
 - Cloudflare Pages static export via `next build` -> `out/`
 
@@ -53,6 +54,7 @@ Rules for static data:
 - Keep source metadata structured and explicit: author, repository URL, directory URL, license, and optional license URL.
 - Classify user-created Skills as `sourceType: "own"` and other public, bundled, curated, or third-party Skills as `sourceType: "third-party"`.
 - Use `toolScopes` for tool compatibility so a Skill can appear under Claude Code, Codex, or both.
+- Use `riskLevel` as a conservative catalog-maintenance signal: `low`, `medium`, or `high`. It describes review and operational caution for using or adapting a Skill; it is not evidence proof, a security certification, or a production claim.
 - Local Skill folders may be used as manual review candidates, but SkillDex must not scan them at runtime or build time.
 - Use stable category IDs and render display labels through the UI helper layer.
 - Use `indexedAt` and `lastReviewedAt` for catalog review dates. Do not claim upstream update timestamps unless they were actually fetched and verified.
@@ -114,7 +116,8 @@ Before adding a new entry:
 10. Run the full verification commands before publishing.
 11. Choose the correct `sourceType`: `own` for user-created Skills, `third-party` for public, bundled, curated, or third-party Skills.
 12. Choose one or more `toolScopes` values so each Skill appears under Claude Code, Codex, or both as appropriate.
-13. Add `evidence` only for facts reviewed in this phase. Prefer source links, workflow notes, or `TBD` summaries over unverified claims.
+13. Choose a conservative `riskLevel`. Use `high` for Skills that touch deployments, API credentials, security review, MCP servers, CI, or external systems; use `medium` when incorrect usage can materially affect code or workflow quality; use `low` only for low-impact documentation or formatting helpers.
+14. Add `evidence` only for facts reviewed in this phase. Prefer source links, workflow notes, or `TBD` summaries over unverified claims.
 
 Do not add a database, auth system, API routes, GitHub sync, local file scanning, online Skill execution, or ChatGPT Skill support when adding catalog entries.
 
