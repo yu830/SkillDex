@@ -42,6 +42,8 @@ When editing relationships, use this checklist:
 
 Use `docs/relationship-matrix.md` as the review surface for the current Project <-> Skill mapping. Update that matrix in the same phase as any `relatedSkillSlugs` data change.
 
+Use `docs/relationship-review-checklist.md` before editing relationship links so proof boundaries, locale-aware routes, and validation commands stay consistent.
+
 Required project evidence records:
 
 - InsightCanvas Agent

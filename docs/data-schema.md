@@ -64,4 +64,6 @@ Reverse related projects are navigation context only. They do not prove that a S
 
 The reviewable relationship matrix lives in `docs/relationship-matrix.md`. Keep it synchronized with `src/data/projects.ts` when `relatedSkillSlugs` changes.
 
+Use `docs/relationship-review-checklist.md` before changing `relatedSkillSlugs`; it records slug, matrix, locale-link, and validation guardrails.
+
 Missing public proof must remain visible as a `TBD` summary or a `note` artifact. Do not fill placeholder URLs.

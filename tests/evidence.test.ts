@@ -167,6 +167,67 @@ test("relationship matrix documents current Project and Skill slug coverage", ()
   }
 });
 
+test("relationship review checklist documents real slugs, commands, and proof boundaries", () => {
+  const checklist = readFileSync("docs/relationship-review-checklist.md", "utf8");
+  const matrix = readFileSync("docs/relationship-matrix.md", "utf8");
+  const packageJson = JSON.parse(readFileSync("package.json", "utf8"));
+  const projects = getAllProjectEvidence();
+  const skillsWithProjects = getAllSkills()
+    .map((skill) => ({ skill, projects: getProjectsByRelatedSkillSlug(skill.slug) }))
+    .filter(({ projects }) => projects.length > 0);
+
+  assert.match(matrix, /docs\/relationship-review-checklist\.md/);
+  assert.match(checklist, /src\/data\/projects\.ts/);
+  assert.match(checklist, /getProjectsByRelatedSkillSlug/);
+  assert.match(checklist, /getProjectPath\(locale, project\.slug\)/);
+  assert.match(checklist, /getSkillPath\(locale, skill\.slug\)/);
+  assert.match(checklist, new RegExp(`${projects.length} Projects`));
+  assert.match(checklist, new RegExp(`${skillsWithProjects.length} Skills`));
+
+  for (const project of projects) {
+    assert.ok(checklist.includes(`\`${project.slug}\``), project.slug);
+  }
+
+  for (const { skill } of skillsWithProjects) {
+    assert.ok(checklist.includes(`\`${skill.slug}\``), skill.slug);
+  }
+
+  const commands = [
+    "npm ci --dry-run",
+    "npm run test",
+    "npm run lint",
+    "npm run build",
+    "npm run verify:static-output",
+    "npx --yes npm@10.9.8 audit --audit-level=moderate",
+    "npx npm@latest audit --audit-level=moderate",
+    "git diff --check",
+    "git status",
+  ];
+
+  for (const command of commands) {
+    assert.ok(checklist.includes(command), command);
+  }
+
+  const scripts = packageJson.scripts as Record<string, string>;
+  for (const match of checklist.matchAll(/npm run ([\w:-]+)/g)) {
+    assert.ok(scripts[match[1]], `missing package script for ${match[0]}`);
+  }
+
+  const policyText = `${checklist}\n${matrix}`;
+  for (const misleadingPhrase of [
+    "relationship is evidence",
+    "relationship is proof",
+    "matrix is evidence",
+    "matrix is proof",
+    "related projects are evidence",
+    "related projects prove",
+    "built with this Skill",
+    "powered by this Skill",
+  ]) {
+    assert.equal(policyText.includes(misleadingPhrase), false, misleadingPhrase);
+  }
+});
+
 test("at least ten skills have structured evidence", () => {
   const skillsWithEvidence = getAllSkills().filter((skill) => isEvidence(skill.evidence));
 

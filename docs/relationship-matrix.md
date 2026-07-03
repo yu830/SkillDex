@@ -4,6 +4,8 @@ This document records the current Project <-> Skill relationship layer for edito
 
 Related Skills and Related Projects are navigation and capability-context links only. They are not evidence artifacts, proof that a project shipped, proof that a Skill was used, or justification for adding external links.
 
+Before editing relationships, use `docs/relationship-review-checklist.md` to verify slug validity, proof-boundary wording, matrix sync, locale-aware links, and local validation commands.
+
 ## Source Of Truth
 
 - Project -> Skill relationships live in each Project record's `relatedSkillSlugs` field.
@@ -52,6 +54,8 @@ Use this checklist before editing any `relatedSkillSlugs` value:
 - English and Chinese links must resolve through locale-aware helpers such as `getProjectPath(locale, project.slug)` and `getSkillPath(locale, skill.slug)`.
 - Empty reverse relationships are allowed; do not add weak relationships only to fill a section.
 - Tests should verify route integrity and slug coverage, but semantic fit still needs human review.
+
+For the full maintenance checklist, see `docs/relationship-review-checklist.md`.
 
 ## Link Expectations
 
