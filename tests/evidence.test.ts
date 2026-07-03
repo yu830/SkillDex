@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import { getAllProjectEvidence, getProjectEvidenceBySlug, getProjectPath, getProjectRelatedSkills, getProjectStaticParams, getProjectsByRelatedSkillSlug } from "#lib/projects";
@@ -140,6 +141,30 @@ test("reverse related project helper derives stable Skill-to-Project navigation"
   ]);
   assert.deepEqual(getProjectsByRelatedSkillSlug("claude-api"), []);
   assert.ok(skillCoverage.size >= 6, `expected at least 6 Skills with related projects, found ${skillCoverage.size}`);
+});
+
+test("relationship matrix documents current Project and Skill slug coverage", () => {
+  const matrix = readFileSync("docs/relationship-matrix.md", "utf8");
+  const projects = getAllProjectEvidence();
+  const skillsWithProjects = getAllSkills()
+    .map((skill) => ({ skill, projects: getProjectsByRelatedSkillSlug(skill.slug) }))
+    .filter(({ projects }) => projects.length > 0);
+
+  assert.match(matrix, /Current coverage: 6 required Project records\./);
+  assert.match(matrix, new RegExp(`Current coverage: ${skillsWithProjects.length} Skill slugs with at least one related Project\\.`));
+  assert.match(matrix, /navigation or capability context, not proof/i);
+  assert.match(matrix, /getProjectPath\(locale, project\.slug\)/);
+  assert.match(matrix, /getSkillPath\(locale, skill\.slug\)/);
+
+  for (const project of projects) {
+    const skillCells = project.relatedSkillSlugs.map((skillSlug) => `\`${skillSlug}\``).join(", ");
+    assert.ok(matrix.includes(`| \`${project.slug}\` | ${project.name} | ${skillCells} |`), project.slug);
+  }
+
+  for (const { skill, projects: relatedProjects } of skillsWithProjects) {
+    const projectCells = relatedProjects.map((project) => `\`${project.slug}\``).join(", ");
+    assert.ok(matrix.includes(`| \`${skill.slug}\` | ${projectCells} |`), skill.slug);
+  }
 });
 
 test("at least ten skills have structured evidence", () => {

@@ -62,4 +62,6 @@ Skill detail pages may show reverse "Related projects" links, but those links ar
 
 Reverse related projects are navigation context only. They do not prove that a Skill was used in a project, that a project shipped, or that a missing artifact is verified.
 
+The reviewable relationship matrix lives in `docs/relationship-matrix.md`. Keep it synchronized with `src/data/projects.ts` when `relatedSkillSlugs` changes.
+
 Missing public proof must remain visible as a `TBD` summary or a `note` artifact. Do not fill placeholder URLs.

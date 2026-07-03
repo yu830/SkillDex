@@ -64,9 +64,15 @@ test("skill detail route renders related projects with locale-aware links", () =
   assert.match(source, /Related projects/);
   assert.match(source, /navigation and portfolio context/);
   assert.match(source, /do not replace evidence artifacts/);
+  assert.match(source, /Project evidence status/);
+  assert.match(source, /Project record updated/);
   assert.match(source, /getProjectsByRelatedSkillSlug\(skill\.slug\)/);
   assert.match(source, /getProjectPath\(locale,\s*project\.slug\)/);
   assert.match(source, /getLocalizedText\(project\.summary,\s*locale\)/);
+  assert.match(source, /evidenceStatusLabel={text\.projectEvidenceStatus}/);
+  assert.match(source, /updatedLabel={text\.projectRecordUpdated}/);
+  assert.doesNotMatch(source, /<Tag>\s*{project\.evidence\.status}\s*<\/Tag>/);
+  assert.doesNotMatch(source, /<Tag>\s*{project\.updatedAt}\s*<\/Tag>/);
 });
 
 test("project detail route statically generates locales and project slugs", () => {

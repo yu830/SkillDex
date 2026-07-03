@@ -32,6 +32,8 @@ const sectionTitles = {
     relatedProjectsNote:
       "Related projects are derived from project records for navigation and portfolio context. They do not replace evidence artifacts, prove shipment, or prove that this Skill was used in a project.",
     openProject: "Open project record",
+    projectEvidenceStatus: "Project evidence status",
+    projectRecordUpdated: "Project record updated",
     source: "Source metadata",
     back: "Back to skills",
     copyPrompt: "Copy prompt",
@@ -58,6 +60,8 @@ const sectionTitles = {
     relatedProjectsNote:
       "\u76f8\u5173\u9879\u76ee\u7531\u9879\u76ee\u8bb0\u5f55\u4e2d\u7684 relatedSkillSlugs \u6d3e\u751f\uff0c\u4ec5\u7528\u4e8e\u5bfc\u822a\u548c\u4f5c\u54c1\u96c6\u4e0a\u4e0b\u6587\u3002\u5b83\u4eec\u4e0d\u66ff\u4ee3 evidence artifacts\uff0c\u4e5f\u4e0d\u8bc1\u660e\u9879\u76ee\u5df2\u4ea4\u4ed8\u6216\u8be5 Skill \u88ab\u7528\u4e8e\u9879\u76ee\u3002",
     openProject: "\u6253\u5f00\u9879\u76ee\u8bb0\u5f55",
+    projectEvidenceStatus: "\u9879\u76ee\u8bc1\u636e\u72b6\u6001",
+    projectRecordUpdated: "\u9879\u76ee\u8bb0\u5f55\u66f4\u65b0",
     source: "\u6765\u6e90\u5143\u6570\u636e",
     back: "\u8fd4\u56de Skills",
     copyPrompt: "\u590d\u5236\u63d0\u793a\u8bcd",
@@ -216,7 +220,14 @@ export default async function SkillDetailPage({ params }: PageProps) {
               <p className="max-w-4xl text-sm leading-7 text-[var(--muted-ink)]">{text.relatedProjectsNote}</p>
               <ul className="mt-6 grid gap-4">
                 {relatedProjects.map((project) => (
-                  <RelatedProjectItem key={project.slug} project={project} locale={locale} openProjectLabel={text.openProject} />
+                  <RelatedProjectItem
+                    key={project.slug}
+                    project={project}
+                    locale={locale}
+                    openProjectLabel={text.openProject}
+                    evidenceStatusLabel={text.projectEvidenceStatus}
+                    updatedLabel={text.projectRecordUpdated}
+                  />
                 ))}
               </ul>
             </div>
@@ -291,14 +302,20 @@ type RelatedProjectItemProps = {
   project: ProjectEvidenceRecord;
   locale: Locale;
   openProjectLabel: string;
+  evidenceStatusLabel: string;
+  updatedLabel: string;
 };
 
-function RelatedProjectItem({ project, locale, openProjectLabel }: RelatedProjectItemProps) {
+function RelatedProjectItem({ project, locale, openProjectLabel, evidenceStatusLabel, updatedLabel }: RelatedProjectItemProps) {
   return (
     <li className="border-t border-[var(--line-soft)] pt-4">
       <div className="flex flex-wrap gap-2">
-        <Tag>{project.evidence.status}</Tag>
-        <Tag>{project.updatedAt}</Tag>
+        <Tag>
+          {evidenceStatusLabel}: {project.evidence.status}
+        </Tag>
+        <Tag>
+          {updatedLabel}: {project.updatedAt}
+        </Tag>
       </div>
       <Link
         href={getProjectPath(locale, project.slug)}

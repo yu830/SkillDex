@@ -40,6 +40,8 @@ When editing relationships, use this checklist:
 - Relationship tests prove route integrity, not semantic fit.
 - No proof status, repository URL, demo URL, benchmark, or deployment claim is upgraded by adding a relationship link.
 
+Use `docs/relationship-matrix.md` as the review surface for the current Project <-> Skill mapping. Update that matrix in the same phase as any `relatedSkillSlugs` data change.
+
 Required project evidence records:
 
 - InsightCanvas Agent

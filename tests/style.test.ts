@@ -50,6 +50,7 @@ test("skill detail page uses the same editorial type system as the home page", (
   assert.match(source, /Evidence summary/);
   assert.match(source, /Related projects/);
   assert.match(source, /portfolio context/);
+  assert.match(source, /Project evidence status/);
   assert.match(source, /leading-\[1\.02\]/);
   assert.doesNotMatch(source, /clamp\(/);
   assert.doesNotMatch(source, /vw/);

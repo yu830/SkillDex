@@ -1,5 +1,16 @@
 import { existsSync, readFileSync } from "node:fs";
 
+const relatedSkillProjectLinks = {
+  "vercel-deploy": ["loopengineering"],
+  playwright: ["bug-hunter-replay", "loopengineering"],
+  "vibe-coding-review": ["insightcanvas-agent", "repolens-rag", "bug-hunter-replay", "vibe-coding-review", "loopengineering"],
+  "frontend-design": ["insightcanvas-agent"],
+  "skill-creator": ["vibe-coding-review"],
+  "mcp-builder": ["memorybridge-mcp", "repolens-rag"],
+  "gh-fix-ci": ["bug-hunter-replay", "vibe-coding-review", "loopengineering"],
+  "gh-address-comments": ["vibe-coding-review", "loopengineering"],
+};
+
 const requiredFiles = [
   "out/index.html",
   "out/en/index.html",
@@ -12,9 +23,7 @@ const requiredFiles = [
   "out/en/projects/vibe-coding-review/index.html",
   "out/en/projects/loopengineering/index.html",
   "out/en/skills/index.html",
-  "out/en/skills/playwright/index.html",
-  "out/en/skills/frontend-design/index.html",
-  "out/en/skills/vibe-coding-review/index.html",
+  ...Object.keys(relatedSkillProjectLinks).map((skillSlug) => `out/en/skills/${skillSlug}/index.html`),
   "out/zh/index.html",
   "out/zh/about/index.html",
   "out/zh/projects/index.html",
@@ -60,26 +69,21 @@ const contentChecks = [
     label: "LoopEngineering related Skill links",
     matches: (html) => html.includes("Related skills") && html.includes('href="/en/skills/vercel-deploy/"') && html.includes('href="/en/skills/playwright/"'),
   },
-  {
-    file: "out/en/skills/frontend-design/index.html",
-    label: "Frontend Design related Project links",
-    matches: (html) => html.includes("Related projects") && html.includes('href="/en/projects/insightcanvas-agent/"') && html.includes("do not replace evidence artifacts"),
-  },
-  {
-    file: "out/en/skills/vibe-coding-review/index.html",
-    label: "Vibe Coding Review related Project links",
+  ...Object.entries(relatedSkillProjectLinks).map(([skillSlug, projectSlugs]) => ({
+    file: `out/en/skills/${skillSlug}/index.html`,
+    label: `${skillSlug} related Project links`,
     matches: (html) =>
       html.includes("Related projects") &&
-      html.includes('href="/en/projects/insightcanvas-agent/"') &&
-      html.includes('href="/en/projects/repolens-rag/"') &&
-      html.includes('href="/en/projects/bug-hunter-replay/"') &&
-      html.includes('href="/en/projects/vibe-coding-review/"') &&
-      html.includes('href="/en/projects/loopengineering/"'),
-  },
+      html.includes("Project evidence status") &&
+      html.includes("Project record updated") &&
+      html.includes("2026-07-02") &&
+      html.includes("do not replace evidence artifacts") &&
+      projectSlugs.every((projectSlug) => html.includes(`href="/en/projects/${projectSlug}/"`)),
+  })),
   {
     file: "out/zh/skills/vibe-coding-review/index.html",
     label: "Vibe Coding Review Chinese related Project links",
-    matches: (html) => html.includes('href="/zh/projects/insightcanvas-agent/"') && html.includes('href="/zh/projects/loopengineering/"'),
+    matches: (html) => html.includes("项目证据状态") && html.includes('href="/zh/projects/insightcanvas-agent/"') && html.includes('href="/zh/projects/loopengineering/"'),
   },
 ];
 
