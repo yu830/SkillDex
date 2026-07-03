@@ -5,7 +5,9 @@ import { CopyButton } from "@/components/CopyButton";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { StatusBadge } from "@/components/StatusBadge";
 import { Tag } from "@/components/Tag";
+import { getProjectPath, getProjectsByRelatedSkillSlug } from "@/lib/projects";
 import { getAllSkills, getCategoryLabel, getLocalizedText, getSkillBySlug, getSourceTypeLabel, getToolScopeLabel, isLocale, LOCALES } from "@/lib/skills";
+import type { ProjectEvidenceRecord } from "@/types/project";
 import type { Locale, LocalizedText } from "@/types/skill";
 
 type PageProps = {
@@ -26,6 +28,10 @@ const sectionTitles = {
     install: "Installation / usage",
     compatibility: "Compatibility",
     evidence: "Evidence summary",
+    relatedProjects: "Related projects",
+    relatedProjectsNote:
+      "Related projects are derived from project records for navigation and portfolio context. They do not replace evidence artifacts, prove shipment, or prove that this Skill was used in a project.",
+    openProject: "Open project record",
     source: "Source metadata",
     back: "Back to skills",
     copyPrompt: "Copy prompt",
@@ -48,6 +54,10 @@ const sectionTitles = {
     install: "\u5b89\u88c5 / \u4f7f\u7528",
     compatibility: "\u517c\u5bb9\u6027",
     evidence: "\u8bc1\u636e\u6458\u8981",
+    relatedProjects: "\u76f8\u5173\u9879\u76ee",
+    relatedProjectsNote:
+      "\u76f8\u5173\u9879\u76ee\u7531\u9879\u76ee\u8bb0\u5f55\u4e2d\u7684 relatedSkillSlugs \u6d3e\u751f\uff0c\u4ec5\u7528\u4e8e\u5bfc\u822a\u548c\u4f5c\u54c1\u96c6\u4e0a\u4e0b\u6587\u3002\u5b83\u4eec\u4e0d\u66ff\u4ee3 evidence artifacts\uff0c\u4e5f\u4e0d\u8bc1\u660e\u9879\u76ee\u5df2\u4ea4\u4ed8\u6216\u8be5 Skill \u88ab\u7528\u4e8e\u9879\u76ee\u3002",
+    openProject: "\u6253\u5f00\u9879\u76ee\u8bb0\u5f55",
     source: "\u6765\u6e90\u5143\u6570\u636e",
     back: "\u8fd4\u56de Skills",
     copyPrompt: "\u590d\u5236\u63d0\u793a\u8bcd",
@@ -86,6 +96,7 @@ export default async function SkillDetailPage({ params }: PageProps) {
   const toolLabels = skill.toolScopes.map((scope) => getToolScopeLabel(scope, locale));
   const ownershipLabel = getSourceTypeLabel(skill.sourceType, locale);
   const compatibilityToolLabels = skill.compatibility.tools.map((tool) => getToolScopeLabel(tool, locale));
+  const relatedProjects = getProjectsByRelatedSkillSlug(skill.slug);
 
   return (
     <main className="editorial-shell mx-auto flex w-full max-w-[1500px] flex-1 flex-col px-4 py-4 text-[var(--ink)] sm:px-6 sm:py-6 lg:px-8">
@@ -198,6 +209,20 @@ export default async function SkillDetailPage({ params }: PageProps) {
           </section>
         ) : null}
 
+        {relatedProjects.length > 0 ? (
+          <section className="grid border-b border-[var(--line)] lg:grid-cols-[minmax(220px,4fr)_minmax(0,8fr)]">
+            <SectionKicker title={text.relatedProjects} />
+            <div className="px-5 py-8 sm:px-8">
+              <p className="max-w-4xl text-sm leading-7 text-[var(--muted-ink)]">{text.relatedProjectsNote}</p>
+              <ul className="mt-6 grid gap-4">
+                {relatedProjects.map((project) => (
+                  <RelatedProjectItem key={project.slug} project={project} locale={locale} openProjectLabel={text.openProject} />
+                ))}
+              </ul>
+            </div>
+          </section>
+        ) : null}
+
         <section className="grid border-b border-[var(--line)] lg:grid-cols-[minmax(220px,4fr)_minmax(0,8fr)]">
           <SectionKicker title={text.prompts} />
           <div className="grid gap-0">
@@ -259,6 +284,33 @@ export default async function SkillDetailPage({ params }: PageProps) {
         </footer>
       </div>
     </main>
+  );
+}
+
+type RelatedProjectItemProps = {
+  project: ProjectEvidenceRecord;
+  locale: Locale;
+  openProjectLabel: string;
+};
+
+function RelatedProjectItem({ project, locale, openProjectLabel }: RelatedProjectItemProps) {
+  return (
+    <li className="border-t border-[var(--line-soft)] pt-4">
+      <div className="flex flex-wrap gap-2">
+        <Tag>{project.evidence.status}</Tag>
+        <Tag>{project.updatedAt}</Tag>
+      </div>
+      <Link
+        href={getProjectPath(locale, project.slug)}
+        className="mt-4 inline-block font-serif text-2xl font-normal leading-snug tracking-normal text-[var(--ink)] underline decoration-[var(--line-soft)] underline-offset-4 hover:decoration-[var(--ink)]"
+      >
+        {project.name}
+      </Link>
+      <p className="mt-3 max-w-3xl text-sm leading-6 text-[var(--muted-ink)]">{getLocalizedText(project.summary, locale)}</p>
+      <Link href={getProjectPath(locale, project.slug)} className="mt-3 inline-block font-medium text-[var(--ink)] underline decoration-[var(--line-soft)] underline-offset-4 hover:decoration-[var(--ink)]">
+        {openProjectLabel}
+      </Link>
+    </li>
   );
 }
 

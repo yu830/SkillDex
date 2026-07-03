@@ -29,6 +29,17 @@ Project detail pages may expand the record with problem, approach, evidence, pro
 
 Project detail pages may also list related Skills. Related Skills are navigation and capability mappings only; they do not replace evidence artifacts, prove that a project shipped, or justify adding unverified external links.
 
+Skill detail pages may list related Projects derived from project `relatedSkillSlugs`. Treat those links as navigation and portfolio context only. Avoid wording such as "built with this Skill", "powered by this Skill", "case study", or "evidence" unless the Project evidence artifacts independently verify that claim.
+
+When editing relationships, use this checklist:
+
+- The Skill slug exists in `src/data/skills.ts`.
+- The Project slug exists in `src/data/projects.ts`.
+- Reverse Skill -> Project links are derived, not stored separately on Skill records.
+- Empty reverse sections are allowed when no Project maps to a Skill.
+- Relationship tests prove route integrity, not semantic fit.
+- No proof status, repository URL, demo URL, benchmark, or deployment claim is upgraded by adding a relationship link.
+
 Required project evidence records:
 
 - InsightCanvas Agent

@@ -58,6 +58,17 @@ test("skill detail route statically generates locales and slugs", () => {
   assert.match(source, /getSkillBySlug/);
 });
 
+test("skill detail route renders related projects with locale-aware links", () => {
+  const source = readFileSync(join(root, "src/app/[locale]/skills/[slug]/page.tsx"), "utf8");
+
+  assert.match(source, /Related projects/);
+  assert.match(source, /navigation and portfolio context/);
+  assert.match(source, /do not replace evidence artifacts/);
+  assert.match(source, /getProjectsByRelatedSkillSlug\(skill\.slug\)/);
+  assert.match(source, /getProjectPath\(locale,\s*project\.slug\)/);
+  assert.match(source, /getLocalizedText\(project\.summary,\s*locale\)/);
+});
+
 test("project detail route statically generates locales and project slugs", () => {
   const source = readFileSync(join(root, "src/app/[locale]/projects/[slug]/page.tsx"), "utf8");
 

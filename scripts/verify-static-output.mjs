@@ -13,6 +13,8 @@ const requiredFiles = [
   "out/en/projects/loopengineering/index.html",
   "out/en/skills/index.html",
   "out/en/skills/playwright/index.html",
+  "out/en/skills/frontend-design/index.html",
+  "out/en/skills/vibe-coding-review/index.html",
   "out/zh/index.html",
   "out/zh/about/index.html",
   "out/zh/projects/index.html",
@@ -24,6 +26,7 @@ const requiredFiles = [
   "out/zh/projects/loopengineering/index.html",
   "out/zh/skills/index.html",
   "out/zh/skills/frontend-design/index.html",
+  "out/zh/skills/vibe-coding-review/index.html",
 ];
 
 const forbiddenChecks = [
@@ -56,6 +59,27 @@ const contentChecks = [
     file: "out/en/projects/loopengineering/index.html",
     label: "LoopEngineering related Skill links",
     matches: (html) => html.includes("Related skills") && html.includes('href="/en/skills/vercel-deploy/"') && html.includes('href="/en/skills/playwright/"'),
+  },
+  {
+    file: "out/en/skills/frontend-design/index.html",
+    label: "Frontend Design related Project links",
+    matches: (html) => html.includes("Related projects") && html.includes('href="/en/projects/insightcanvas-agent/"') && html.includes("do not replace evidence artifacts"),
+  },
+  {
+    file: "out/en/skills/vibe-coding-review/index.html",
+    label: "Vibe Coding Review related Project links",
+    matches: (html) =>
+      html.includes("Related projects") &&
+      html.includes('href="/en/projects/insightcanvas-agent/"') &&
+      html.includes('href="/en/projects/repolens-rag/"') &&
+      html.includes('href="/en/projects/bug-hunter-replay/"') &&
+      html.includes('href="/en/projects/vibe-coding-review/"') &&
+      html.includes('href="/en/projects/loopengineering/"'),
+  },
+  {
+    file: "out/zh/skills/vibe-coding-review/index.html",
+    label: "Vibe Coding Review Chinese related Project links",
+    matches: (html) => html.includes('href="/zh/projects/insightcanvas-agent/"') && html.includes('href="/zh/projects/loopengineering/"'),
   },
 ];
 

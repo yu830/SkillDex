@@ -26,6 +26,18 @@ export function getProjectRelatedSkills(project: ProjectEvidenceRecord): Skill[]
   });
 }
 
+export function getProjectsByRelatedSkillSlug(skillSlug: string): ProjectEvidenceRecord[] {
+  const seenProjectSlugs = new Set<string>();
+
+  return projectEvidence.filter((project) => {
+    if (!project.relatedSkillSlugs.includes(skillSlug)) return false;
+    if (seenProjectSlugs.has(project.slug)) return false;
+
+    seenProjectSlugs.add(project.slug);
+    return true;
+  });
+}
+
 export function getProjectStaticParams() {
   return LOCALES.flatMap((locale) => projectEvidence.map((project) => ({ locale, slug: project.slug })));
 }

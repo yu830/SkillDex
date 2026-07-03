@@ -58,4 +58,8 @@ Project records include:
 
 `relatedSkillSlugs` maps a project to existing Skill records for navigation and capability context. Every slug must exist in `src/data/skills.ts`, every project should list at least one related Skill, and the relationship must not be treated as evidence proof.
 
+Skill detail pages may show reverse "Related projects" links, but those links are derived from `src/data/projects.ts` by looking up project records whose `relatedSkillSlugs` contain the current Skill slug. Do not add a separate `relatedProjectSlugs` field to Skill records unless the data ownership model is deliberately changed in a future phase.
+
+Reverse related projects are navigation context only. They do not prove that a Skill was used in a project, that a project shipped, or that a missing artifact is verified.
+
 Missing public proof must remain visible as a `TBD` summary or a `note` artifact. Do not fill placeholder URLs.

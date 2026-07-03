@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { getAllProjectEvidence, getProjectEvidenceBySlug, getProjectPath, getProjectRelatedSkills, getProjectStaticParams } from "#lib/projects";
+import { getAllProjectEvidence, getProjectEvidenceBySlug, getProjectPath, getProjectRelatedSkills, getProjectStaticParams, getProjectsByRelatedSkillSlug } from "#lib/projects";
 import { getAllSkills, getSkillBySlug, getSkillPath, getSkillSearchText, getSkillsBySourceType, getSkillsByToolScope } from "#lib/skills";
 import { isEvidence } from "#lib/evidence";
 
@@ -110,6 +110,36 @@ test("project related skill slugs are populated, valid, and diverse", () => {
   }
 
   assert.ok(coveredSkillSlugs.size >= 6, `expected at least 6 related Skills, found ${coveredSkillSlugs.size}`);
+});
+
+test("reverse related project helper derives stable Skill-to-Project navigation", () => {
+  const projects = getAllProjectEvidence();
+  const skillCoverage = new Map<string, string[]>();
+
+  for (const skill of getAllSkills()) {
+    const expectedProjectSlugs = projects.filter((project) => project.relatedSkillSlugs.includes(skill.slug)).map((project) => project.slug);
+    const actualProjectSlugs = getProjectsByRelatedSkillSlug(skill.slug).map((project) => project.slug);
+
+    assert.deepEqual(actualProjectSlugs, expectedProjectSlugs, skill.slug);
+    assert.equal(new Set(actualProjectSlugs).size, actualProjectSlugs.length, skill.slug);
+
+    if (actualProjectSlugs.length > 0) {
+      skillCoverage.set(skill.slug, actualProjectSlugs);
+    }
+  }
+
+  assert.deepEqual(getProjectsByRelatedSkillSlug("frontend-design").map((project) => project.slug), ["insightcanvas-agent"]);
+  assert.deepEqual(getProjectsByRelatedSkillSlug("mcp-builder").map((project) => project.slug), ["memorybridge-mcp", "repolens-rag"]);
+  assert.deepEqual(getProjectsByRelatedSkillSlug("playwright").map((project) => project.slug), ["bug-hunter-replay", "loopengineering"]);
+  assert.deepEqual(getProjectsByRelatedSkillSlug("vibe-coding-review").map((project) => project.slug), [
+    "insightcanvas-agent",
+    "repolens-rag",
+    "bug-hunter-replay",
+    "vibe-coding-review",
+    "loopengineering",
+  ]);
+  assert.deepEqual(getProjectsByRelatedSkillSlug("claude-api"), []);
+  assert.ok(skillCoverage.size >= 6, `expected at least 6 Skills with related projects, found ${skillCoverage.size}`);
 });
 
 test("at least ten skills have structured evidence", () => {
